@@ -1,5 +1,9 @@
 # Team Contract
 ---
+This Contract is the Final Version from the old repository "team-project"(link:
+https://github.com/Hwwv/team-project.git), where you can find people's commits 
+for signing it.
+
 ## Purpose of this Contract
 
 This contract sets out shared expectations and commitments for how our team will collaborate during the course. It is designed to promote accountability, professionalism, and mutual support as we complete individual preparation, readiness assurance tests, in-class activities, and our course project.
