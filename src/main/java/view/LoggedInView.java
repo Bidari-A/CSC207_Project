@@ -54,6 +54,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.add(title);
         this.add(usernameInfo);
         this.add(username);
+        this.add(buttons);
 
 
     }
