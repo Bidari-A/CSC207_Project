@@ -14,6 +14,7 @@ public class User {
      * @param password the password
      * @throws IllegalArgumentException if the password or name are empty
      */
+
     public User(String name, String password) {
         if ("".equals(name)) {
             throw new IllegalArgumentException("Username cannot be empty");
@@ -32,5 +33,4 @@ public class User {
     public String getPassword() {
         return password;
     }
-
 }
