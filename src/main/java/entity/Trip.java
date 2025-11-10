@@ -19,7 +19,7 @@ public class Trip {
         this.accommodations = accommodations;
         this.flights = flights;
     }
-
-    // TODO: Implement Methods
     //comment
+    // TODO: Implement Methods
+
 }
