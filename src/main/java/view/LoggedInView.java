@@ -24,7 +24,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final LoggedInViewModel loggedInViewModel;
     private LogoutController logoutController;
 
-    private final JLabel username;
     private final JLabel lastTripLabel;
     private final JLabel nameLabel;
     private final JLabel cityLabel;
@@ -42,10 +41,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-        // ===== 顶部栏 =====
+        // ====== 顶部栏 ======
         JPanel topPanel = new JPanel(new BorderLayout());
         logOut = new JButton("Log Out");
         tripListButton = new JButton("Trip List");
+
         JLabel title = new JLabel("Dashboard", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
 
@@ -53,12 +53,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         topPanel.add(title, BorderLayout.CENTER);
         topPanel.add(tripListButton, BorderLayout.EAST);
 
-        // ===== 用户信息区域 =====
-        JLabel usernameInfo = new JLabel("Currently logged in: ");
-        username = new JLabel();
-        username.setFont(new Font("Arial", Font.PLAIN, 14));
-
-        // ===== 中间内容：Trip 信息 =====
+        // ====== 中间内容：Trip 信息 ======
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -74,7 +69,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         cityLabel.setFont(infoFont);
         dateLabel.setFont(infoFont);
 
-        // 居中排列
         lastTripLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         cityLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -88,9 +82,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         centerPanel.add(cityLabel);
         centerPanel.add(Box.createVerticalStrut(5));
         centerPanel.add(dateLabel);
-        centerPanel.add(Box.createVerticalStrut(20));
+        centerPanel.add(Box.createVerticalStrut(25));
 
-        // ===== 四个按钮：Details / Delete / Create / Complete =====
+        // ====== 四个按钮：Details / Delete / Create / Complete ======
         JPanel actionRow = new JPanel();
         actionRow.setLayout(new BoxLayout(actionRow, BoxLayout.X_AXIS));
         actionRow.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -111,28 +105,21 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         actionRow.add(Box.createHorizontalGlue());
 
         centerPanel.add(actionRow);
+        centerPanel.add(Box.createVerticalStrut(30));
 
-        // ===== 底部 New Trip =====
+        // ====== 底部 New Trip 按钮 ======
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         newTripButton = new JButton("New Trip");
         bottomPanel.add(newTripButton);
 
-        // ===== 主布局 =====
+        // ====== 总体布局 ======
         this.setLayout(new BorderLayout(20, 20));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.add(topPanel, BorderLayout.NORTH);
-
-        JPanel midWrapper = new JPanel();
-        midWrapper.setLayout(new BoxLayout(midWrapper, BoxLayout.Y_AXIS));
-        midWrapper.add(usernameInfo);
-        midWrapper.add(username);
-        midWrapper.add(Box.createVerticalStrut(10));
-        midWrapper.add(centerPanel);
-
-        this.add(midWrapper, BorderLayout.CENTER);
+        this.add(centerPanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
-        // ===== 添加监听器 =====
+        // ====== 按钮监听 ======
         logOut.addActionListener(this);
         tripListButton.addActionListener(this);
         newTripButton.addActionListener(this);
@@ -167,13 +154,12 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     }
 
     /**
-     * Updates username when state changes.
+     * Updates the labels when LoggedInState changes.
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
-            username.setText(state.getUsername());
         }
     }
 
@@ -183,5 +169,15 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+
+    // ====== 测试主方法（可运行查看UI） ======
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Dashboard");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(480, 420);
+        frame.add(new LoggedInView(new LoggedInViewModel()));
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
