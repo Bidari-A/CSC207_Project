@@ -41,7 +41,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-        // ====== 顶部栏 ======
         JPanel topPanel = new JPanel(new BorderLayout());
         logOut = new JButton("Log Out");
         tripListButton = new JButton("Trip List");
@@ -53,7 +52,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         topPanel.add(title, BorderLayout.CENTER);
         topPanel.add(tripListButton, BorderLayout.EAST);
 
-        // ====== 中间内容：Trip 信息 ======
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -84,7 +82,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         centerPanel.add(dateLabel);
         centerPanel.add(Box.createVerticalStrut(25));
 
-        // ====== 四个按钮：Details / Delete / Create / Complete ======
         JPanel actionRow = new JPanel();
         actionRow.setLayout(new BoxLayout(actionRow, BoxLayout.X_AXIS));
         actionRow.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -107,19 +104,16 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         centerPanel.add(actionRow);
         centerPanel.add(Box.createVerticalStrut(30));
 
-        // ====== 底部 New Trip 按钮 ======
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         newTripButton = new JButton("New Trip");
         bottomPanel.add(newTripButton);
 
-        // ====== 总体布局 ======
         this.setLayout(new BorderLayout(20, 20));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.add(topPanel, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
-        // ====== 按钮监听 ======
         logOut.addActionListener(this);
         tripListButton.addActionListener(this);
         newTripButton.addActionListener(this);
@@ -170,14 +164,14 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
-
-    // ====== 测试主方法（可运行查看UI） ======
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Dashboard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(480, 420);
-        frame.add(new LoggedInView(new LoggedInViewModel()));
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
 }
+
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Dashboard");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(480, 420);
+//        frame.add(new LoggedInView(new LoggedInViewModel()));
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//    }
+//}
