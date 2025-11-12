@@ -1,14 +1,10 @@
 package view;
 
-import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.signup.SignupState;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,22 +20,31 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final LoggedInViewModel loggedInViewModel;
     private LogoutController logoutController;
 
-    private final JLabel lastTripLabel;
-    private final JLabel nameLabel;
-    private final JLabel cityLabel;
-    private final JLabel dateLabel;
+    // TODO to be assigned later..
+    // tripHistoryController
+    // detailController
+    // deleteTripController
+    // completeTripController
+    // newTripController
+
+    private final JLabel tripName;
+    private final JLabel cityName;
+    private final JLabel date;
+    private final JLabel username;
 
     private final JButton logOut;
     private final JButton tripListButton;
     private final JButton newTripButton;
     private final JButton detailsButton;
     private final JButton deleteButton;
-    private final JButton createButton;
     private final JButton completeButton;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
+
+        final JLabel usernameInfo = new JLabel("Currently logged in as: ");
+        username = new JLabel();
 
         JPanel topPanel = new JPanel(new BorderLayout());
         logOut = new JButton("Log Out");
@@ -56,30 +61,61 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        lastTripLabel = new JLabel("Last Trip Created:");
-        nameLabel = new JLabel("Name of Trip: ");
-        cityLabel = new JLabel("City: ");
-        dateLabel = new JLabel("Date: ");
+        JPanel usernameHolderPanel = new JPanel();
+        usernameHolderPanel.setLayout(new BoxLayout(usernameHolderPanel, BoxLayout.X_AXIS));
+        usernameHolderPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        usernameHolderPanel.add(usernameInfo);
+        usernameHolderPanel.add(username);
+
+        JLabel lastTrip = new JLabel("Last Trip Created:");
+        JLabel tripNameInfo = new JLabel("Name of Trip: ");
+        JLabel cityNameInfo = new JLabel("City: ");
+        JLabel dateInfo = new JLabel("Date: ");
+
+        // TODO EDIT LATER
+        tripName = new JLabel("Holder Trip");
+        cityName = new JLabel("Holder City Name");
+        date = new JLabel("Holder Date");
 
         Font infoFont = new Font("Arial", Font.PLAIN, 14);
-        lastTripLabel.setFont(infoFont);
-        nameLabel.setFont(infoFont);
-        cityLabel.setFont(infoFont);
-        dateLabel.setFont(infoFont);
+        tripNameInfo.setFont(infoFont);
+        cityNameInfo.setFont(infoFont);
+        dateInfo.setFont(infoFont);
+        lastTrip.setFont(infoFont);
+        tripName.setFont(infoFont);
+        cityName.setFont(infoFont);
+        date.setFont(infoFont);
 
-        lastTripLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cityLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        dateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lastTrip.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+
+        JPanel topPanel_1 = new JPanel();
+        topPanel_1.setLayout(new BoxLayout(topPanel_1, BoxLayout.X_AXIS));
+        topPanel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel_1.add(tripNameInfo);
+        topPanel_1.add(tripName);
+
+        JPanel topPanel_2 = new JPanel();
+        topPanel_2.setLayout(new BoxLayout(topPanel_2, BoxLayout.X_AXIS));
+        topPanel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel_2.add(cityNameInfo);
+        topPanel_2.add(cityName);
+
+        JPanel topPanel_3 = new JPanel();
+        topPanel_3.setLayout(new BoxLayout(topPanel_3, BoxLayout.X_AXIS));
+        topPanel_3.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel_3.add(dateInfo);
+        topPanel_3.add(date);
+
+        centerPanel.add(usernameHolderPanel);
         centerPanel.add(Box.createVerticalStrut(10));
-        centerPanel.add(lastTripLabel);
+        centerPanel.add(lastTrip);
         centerPanel.add(Box.createVerticalStrut(10));
-        centerPanel.add(nameLabel);
+        centerPanel.add(topPanel_1);
         centerPanel.add(Box.createVerticalStrut(5));
-        centerPanel.add(cityLabel);
+        centerPanel.add(topPanel_2);
         centerPanel.add(Box.createVerticalStrut(5));
-        centerPanel.add(dateLabel);
+        centerPanel.add(topPanel_3);
         centerPanel.add(Box.createVerticalStrut(25));
 
         JPanel actionRow = new JPanel();
@@ -88,15 +124,12 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         detailsButton = new JButton("Details");
         deleteButton = new JButton("Delete");
-        createButton = new JButton("Create");
         completeButton = new JButton("Complete");
 
         actionRow.add(Box.createHorizontalGlue());
         actionRow.add(detailsButton);
         actionRow.add(Box.createHorizontalStrut(15));
         actionRow.add(deleteButton);
-        actionRow.add(Box.createHorizontalStrut(15));
-        actionRow.add(createButton);
         actionRow.add(Box.createHorizontalStrut(15));
         actionRow.add(completeButton);
         actionRow.add(Box.createHorizontalGlue());
@@ -119,7 +152,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         newTripButton.addActionListener(this);
         detailsButton.addActionListener(this);
         deleteButton.addActionListener(this);
-        createButton.addActionListener(this);
         completeButton.addActionListener(this);
     }
 
@@ -140,8 +172,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             System.out.println("Details clicked");
         } else if (source == deleteButton) {
             System.out.println("Delete clicked");
-        } else if (source == createButton) {
-            System.out.println("Create clicked");
         } else if (source == completeButton) {
             System.out.println("Complete clicked");
         }
@@ -154,6 +184,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
+            username.setText(state.getUsername());
         }
     }
 
@@ -165,13 +196,3 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.logoutController = logoutController;
     }
 }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Dashboard");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(480, 420);
-//        frame.add(new LoggedInView(new LoggedInViewModel()));
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-//    }
-//}
