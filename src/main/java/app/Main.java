@@ -9,11 +9,9 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()
-                .addTripListView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
-                .addTripListUseCase()
                 .build();
 
         application.pack();
