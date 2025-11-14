@@ -1,5 +1,18 @@
 package data_access;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import entity.Trip;
 import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
@@ -7,24 +20,20 @@ import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
  * DAO for user data implemented using a File to persist the data.
  */
 public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
-                                                 LoginUserDataAccessInterface,
-                                                 ChangePasswordUserDataAccessInterface,
-                                                 LogoutUserDataAccessInterface {
+        LoginUserDataAccessInterface,
+        ChangePasswordUserDataAccessInterface,
+        LogoutUserDataAccessInterface{
 
     private static final String HEADER = "username,password";
 
     private final File csvFile;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
     private final Map<String, User> accounts = new HashMap<>();
+    private final Map<String, List<Trip>> userTrips = new HashMap<>();
 
     private String currentUsername;
 
@@ -120,5 +129,46 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         // Replace the User object in the map
         accounts.put(user.getName(), user);
         save();
+    }
+
+    /**
+     * Gets trips for a user.
+     * @param username the username
+     * @return list of trips for the user
+     */
+    public List<Trip> getTrips(String username){
+        List<Trip> trips = userTrips.get(username);
+        return trips != null ? new ArrayList<>(trips): new ArrayList<>();
+    }
+
+    /**
+     * Gets the current user name.
+     * @return the current user name
+     */
+    public String getCurrentUserName() {
+        return "";
+    }
+
+    /**
+     * Deletes a trip for a user.
+     * @param username the username
+     * @param tripName the name of the trip to delete
+     * @return true if the trip was deleted, false otherwise
+     */
+    public boolean deleteTrip(String username, String tripName) {
+        List<Trip> trips = userTrips.get(username);
+        if (trips != null) {
+            return trips.removeIf(trip -> trip.getName().equals(tripName));
+        }
+        return false;
+    }
+
+    /**
+     * Adds a trip for a user. This is a helper method that can be used when creating trips.
+     * @param username the username
+     * @param trip the trip to add
+     */
+    public void addTrip(String username, Trip trip) {
+        userTrips.computeIfAbsent(username, k -> new ArrayList<>()).add(trip);
     }
 }

@@ -54,7 +54,7 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
     private TripView tripView;
-
+    private TripListView tripListView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
