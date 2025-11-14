@@ -8,7 +8,7 @@ import interface_adapter.ViewModel;
 public class TripViewModel extends ViewModel<TripState> {
 
     public TripViewModel() {
-        super("log in");
+        super("trip");
         setState(new TripState());
     }
 
