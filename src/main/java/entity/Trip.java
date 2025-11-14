@@ -20,5 +20,25 @@ public class Trip {
         this.flights = flights;
     }
 
+    public String getName() {
+        return this.name;
+    }
+    public String getCityName() {
+        return this.cityName;
+    }
+    public List<Date> getTripDates() {
+        return this.tripDates;
+    }
+    public List<Destination> getDestinations() {
+        return this.destinations;
+    }
+    public List<Accommodation> getAccommodations() {
+        return this.accommodations;
+    }
+    public List<Flight> getFlights() {
+        return this.flights;
+    }
+
     // TODO: Implement Methods
+
 }
