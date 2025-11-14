@@ -1,20 +1,24 @@
 package data_access;
 
-import entity.Trip;
-import entity.User;
-import entity.UserFactory;
-import use_case.change_password.ChangePasswordUserDataAccessInterface;
-import use_case.delete_trip.DeleteTripUserDataAccessInterface;
-import use_case.login.LoginUserDataAccessInterface;
-import use_case.logout.LogoutUserDataAccessInterface;
-import use_case.signup.SignupUserDataAccessInterface;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import entity.Trip;
+import entity.User;
+import entity.UserFactory;
+import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.login.LoginUserDataAccessInterface;
+import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.signup.SignupUserDataAccessInterface;
 
 /**
  * DAO for user data implemented using a File to persist the data.
@@ -22,8 +26,7 @@ import java.util.Map;
 public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface,
-        DeleteTripUserDataAccessInterface{
+        LogoutUserDataAccessInterface{
 
     private static final String HEADER = "username,password";
 
@@ -146,7 +149,12 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         return "";
     }
 
-    @Override
+    /**
+     * Deletes a trip for a user.
+     * @param username the username
+     * @param tripName the name of the trip to delete
+     * @return true if the trip was deleted, false otherwise
+     */
     public boolean deleteTrip(String username, String tripName) {
         List<Trip> trips = userTrips.get(username);
         if (trips != null) {
