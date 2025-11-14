@@ -2,25 +2,19 @@ package interface_adapter.delete_trip;
 
 import use_case.delete_trip.DeleteTripOutputBoundary;
 import use_case.delete_trip.DeleteTripOutputData;
-import use_case.trip_list.TripListInputBoundary;
-import use_case.trip_list.TripListInputData;
 
 /**
  * The Presenter for the Delete Trip Use Case.
+ * Note: Trip list refresh logic removed - update TripListViewModel directly after deletion.
  */
 public class DeleteTripPresenter implements DeleteTripOutputBoundary {
 
-    private final TripListInputBoundary tripListInputBoundary;
-
-    public DeleteTripPresenter(TripListInputBoundary tripListInputBoundary) {
-        this.tripListInputBoundary = tripListInputBoundary;
+    public DeleteTripPresenter() {
     }
 
     @Override
     public void prepareSuccessView(DeleteTripOutputData response) {
-        // Refresh the trip list after successful deletion
-        TripListInputData tripListInputData = new TripListInputData(response.getUsername());
-        tripListInputBoundary.execute(tripListInputData);
+        // Trip list refresh removed - update TripListViewModel directly if needed
     }
 
     @Override

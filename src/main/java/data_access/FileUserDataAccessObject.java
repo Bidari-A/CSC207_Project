@@ -8,7 +8,6 @@ import use_case.delete_trip.DeleteTripUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
-import use_case.trip_list.TripListUserDataAccessInterface;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,9 +20,10 @@ import java.util.Map;
  * DAO for user data implemented using a File to persist the data.
  */
 public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
-                                                 LoginUserDataAccessInterface,
-                                                 ChangePasswordUserDataAccessInterface,
-                                                 LogoutUserDataAccessInterface,TripListUserDataAccessInterface,DeleteTripUserDataAccessInterface{
+        LoginUserDataAccessInterface,
+        ChangePasswordUserDataAccessInterface,
+        LogoutUserDataAccessInterface,
+        DeleteTripUserDataAccessInterface{
 
     private static final String HEADER = "username,password";
 
@@ -128,13 +128,20 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         save();
     }
 
-    @Override
+    /**
+     * Gets trips for a user.
+     * @param username the username
+     * @return list of trips for the user
+     */
     public List<Trip> getTrips(String username){
         List<Trip> trips = userTrips.get(username);
         return trips != null ? new ArrayList<>(trips): new ArrayList<>();
     }
 
-    @Override
+    /**
+     * Gets the current user name.
+     * @return the current user name
+     */
     public String getCurrentUserName() {
         return "";
     }
