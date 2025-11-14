@@ -3,6 +3,7 @@ package view;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.trip_list.TripListController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
-    private LogoutController logoutController;
+    private TripListController tripListController;
 
     // TODO to be assigned later..
     // tripHistoryController
@@ -38,6 +39,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JButton detailsButton;
     private final JButton deleteButton;
     private final JButton completeButton;
+    private LogoutController logoutController;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
@@ -165,7 +167,14 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         if (source == logOut && logoutController != null) {
             logoutController.execute();
         } else if (source == tripListButton) {
-            System.out.println("Trip List clicked");
+            // Get the current username from the logged in state
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+            
+            // Load trips (navigation will be handled by TripListPresenter)
+            if (tripListController != null && username != null) {
+                tripListController.execute(username);
+            }
         } else if (source == newTripButton) {
             System.out.println("New Trip clicked");
         } else if (source == detailsButton) {
@@ -194,5 +203,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+
+    public void setTripListController(TripListController tripListController) {
+        this.tripListController = tripListController;
     }
 }
