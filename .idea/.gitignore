@@ -17,3 +17,4 @@ out/
 
 # Maven
 target/
+/target/
