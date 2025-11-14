@@ -15,9 +15,6 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
-import interface_adapter.trip_list.TripListController;
-import interface_adapter.trip_list.TripListPresenter;
-import interface_adapter.trip_list.TripListViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -33,9 +30,6 @@ import use_case.delete_trip.DeleteTripOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import use_case.trip_list.TripListInputBoundary;
-import use_case.trip_list.TripListInteractor;
-import use_case.trip_list.TripListOutputBoundary;
 import view.*;
 
 import javax.swing.*;
@@ -63,7 +57,7 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
-    private TripListViewModel tripListViewModel;
+    private TripView tripView;
     private TripListView tripListView;
 
     public AppBuilder() {
@@ -88,13 +82,6 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
-        return this;
-    }
-
-    public AppBuilder addTripListView() {
-        tripListViewModel = new TripListViewModel();
-        tripListView = new TripListView(tripListViewModel, viewManagerModel);
-        cardPanel.add(tripListView, tripListView.getViewName());
         return this;
     }
 
@@ -134,24 +121,6 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
-        return this;
-    }
-    public AppBuilder addTripListUseCase() {
-        final TripListOutputBoundary tripListOutputBoundary = new TripListPresenter(
-                viewManagerModel, tripListViewModel);
-        final TripListInputBoundary tripListInteractor = new TripListInteractor(
-                userDataAccessObject, tripListOutputBoundary);
-
-        final DeleteTripOutputBoundary deleteTripOutputBoundary = new DeleteTripPresenter(
-                tripListInteractor);
-        final DeleteTripInputBoundary deleteTripInteractor = new DeleteTripInteractor(
-                userDataAccessObject, deleteTripOutputBoundary);
-
-        final TripListController tripListController = new TripListController(
-                tripListInteractor, deleteTripInteractor);
-
-        tripListView.setTripListController(tripListController);
-        loggedInView.setTripListController(tripListController);
         return this;
     }
 

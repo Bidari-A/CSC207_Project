@@ -21,24 +21,24 @@ public class Trip {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
-
     public String getCityName() {
-        return cityName;
+        return this.cityName;
     }
-
     public List<Date> getTripDates() {
-        return tripDates;
+        return this.tripDates;
     }
-
     public List<Destination> getDestinations() {
-        return destinations;
+        return this.destinations;
     }
     public List<Accommodation> getAccommodations() {
-        return accommodations;
+        return this.accommodations;
     }
     public List<Flight> getFlights() {
-        return flights;
+        return this.flights;
     }
+
+    // TODO: Implement Methods
+
 }
