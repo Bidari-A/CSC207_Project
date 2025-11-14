@@ -3,8 +3,6 @@ package app;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.logged_in.ChangePasswordController;
-import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
@@ -15,9 +13,6 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
-import use_case.change_password.ChangePasswordInputBoundary;
-import use_case.change_password.ChangePasswordInteractor;
-import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -108,17 +103,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
-                loggedInViewModel);
 
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
-        return this;
-    }
 
     /**
      * Adds the Logout Use Case to the application.
@@ -144,17 +129,17 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        //final JFrame application = new JFrame("User Login Example");
+        final JFrame application = new JFrame("User Login Example");
         // for trip plannar view, for now, change to
-        final JFrame application = new JFrame("Trip Planner");
+        //final JFrame application = new JFrame("Trip Planner");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        //viewManagerModel.setState(signupView.getViewName());
+        viewManagerModel.setState(signupView.getViewName());
 
         //change to
-        viewManagerModel.setState(createNewTripView.getViewName());
+        //viewManagerModel.setState(createNewTripView.getViewName());
         //if you want to see the create new trip page!
         viewManagerModel.firePropertyChange();
 

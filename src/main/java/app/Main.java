@@ -11,7 +11,6 @@ public class Main {
                 .addLoggedInView()
                 .addSignupUseCase()
                 .addLoginUseCase()
-                .addChangePasswordUseCase()
                 .addLogoutUseCase()
                 .addCreateNewTripView()
                 .build();
@@ -21,4 +20,5 @@ public class Main {
         application.setVisible(true);
     }
 }
+
 

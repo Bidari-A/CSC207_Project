@@ -1,14 +1,10 @@
 package view;
 
-import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.signup.SignupState;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,122 +18,178 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
-    private final JLabel passwordErrorField = new JLabel();
-    private ChangePasswordController changePasswordController = null;
     private LogoutController logoutController;
 
+    // TODO to be assigned later..
+    // tripHistoryController
+    // detailController
+    // deleteTripController
+    // completeTripController
+    // newTripController
+
+    private final JLabel tripName;
+    private final JLabel cityName;
+    private final JLabel date;
     private final JLabel username;
 
     private final JButton logOut;
-
-    private final JTextField passwordInputField = new JTextField(15);
-    private final JButton changePassword;
+    private final JButton tripListButton;
+    private final JButton newTripButton;
+    private final JButton detailsButton;
+    private final JButton deleteButton;
+    private final JButton completeButton;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel("Logged In Screen");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        final LabelTextPanel passwordInfo = new LabelTextPanel(
-                new JLabel("Password"), passwordInputField);
-
-        final JLabel usernameInfo = new JLabel("Currently logged in: ");
+        final JLabel usernameInfo = new JLabel("Currently logged in as: ");
         username = new JLabel();
 
-        final JPanel buttons = new JPanel();
+        JPanel topPanel = new JPanel(new BorderLayout());
         logOut = new JButton("Log Out");
-        buttons.add(logOut);
+        tripListButton = new JButton("Trip List");
 
-        changePassword = new JButton("Change Password");
-        buttons.add(changePassword);
+        JLabel title = new JLabel("Dashboard", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 22));
+
+        topPanel.add(logOut, BorderLayout.WEST);
+        topPanel.add(title, BorderLayout.CENTER);
+        topPanel.add(tripListButton, BorderLayout.EAST);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel usernameHolderPanel = new JPanel();
+        usernameHolderPanel.setLayout(new BoxLayout(usernameHolderPanel, BoxLayout.X_AXIS));
+        usernameHolderPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        usernameHolderPanel.add(usernameInfo);
+        usernameHolderPanel.add(username);
+
+        JLabel lastTrip = new JLabel("Last Trip Created:");
+        JLabel tripNameInfo = new JLabel("Name of Trip: ");
+        JLabel cityNameInfo = new JLabel("City: ");
+        JLabel dateInfo = new JLabel("Date: ");
+
+        // TODO EDIT LATER
+        tripName = new JLabel("Holder Trip");
+        cityName = new JLabel("Holder City Name");
+        date = new JLabel("Holder Date");
+
+        Font infoFont = new Font("Arial", Font.PLAIN, 14);
+        tripNameInfo.setFont(infoFont);
+        cityNameInfo.setFont(infoFont);
+        dateInfo.setFont(infoFont);
+        lastTrip.setFont(infoFont);
+        tripName.setFont(infoFont);
+        cityName.setFont(infoFont);
+        date.setFont(infoFont);
+
+        lastTrip.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        JPanel topPanel_1 = new JPanel();
+        topPanel_1.setLayout(new BoxLayout(topPanel_1, BoxLayout.X_AXIS));
+        topPanel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel_1.add(tripNameInfo);
+        topPanel_1.add(tripName);
+
+        JPanel topPanel_2 = new JPanel();
+        topPanel_2.setLayout(new BoxLayout(topPanel_2, BoxLayout.X_AXIS));
+        topPanel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel_2.add(cityNameInfo);
+        topPanel_2.add(cityName);
+
+        JPanel topPanel_3 = new JPanel();
+        topPanel_3.setLayout(new BoxLayout(topPanel_3, BoxLayout.X_AXIS));
+        topPanel_3.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel_3.add(dateInfo);
+        topPanel_3.add(date);
+
+        centerPanel.add(usernameHolderPanel);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(lastTrip);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(topPanel_1);
+        centerPanel.add(Box.createVerticalStrut(5));
+        centerPanel.add(topPanel_2);
+        centerPanel.add(Box.createVerticalStrut(5));
+        centerPanel.add(topPanel_3);
+        centerPanel.add(Box.createVerticalStrut(25));
+
+        JPanel actionRow = new JPanel();
+        actionRow.setLayout(new BoxLayout(actionRow, BoxLayout.X_AXIS));
+        actionRow.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        detailsButton = new JButton("Details");
+        deleteButton = new JButton("Delete");
+        completeButton = new JButton("Complete");
+
+        actionRow.add(Box.createHorizontalGlue());
+        actionRow.add(detailsButton);
+        actionRow.add(Box.createHorizontalStrut(15));
+        actionRow.add(deleteButton);
+        actionRow.add(Box.createHorizontalStrut(15));
+        actionRow.add(completeButton);
+        actionRow.add(Box.createHorizontalGlue());
+
+        centerPanel.add(actionRow);
+        centerPanel.add(Box.createVerticalStrut(30));
+
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        newTripButton = new JButton("New Trip");
+        bottomPanel.add(newTripButton);
+
+        this.setLayout(new BorderLayout(20, 20));
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.add(topPanel, BorderLayout.NORTH);
+        this.add(centerPanel, BorderLayout.CENTER);
+        this.add(bottomPanel, BorderLayout.SOUTH);
 
         logOut.addActionListener(this);
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
-
-            private void documentListenerHelper() {
-                final LoggedInState currentState = loggedInViewModel.getState();
-                currentState.setPassword(passwordInputField.getText());
-                loggedInViewModel.setState(currentState);
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-        });
-
-        changePassword.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-                        this.changePasswordController.execute(
-                                currentState.getUsername(),
-                                currentState.getPassword()
-                        );
-                    }
-                }
-        );
-
-        this.add(title);
-        this.add(usernameInfo);
-        this.add(username);
-
-        this.add(passwordInfo);
-        this.add(passwordErrorField);
-        this.add(buttons);
+        tripListButton.addActionListener(this);
+        newTripButton.addActionListener(this);
+        detailsButton.addActionListener(this);
+        deleteButton.addActionListener(this);
+        completeButton.addActionListener(this);
     }
 
     /**
-     * React to a button click that results in evt.
-     * @param evt the ActionEvent to react to
+     * Handles button click events.
      */
+    @Override
     public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
-        logoutController.execute();
+        Object source = evt.getSource();
+
+        if (source == logOut && logoutController != null) {
+            logoutController.execute();
+        } else if (source == tripListButton) {
+            System.out.println("Trip List clicked");
+        } else if (source == newTripButton) {
+            System.out.println("New Trip clicked");
+        } else if (source == detailsButton) {
+            System.out.println("Details clicked");
+        } else if (source == deleteButton) {
+            System.out.println("Delete clicked");
+        } else if (source == completeButton) {
+            System.out.println("Complete clicked");
+        }
     }
 
+    /**
+     * Updates the labels when LoggedInState changes.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
+        if ("state".equals(evt.getPropertyName())) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("password")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            if (state.getPasswordError() == null) {
-                JOptionPane.showMessageDialog(this, "password updated for " + state.getUsername());
-                passwordInputField.setText("");
-            }
-            else {
-                JOptionPane.showMessageDialog(this, state.getPasswordError());
-            }
-        }
-
     }
 
     public String getViewName() {
         return viewName;
-    }
-
-    public void setChangePasswordController(ChangePasswordController changePasswordController) {
-        this.changePasswordController = changePasswordController;
     }
 
     public void setLogoutController(LogoutController logoutController) {
