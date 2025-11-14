@@ -19,6 +19,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
+    private LogoutController logoutController;
     private TripListController tripListController;
 
     // TODO to be assigned later..
@@ -39,7 +40,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JButton detailsButton;
     private final JButton deleteButton;
     private final JButton completeButton;
-    private LogoutController logoutController;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;

@@ -36,11 +36,7 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.trip_list.TripListInputBoundary;
 import use_case.trip_list.TripListInteractor;
 import use_case.trip_list.TripListOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.TripListView;
-import view.ViewManager;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
