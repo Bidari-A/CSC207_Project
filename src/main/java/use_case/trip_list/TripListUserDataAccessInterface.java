@@ -1,4 +1,9 @@
 package use_case.trip_list;
 
-public class TripListUserDataAccessInterface {
+import entity.Trip;
+import java.util.List;
+
+public interface TripListUserDataAccessInterface {
+    List<Trip> getTrips(String username);
+    String getCurrentUserName();
 }
