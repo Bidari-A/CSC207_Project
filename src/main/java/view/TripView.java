@@ -1,0 +1,119 @@
+package view;
+
+import interface_adapter.trip.TripState;
+import interface_adapter.trip.TripViewModel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+/**
+ * Minimal Trip View UI.
+ * Shows Trip details on left + right columns,
+ * a Gemini input field at bottom, and a Back button.
+ */
+public class TripView extends JPanel implements ActionListener, PropertyChangeListener {
+
+    private final TripViewModel tripViewModel;
+
+    private final JLabel tripNameLabel = new JLabel();
+    private final JLabel cityLabel = new JLabel();
+    private final JLabel dateLabel = new JLabel();
+    private final JTextArea attractionsArea = new JTextArea(4, 20);
+
+    private final JTextArea flightArea = new JTextArea(4, 20);
+    private final JTextArea hotelArea = new JTextArea(4, 20);
+
+    private final JTextField geminiInputField = new JTextField(25);
+    private final JButton backButton = new JButton("Back");
+
+    public TripView(TripViewModel tripViewModel) {
+        this.tripViewModel = tripViewModel;
+        this.tripViewModel.addPropertyChangeListener(this);
+
+        attractionsArea.setEditable(false);
+        flightArea.setEditable(false);
+        hotelArea.setEditable(false);
+
+        setLayout(new BorderLayout(10, 10));
+
+        // ---- Left panel ----
+        JPanel left = new JPanel();
+        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+
+        left.add(labeled("Name of Trip:", tripNameLabel));
+        left.add(labeled("City:", cityLabel));
+        left.add(labeled("Date:", dateLabel));
+
+        left.add(new JLabel("Attractions:"));
+        left.add(new JScrollPane(attractionsArea));
+
+        // ---- Right panel ----
+        JPanel right = new JPanel();
+        right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
+
+        right.add(new JLabel("Flight:"));
+        right.add(new JScrollPane(flightArea));
+
+        right.add(Box.createVerticalStrut(10));
+
+        right.add(new JLabel("Hotel:"));
+        right.add(new JScrollPane(hotelArea));
+
+        // Top grid: left & right columns
+        JPanel top = new JPanel(new GridLayout(1, 2, 10, 0));
+        top.add(left);
+        top.add(right);
+
+        // Bottom panel: Gemini + Back
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
+
+        JPanel geminiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        geminiPanel.add(new JLabel("Ask Gemini:"));
+        geminiPanel.add(geminiInputField);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(backButton);
+
+        backButton.addActionListener(this);
+
+        bottom.add(geminiPanel);
+        bottom.add(buttonPanel);
+
+        // Add to main layout
+        add(top, BorderLayout.CENTER);
+        add(bottom, BorderLayout.SOUTH);
+    }
+
+    /** Helper method for "Label: value" rows */
+    private JPanel labeled(String title, JLabel value) {
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        p.add(new JLabel(title));
+        p.add(value);
+        return p;
+    }
+
+    /** Handle button clicks (minimalism). */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Back clicked.");
+    }
+
+    /** Updates labels when ViewModel state changes. */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        TripState s = (TripState) evt.getNewValue();
+        tripNameLabel.setText(s.getTripName());
+        cityLabel.setText(s.getCity());
+        dateLabel.setText(s.getDate());
+
+        attractionsArea.setText(s.getAttractions());
+        flightArea.setText(s.getFlightDetails());
+        hotelArea.setText(s.getHotelDetails());
+        geminiInputField.setText(s.getGeminiInput());
+    }
+}
