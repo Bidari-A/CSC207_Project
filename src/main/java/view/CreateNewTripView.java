@@ -1,10 +1,9 @@
 package view;
+
 import javax.swing.*;
 import java.awt.*;
 
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
-import interface_adapter.create_new_trip.CreateNewTripState;
-
 
 public class CreateNewTripView extends JPanel {
     private final String viewName = "create new trip";
@@ -18,23 +17,35 @@ public class CreateNewTripView extends JPanel {
     public CreateNewTripView(CreateNewTripViewModel viewModel) {
         this.viewModel = viewModel;
 
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         final JLabel title = new JLabel("Create New Trip");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        this.setLayout(new GridLayout(5, 2));
+        // Row 1: From
+        JPanel fromRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        fromRow.add(new JLabel("From:"));
+        fromRow.add(fromField);
 
-        this.add(title);
+        // Row 2: To
+        JPanel toRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        toRow.add(new JLabel("To:"));
+        toRow.add(toField);
 
-        this.add(new JLabel("From:"));
-        this.add(fromField);
+        // Row 3: Date
+        JPanel dateRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        dateRow.add(new JLabel("Date:"));
+        dateRow.add(dateField);
 
-        this.add(new JLabel("To:"));
-        this.add(toField);
+        // Row 4: Button
+        JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonRow.add(generateButton);
 
-        this.add(new JLabel("Date:"));
-        this.add(dateField);
-
-        this.add(generateButton);
+        add(title);
+        add(fromRow);
+        add(toRow);
+        add(dateRow);
+        add(buttonRow);
     }
 
     public String getViewName() {

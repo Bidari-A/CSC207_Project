@@ -13,6 +13,7 @@ public class Main {
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
                 .addLogoutUseCase()
+                .addCreateNewTripView()
                 .build();
 
         application.pack();
@@ -20,4 +21,4 @@ public class Main {
         application.setVisible(true);
     }
 }
-//comment for UseCase
+

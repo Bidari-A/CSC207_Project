@@ -9,6 +9,7 @@ import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
@@ -30,6 +31,7 @@ import view.LoggedInView;
 import view.LoginView;
 import view.SignupView;
 import view.ViewManager;
+import view.CreateNewTripView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,6 +58,8 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private CreateNewTripViewModel createNewTripViewModel;
+    private CreateNewTripView createNewTripView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -132,13 +136,26 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addCreateNewTripView() {
+        createNewTripViewModel = new CreateNewTripViewModel();
+        createNewTripView = new CreateNewTripView(createNewTripViewModel);
+        cardPanel.add(createNewTripView, createNewTripView.getViewName());
+        return this;
+    }
+
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        //final JFrame application = new JFrame("User Login Example");
+        // for trip plannar view, for now, change to
+        final JFrame application = new JFrame("Trip Planner");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(signupView.getViewName());
+        //viewManagerModel.setState(signupView.getViewName());
+
+        //change to
+        viewManagerModel.setState(createNewTripView.getViewName());
+        //if you want to see the create new trip page!
         viewManagerModel.firePropertyChange();
 
         return application;
