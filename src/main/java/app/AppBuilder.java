@@ -131,17 +131,17 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        //final JFrame application = new JFrame("User Login Example");
         // for trip plannar view, for now, change to
-        //final JFrame application = new JFrame("Trip Planner");
+        final JFrame application = new JFrame("Trip Planner");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(signupView.getViewName());
+        //viewManagerModel.setState(signupView.getViewName());
 
         //change to
-        //viewManagerModel.setState(createNewTripView.getViewName());
+        viewManagerModel.setState(createNewTripView.getViewName());
         //if you want to see the create new trip page!
         viewManagerModel.firePropertyChange();
 
