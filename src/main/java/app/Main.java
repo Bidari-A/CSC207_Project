@@ -12,6 +12,7 @@ public class Main {
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
+                .addCreateNewTripView()
                 .build();
 
         application.pack();
@@ -19,3 +20,5 @@ public class Main {
         application.setVisible(true);
     }
 }
+
+//

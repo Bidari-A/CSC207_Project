@@ -9,6 +9,7 @@ import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
@@ -27,7 +28,7 @@ import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import view.*;
-
+import view.CreateNewTripView;
 import javax.swing.*;
 import java.awt.*;
 
@@ -53,6 +54,8 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private CreateNewTripViewModel createNewTripViewModel;
+    private CreateNewTripView createNewTripView;
     private TripView tripView;
     private TripListView tripListView;
 
@@ -104,6 +107,7 @@ public class AppBuilder {
     }
 
 
+
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder
@@ -117,6 +121,13 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
+        return this;
+    }
+
+    public AppBuilder addCreateNewTripView() {
+        createNewTripViewModel = new CreateNewTripViewModel();
+        createNewTripView = new CreateNewTripView(createNewTripViewModel);
+        cardPanel.add(createNewTripView, createNewTripView.getViewName());
         return this;
     }
 
