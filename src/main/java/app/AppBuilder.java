@@ -15,6 +15,9 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.change_password.ChangePasswordInputBoundary;
+import use_case.change_password.ChangePasswordInteractor;
+import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -24,12 +27,8 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
 import view.CreateNewTripView;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -57,6 +56,8 @@ public class AppBuilder {
     private LoginView loginView;
     private CreateNewTripViewModel createNewTripViewModel;
     private CreateNewTripView createNewTripView;
+    private TripView tripView;
+    private TripListView tripListView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -131,18 +132,12 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        //final JFrame application = new JFrame("User Login Example");
-        // for trip plannar view, for now, change to
-        final JFrame application = new JFrame("Trip Planner");
+        final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
 
-        //viewManagerModel.setState(signupView.getViewName());
-
-        //change to
-        viewManagerModel.setState(createNewTripView.getViewName());
-        //if you want to see the create new trip page!
+        viewManagerModel.setState(signupView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;
