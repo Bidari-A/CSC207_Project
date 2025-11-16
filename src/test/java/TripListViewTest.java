@@ -43,7 +43,7 @@ public class TripListViewTest {
         tripListViewModel.setState(state);
         tripListViewModel.firePropertyChange();
 
-        // 5️⃣ Wire a dummy TripListController for the Details button
+        // Wire a dummy TripListController for the Details button
         tripListView.setTripListController(new TripListController() {
             @Override
             public void executeDetails(String username, String tripName) {
@@ -63,7 +63,7 @@ public class TripListViewTest {
                 popupVM.setState(s);
                 popupVM.firePropertyChange();
 
-                // ★ OPEN POPUP WINDOW ★
+                // OPEN POPUP WINDOW
                 JFrame tripFrame = new JFrame("Trip Details");
                 tripFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 tripFrame.getContentPane().add(popupView);
