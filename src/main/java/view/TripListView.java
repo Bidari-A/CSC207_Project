@@ -91,29 +91,29 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
             JButton button = (JButton) source;
             String actionCommand = button.getActionCommand();
 
-            if (actionCommand.startsWith("DELETE_")) {
-                // Extract trip name from action command
-                String tripName = actionCommand.substring(7); // Remove "DELETE_" prefix
-                TripListState state = tripListViewModel.getState();
-                if (tripListController != null && state.getUsername() != null) {
-                    tripListController.executeDelete(state.getUsername(), tripName);
-                }
-            } else if (actionCommand.startsWith("DETAILS_")) {
-                // Extract trip name from action command
-                String tripName = actionCommand.substring(8); // Remove "DETAILS_" prefix
-                System.out.println("Details clicked for trip: " + tripName);
-
-                TripListState state = tripListViewModel.getState();
-
-                if (tripListController != null) {
-                    tripListController.executeDetails(
-                            state.getUsername(),
-                            tripName
-                    );
-                } else {
-                    System.out.println("ERROR: tripListController is NULL");
-                }
-            }
+//            if (actionCommand.startsWith("DELETE_")) {
+//                // Extract trip name from action command
+//                String tripName = actionCommand.substring(7); // Remove "DELETE_" prefix
+//                TripListState state = tripListViewModel.getState();
+//                if (tripListController != null && state.getUsername() != null) {
+//                    tripListController.executeDelete(state.getUsername(), tripName);
+//                }
+//            } else if (actionCommand.startsWith("DETAILS_")) {
+//                // Extract trip name from action command
+//                String tripName = actionCommand.substring(8); // Remove "DETAILS_" prefix
+//                System.out.println("Details clicked for trip: " + tripName);
+//
+//                TripListState state = tripListViewModel.getState();
+//
+//                if (tripListController != null) {
+//                    tripListController.executeDetails(
+//                            state.getUsername(),
+//                            tripName
+//                    );
+//                } else {
+//                    System.out.println("ERROR: tripListController is NULL");
+//                }
+//            }
         }
     }
 

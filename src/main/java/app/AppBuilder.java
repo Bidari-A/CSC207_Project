@@ -6,6 +6,9 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.trip_list.TripListController;
+import interface_adapter.trip_list.TripListViewModel;
+import interface_adapter.trip_list.TripListControllerImpl;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -58,6 +61,7 @@ public class AppBuilder {
     private CreateNewTripView createNewTripView;
     private TripView tripView;
     private TripListView tripListView;
+    private TripListViewModel tripListViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -84,6 +88,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addTripListView() {
+        tripListViewModel = new TripListViewModel();
+        tripListView = new TripListView(tripListViewModel, viewManagerModel);
+        cardPanel.add(tripListView, tripListView.getViewName());
+        return this;
+    }
+
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
@@ -103,6 +114,12 @@ public class AppBuilder {
 
         LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
+        return this;
+    }
+
+    public AppBuilder addTripListController() {
+        final TripListController tripListController = new TripListControllerImpl(viewManagerModel);
+        loggedInView.setTripListController(tripListController);
         return this;
     }
 

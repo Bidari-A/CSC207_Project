@@ -9,9 +9,11 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()
+                .addTripListView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
+                .addTripListController()
                 .addCreateNewTripView()
                 .build();
 
