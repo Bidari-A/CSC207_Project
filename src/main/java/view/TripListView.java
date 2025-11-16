@@ -102,7 +102,17 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
                 // Extract trip name from action command
                 String tripName = actionCommand.substring(8); // Remove "DETAILS_" prefix
                 System.out.println("Details clicked for trip: " + tripName);
-                // TODO: Navigate to trip details view
+
+                TripListState state = tripListViewModel.getState();
+
+                if (tripListController != null) {
+                    tripListController.executeDetails(
+                            state.getUsername(),
+                            tripName
+                    );
+                } else {
+                    System.out.println("ERROR: tripListController is NULL");
+                }
             }
         }
     }

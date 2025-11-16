@@ -1,13 +1,18 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import entity.Trip;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListState;
 import interface_adapter.trip_list.TripListViewModel;
 import view.TripListView;
+import interface_adapter.trip.TripState;
+import interface_adapter.trip.TripViewModel;
+import view.TripView;
 
 public class TripListViewTest {
 
@@ -37,6 +42,42 @@ public class TripListViewTest {
         // Push state into VM and update view
         tripListViewModel.setState(state);
         tripListViewModel.firePropertyChange();
+
+        // 5️⃣ Wire a dummy TripListController for the Details button
+        tripListView.setTripListController(new TripListController() {
+            @Override
+            public void executeDetails(String username, String tripName) {
+                // ★ Create a NEW TripViewModel + TripView each time ★
+                TripViewModel popupVM = new TripViewModel();
+                TripView popupView = new TripView(popupVM);
+
+                TripState s = new TripState();
+                s.setTripName(tripName);
+                s.setCity("Paris");
+                s.setDate("June 12 – June 20, 2025");
+                s.setAttractions("Eiffel Tower\nLouvre Museum");
+                s.setFlightDetails("Air France AF-347\nYYZ → CDG\nDepart: 7:00 PM");
+                s.setHotelDetails("Hotel Le Meurice\n5-star luxury suite");
+                s.setGeminiInput("What should I pack?");
+
+                popupVM.setState(s);
+                popupVM.firePropertyChange();
+
+                // ★ OPEN POPUP WINDOW ★
+                JFrame tripFrame = new JFrame("Trip Details");
+                tripFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                tripFrame.getContentPane().add(popupView);
+
+                tripFrame.pack();
+                tripFrame.setLocationRelativeTo(null);
+                tripFrame.setVisible(true);
+            }
+
+            @Override
+            public void executeDelete(String username, String tripName) {
+                System.out.println("Delete clicked: " + tripName);
+            }
+        });
 
         // Show UI in a window
         JFrame frame = new JFrame("Trip List View Test");
