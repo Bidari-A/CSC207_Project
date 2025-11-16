@@ -27,6 +27,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     private final JButton logIn;
     private final JButton cancel;
+    private final JButton back;
 
     private LoginController loginController = null;
 
@@ -48,6 +49,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         buttons.add(logIn);
         cancel = new JButton("cancel");
         buttons.add(cancel);
+        back = new JButton("back");
+        buttons.add(back);
 
         logIn.addActionListener(e -> {
             loginController.execute(
@@ -57,6 +60,9 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         });
 
         cancel.addActionListener(this);
+        back.addActionListener(e -> {
+            loginController.goToSignUp();
+        });
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

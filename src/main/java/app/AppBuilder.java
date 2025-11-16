@@ -39,14 +39,8 @@ public class AppBuilder {
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // set which data access implementation to use, can be any
-    // of the classes from the data_access package
-
-    // DAO version using local file storage
-    final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
-
-    // DAO version using a shared external database
-    // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final FileUserDataAccessObject userDataAccessObject =
+            new FileUserDataAccessObject("users.csv", userFactory);
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -85,10 +79,11 @@ public class AppBuilder {
     }
 
     public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
-                signupViewModel, loginViewModel);
-        final SignupInputBoundary userSignupInteractor = new SignupInteractor(
-                userDataAccessObject, signupOutputBoundary, userFactory);
+        final SignupOutputBoundary signupOutputBoundary =
+                new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
+
+        final SignupInputBoundary userSignupInteractor =
+                new SignupInteractor(userDataAccessObject, signupOutputBoundary, userFactory);
 
         SignupController controller = new SignupController(userSignupInteractor);
         signupView.setSignupController(controller);
@@ -96,25 +91,23 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-        final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
+        final LoginOutputBoundary loginOutputBoundary =
+                new LoginPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
 
-        LoginController loginController = new LoginController(loginInteractor);
+        final LoginInputBoundary loginInteractor =
+                new LoginInteractor(userDataAccessObject, loginOutputBoundary);
+
+        // ⭐ FIXED: add viewManagerModel here
+        LoginController loginController =
+                new LoginController(loginInteractor, viewManagerModel);
+
         loginView.setLoginController(loginController);
         return this;
     }
 
-
-
-    /**
-     * Adds the Logout Use Case to the application.
-     * @return this builder
-     */
     public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        final LogoutOutputBoundary logoutOutputBoundary =
+                new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
 
         final LogoutInputBoundary logoutInteractor =
                 new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
@@ -142,6 +135,4 @@ public class AppBuilder {
 
         return application;
     }
-
-
 }
