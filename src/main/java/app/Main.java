@@ -13,7 +13,7 @@ public class Main {
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
-                .addTripListController()
+                .addCreateNewTripUseCase()
                 .addCreateNewTripView()
                 .build();
 

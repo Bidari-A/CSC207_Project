@@ -113,18 +113,32 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addTripListController() {
+    public AppBuilder addCreateNewTripUseCase() {
         final LoadTripListOutputBoundary loadTripListOutputBoundary =
                 new TripListPresenter(viewManagerModel, tripListViewModel);
 
         final LoadTripListInputBoundary loadTripListInteractor =
                 new LoadTripListInteractor(userDataAccessObject, loadTripListOutputBoundary);
 
-        final TripListController tripListController = new TripListController(loadTripListInteractor);
-        loggedInView.setTripListController(tripListController);
+        TripListController tripListController = new TripListController(loadTripListInteractor);
+
         tripListView.setTripListController(tripListController);
+        loggedInView.setTripListController(tripListController);
         return this;
     }
+
+//    public AppBuilder addTripListController() {
+//        final LoadTripListOutputBoundary loadTripListOutputBoundary =
+//                new TripListPresenter(viewManagerModel, tripListViewModel);
+//
+//        final LoadTripListInputBoundary loadTripListInteractor =
+//                new LoadTripListInteractor(userDataAccessObject, loadTripListOutputBoundary);
+//
+//        final TripListController tripListController = new TripListController(loadTripListInteractor);
+//        loggedInView.setTripListController(tripListController);
+//        tripListView.setTripListController(tripListController);
+//        return this;
+//    }
 
 
 
