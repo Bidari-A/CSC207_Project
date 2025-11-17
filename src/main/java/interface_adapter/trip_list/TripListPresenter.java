@@ -1,14 +1,13 @@
 package interface_adapter.trip_list;
 
 import interface_adapter.ViewManagerModel;
-import entity.Trip;
-import java.util.List;
+import use_case.load_trip_list.LoadTripListOutputBoundary;
+import use_case.load_trip_list.LoadTripListOutputData;
 
 /**
  * The Presenter for the Trip List Use Case.
- * Note: Use case interfaces removed - use helper methods to update ViewModel directly.
  */
-public class TripListPresenter {
+public class TripListPresenter implements LoadTripListOutputBoundary {
 
     private final TripListViewModel tripListViewModel;
     private final ViewManagerModel viewManagerModel;
@@ -21,13 +20,13 @@ public class TripListPresenter {
 
     /**
      * Updates the trip list view with trips.
-     * @param trips the list of trips to display
-     * @param username the username
+     * @param outputData the output data containing trips and username
      */
-    public void prepareSuccessView(List<Trip> trips, String username) {
+    @Override
+    public void prepareSuccessView(LoadTripListOutputData outputData) {
         final TripListState tripListState = tripListViewModel.getState();
-        tripListState.setTrips(trips);
-        tripListState.setUsername(username);
+        tripListState.setTrips(outputData.getTrips());
+        tripListState.setUsername(outputData.getUsername());
         tripListState.setError(null);
         this.tripListViewModel.firePropertyChange();
 
@@ -40,6 +39,7 @@ public class TripListPresenter {
      * Displays an error in the trip list view.
      * @param error the error message
      */
+    @Override
     public void prepareFailView(String error) {
         final TripListState tripListState = tripListViewModel.getState();
         tripListState.setError(error);

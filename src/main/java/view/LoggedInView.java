@@ -173,9 +173,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             
             // Load trips (navigation will be handled by TripListPresenter)
             if (tripListController != null && username != null) {
-                String tripNameStr = tripName.getText();
-                tripListController.executeDetails(username, tripNameStr);
+                tripListController.executeLoadTrips(username);
             }
+
         } else if (source == newTripButton) {
             System.out.println("New Trip clicked");
         } else if (source == detailsButton) {
