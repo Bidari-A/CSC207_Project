@@ -13,6 +13,7 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
+import use_case.create_new_trip.CreateNewTripInteractor;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
@@ -125,7 +126,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addCreateNewTripUseCase() {
+    public AppBuilder addLoadTripListUseCase() {
         final LoadTripListOutputBoundary loadTripListOutputBoundary =
                 new TripListPresenter(viewManagerModel, tripListViewModel);
 
