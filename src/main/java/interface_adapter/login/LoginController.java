@@ -1,6 +1,5 @@
 package interface_adapter.login;
 
-import interface_adapter.ViewManagerModel;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInputData;
 
@@ -10,12 +9,10 @@ import use_case.login.LoginInputData;
 public class LoginController {
 
     private final LoginInputBoundary loginUseCaseInteractor;
-    private final ViewManagerModel viewManagerModel;
 
-    public LoginController(LoginInputBoundary loginUseCaseInteractor,
-                           ViewManagerModel viewManagerModel) {
+    public LoginController(LoginInputBoundary loginUseCaseInteractor
+    ) {
         this.loginUseCaseInteractor = loginUseCaseInteractor;
-        this.viewManagerModel = viewManagerModel;
     }
 
     public void execute(String username, String password) {
@@ -23,8 +20,7 @@ public class LoginController {
         loginUseCaseInteractor.execute(loginInputData);
     }
 
-    public void goToSignUp() {
-        viewManagerModel.setState("sign up");
-        viewManagerModel.firePropertyChange();
+    public void switchToSignUpView() {
+        loginUseCaseInteractor.switchToSignUpView();
     }
 }

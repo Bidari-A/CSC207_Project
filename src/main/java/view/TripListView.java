@@ -2,7 +2,6 @@ package view;
 
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListState;
-import interface_adapter.ViewManagerModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +21,6 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
 
     private final String viewName = "trip list";
     private final TripListViewModel tripListViewModel;
-    private final ViewManagerModel viewManagerModel;
     private TripListController tripListController;
 
     private final JButton backButton;
@@ -30,9 +28,8 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
     private final JLabel title;
     private final JLabel errorLabel;
 
-    public TripListView(TripListViewModel tripListViewModel, ViewManagerModel viewManagerModel) {
+    public TripListView(TripListViewModel tripListViewModel) {
         this.tripListViewModel = tripListViewModel;
-        this.viewManagerModel = viewManagerModel;
         this.tripListViewModel.addPropertyChangeListener(this);
 
         // Title
@@ -85,35 +82,34 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
 
         if (source == backButton) {
             // Navigate back to logged in view
-            viewManagerModel.setState("logged in");
-            viewManagerModel.firePropertyChange();
+            tripListController.goBack();
         } else if (source instanceof JButton) {
             JButton button = (JButton) source;
             String actionCommand = button.getActionCommand();
 
-            if (actionCommand.startsWith("DELETE_")) {
-                // Extract trip name from action command
-                String tripName = actionCommand.substring(7); // Remove "DELETE_" prefix
-                TripListState state = tripListViewModel.getState();
-                if (tripListController != null && state.getUsername() != null) {
-                    tripListController.executeDelete(state.getUsername(), tripName);
-                }
-            } else if (actionCommand.startsWith("DETAILS_")) {
-                // Extract trip name from action command
-                String tripName = actionCommand.substring(8); // Remove "DETAILS_" prefix
-                System.out.println("Details clicked for trip: " + tripName);
-
-                TripListState state = tripListViewModel.getState();
-
-                if (tripListController != null) {
-                    tripListController.executeDetails(
-                            state.getUsername(),
-                            tripName
-                    );
-                } else {
-                    System.out.println("ERROR: tripListController is NULL");
-                }
-            }
+//            if (actionCommand.startsWith("DELETE_")) {
+//                // Extract trip name from action command
+//                String tripName = actionCommand.substring(7); // Remove "DELETE_" prefix
+//                TripListState state = tripListViewModel.getState();
+//                if (tripListController != null && state.getUsername() != null) {
+//                    tripListController.executeDelete(state.getUsername(), tripName);
+//                }
+//            } else if (actionCommand.startsWith("DETAILS_")) {
+//                // Extract trip name from action command
+//                String tripName = actionCommand.substring(8); // Remove "DETAILS_" prefix
+//                System.out.println("Details clicked for trip: " + tripName);
+//
+//                TripListState state = tripListViewModel.getState();
+//
+//                if (tripListController != null) {
+//                    tripListController.executeDetails(
+//                            state.getUsername(),
+//                            tripName
+//                    );
+//                } else {
+//                    System.out.println("ERROR: tripListController is NULL");
+//                }
+//            }
         }
     }
 
