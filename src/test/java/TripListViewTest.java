@@ -40,7 +40,7 @@ class TripListViewTest {
     void setUp() {
         tripListViewModel = new TripListViewModel();
         viewManagerModel = new ViewManagerModel();
-        tripListView = new TripListView(tripListViewModel, viewManagerModel);
+        tripListView = new TripListView(tripListViewModel);
 
         // Create a frame to ensure proper initialization
         testFrame = new JFrame();
@@ -542,7 +542,7 @@ class TripListViewTest {
         // Create the view model and view
         TripListViewModel tripListViewModel = new TripListViewModel();
         ViewManagerModel viewManagerModel = new ViewManagerModel();
-        TripListView tripListView = new TripListView(tripListViewModel, viewManagerModel);
+        TripListView tripListView = new TripListView(tripListViewModel);
 
         // Create example trips with sample data
         List<Trip> exampleTrips = new ArrayList<>();

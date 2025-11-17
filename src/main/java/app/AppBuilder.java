@@ -82,7 +82,7 @@ public class AppBuilder {
 
     public AppBuilder addTripListView() {
         tripListViewModel = new TripListViewModel();
-        tripListView = new TripListView(tripListViewModel, viewManagerModel);
+        tripListView = new TripListView(tripListViewModel);
         cardPanel.add(tripListView, tripListView.getViewName());
         return this;
     }

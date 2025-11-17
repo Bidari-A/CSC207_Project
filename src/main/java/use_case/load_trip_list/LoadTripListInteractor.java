@@ -33,5 +33,9 @@ public class LoadTripListInteractor implements LoadTripListInputBoundary {
             loadTripListPresenter.prepareFailView("Error loading trips: " + e.getMessage());
         }
     }
+    public void goBack() {
+        loadTripListPresenter.prepareBackView();
+    }
+
 }
 

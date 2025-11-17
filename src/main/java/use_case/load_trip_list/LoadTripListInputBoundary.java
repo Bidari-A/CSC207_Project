@@ -10,4 +10,5 @@ public interface LoadTripListInputBoundary {
      * @param loadTripListInputData the input data containing username
      */
     void execute(LoadTripListInputData loadTripListInputData);
+    void goBack();
 }

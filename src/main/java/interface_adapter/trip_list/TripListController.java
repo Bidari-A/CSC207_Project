@@ -14,6 +14,10 @@ public class TripListController {
         this.loadTripListUseCaseInteractor = loadTripListUseCaseInteractor;
     }
 
+    public void goBack() {
+        loadTripListUseCaseInteractor.goBack();
+    }
+
     /**
      * Loads trips for the given username.
      * @param username the username
