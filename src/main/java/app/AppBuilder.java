@@ -107,7 +107,7 @@ public class AppBuilder {
                 new LoginInteractor(userDataAccessObject, loginOutputBoundary);
 
         LoginController loginController =
-                new LoginController(loginInteractor, viewManagerModel);
+                new LoginController(loginInteractor);
 
         loginView.setLoginController(loginController);
         return this;
