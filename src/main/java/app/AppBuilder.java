@@ -97,7 +97,6 @@ public class AppBuilder {
         final LoginInputBoundary loginInteractor =
                 new LoginInteractor(userDataAccessObject, loginOutputBoundary);
 
-        // ⭐ FIXED: add viewManagerModel here
         LoginController loginController =
                 new LoginController(loginInteractor, viewManagerModel);
 

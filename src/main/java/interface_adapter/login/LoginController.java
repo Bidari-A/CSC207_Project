@@ -24,7 +24,7 @@ public class LoginController {
     }
 
     public void goToSignUp() {
-        viewManagerModel.setState("sign up");   // ✔ 正确
-        viewManagerModel.firePropertyChange();  // ✔ 正确
+        viewManagerModel.setState("sign up");
+        viewManagerModel.firePropertyChange();
     }
 }
