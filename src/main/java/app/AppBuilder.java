@@ -78,6 +78,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addCreateNewTripView() {
+        createNewTripViewModel = new CreateNewTripViewModel();
+        createNewTripView = new CreateNewTripView(createNewTripViewModel);
+        cardPanel.add(createNewTripView, createNewTripView.getViewName());
+        return this;
+    }
+
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary =
                 new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
@@ -116,12 +123,31 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addCreateNewTripView() {
-        createNewTripViewModel = new CreateNewTripViewModel();
-        createNewTripView = new CreateNewTripView(createNewTripViewModel);
-        cardPanel.add(createNewTripView, createNewTripView.getViewName());
+    public AppBuilder addCreateNewTripUseCase() {
+
+        interface_adapter.create_new_trip.CreateNewTripPresenter presenter =
+                new interface_adapter.create_new_trip.CreateNewTripPresenter(viewManagerModel);
+
+        // For now! create a minimal interactor so it compiles
+        use_case.create_new_trip.CreateNewTripInputBoundary interactor =
+                new use_case.create_new_trip.CreateNewTripInputBoundary() {
+                    @Override
+                    public void execute(use_case.create_new_trip.CreateNewTripInputData inputData) {
+                        System.out.println("Create trip use case not implemented yet, but running.");
+                    }
+                };
+
+        //Create the controller
+        interface_adapter.create_new_trip.CreateNewTripController controller =
+                new interface_adapter.create_new_trip.CreateNewTripController(interactor, presenter);
+
+        // Give the controller to LoggedInView
+        loggedInView.setCreateNewTripController(controller);
+
         return this;
     }
+
+
 
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
