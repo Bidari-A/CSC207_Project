@@ -1,9 +1,13 @@
 package view;
 
+
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.trip_list.TripListController;
+import use_case.flight_search.FlightSearchInteractor;
+import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.flight_search.FlightSearchController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +25,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final LoggedInViewModel loggedInViewModel;
     private LogoutController logoutController;
     private TripListController tripListController;
+
+    // For opening the flight page
+    private FlightSearchViewModel flightSearchViewModel;
+    private FlightSearchController flightSearchController;
+
 
     // TODO to be assigned later..
     // tripHistoryController
@@ -40,6 +49,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JButton detailsButton;
     private final JButton deleteButton;
     private final JButton completeButton;
+    private final JButton flightSearchButton;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
@@ -141,7 +151,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         newTripButton = new JButton("New Trip");
+        flightSearchButton = new JButton("Search Flights");
+
         bottomPanel.add(newTripButton);
+        bottomPanel.add(flightSearchButton);
+
 
         this.setLayout(new BorderLayout(20, 20));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -155,6 +169,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         detailsButton.addActionListener(this);
         deleteButton.addActionListener(this);
         completeButton.addActionListener(this);
+        flightSearchButton.addActionListener(this);
     }
 
     /**
@@ -180,6 +195,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             System.out.println("New Trip clicked");
         } else if (source == detailsButton) {
             System.out.println("Details clicked");
+        } else if (source == flightSearchButton) {
+            Window parent = SwingUtilities.getWindowAncestor(this);
+            FlightSearchDialog dialog =
+                    new FlightSearchDialog(parent, flightSearchViewModel, flightSearchController);
+            dialog.setVisible(true);
         } else if (source == deleteButton) {
             System.out.println("Delete clicked");
         } else if (source == completeButton) {
@@ -209,4 +229,13 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setTripListController(TripListController tripListController) {
         this.tripListController = tripListController;
     }
+
+    public void setFlightSearchViewModel(FlightSearchViewModel flightSearchViewModel) {
+        this.flightSearchViewModel = flightSearchViewModel;
+    }
+
+    public void setFlightSearchController(FlightSearchController flightSearchController) {
+        this.flightSearchController = flightSearchController;
+    }
+
 }
