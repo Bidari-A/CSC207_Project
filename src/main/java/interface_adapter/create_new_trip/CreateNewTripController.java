@@ -40,6 +40,9 @@ public class CreateNewTripController {
      * clicks the "New Trip" button.
      */
     public void openForm() {
-        createNewTripPresenter.showCreateNewTripView();
+        // this previously directly alerting presenter. now it alerts the interactor.
+        // createNewTripPresenter.showCreateNewTripView();
+        createNewTripInteractor.prepareScreen();
+
     }
 }

@@ -133,6 +133,9 @@ public class AppBuilder {
         interface_adapter.create_new_trip.CreateNewTripPresenter presenter =
                 new interface_adapter.create_new_trip.CreateNewTripPresenter(viewManagerModel);
 
+        CreateNewTripOutputBoundary createNewTripPresenter =
+                new CreateNewTripPresenter(viewManagerModel);
+
         // For now! create a minimal interactor so it compiles
         use_case.create_new_trip.CreateNewTripInputBoundary interactor =
                 new use_case.create_new_trip.CreateNewTripInputBoundary() {
@@ -140,6 +143,11 @@ public class AppBuilder {
                     public void execute(use_case.create_new_trip.CreateNewTripInputData inputData) {
                         System.out.println("Create trip use case not implemented yet, but running.");
                     }
+
+                    public void prepareScreen() {
+                            // For now, just delegate to the presenter to switch views
+                            createNewTripPresenter.showCreateNewTripView();
+                        }
                 };
 
         //Create the controller

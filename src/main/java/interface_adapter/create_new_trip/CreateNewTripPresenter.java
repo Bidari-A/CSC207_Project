@@ -17,4 +17,5 @@ public class CreateNewTripPresenter implements CreateNewTripOutputBoundary {
         viewManagerModel.setState("create new trip");
         viewManagerModel.firePropertyChange();
     }
+
 }
