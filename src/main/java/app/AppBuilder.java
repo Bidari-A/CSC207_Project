@@ -20,6 +20,7 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -130,29 +131,15 @@ public class AppBuilder {
 
     public AppBuilder addCreateNewTripUseCase() {
 
-        interface_adapter.create_new_trip.CreateNewTripPresenter presenter =
-                new interface_adapter.create_new_trip.CreateNewTripPresenter(viewManagerModel);
-
-        CreateNewTripOutputBoundary createNewTripPresenter =
+        final CreateNewTripOutputBoundary createNewTripPresenter =
                 new CreateNewTripPresenter(viewManagerModel);
 
-        // For now! create a minimal interactor so it compiles
-        use_case.create_new_trip.CreateNewTripInputBoundary interactor =
-                new use_case.create_new_trip.CreateNewTripInputBoundary() {
-                    @Override
-                    public void execute(use_case.create_new_trip.CreateNewTripInputData inputData) {
-                        System.out.println("Create trip use case not implemented yet, but running.");
-                    }
+        final CreateNewTripInputBoundary createNewTripInteractor =
+                new CreateNewTripInteractor(createNewTripPresenter);
 
-                    public void prepareScreen() {
-                            // For now, just delegate to the presenter to switch views
-                            createNewTripPresenter.showCreateNewTripView();
-                        }
-                };
+        final CreateNewTripController controller =
+                new CreateNewTripController(createNewTripInteractor, createNewTripPresenter);
 
-        //Create the controller
-        interface_adapter.create_new_trip.CreateNewTripController controller =
-                new interface_adapter.create_new_trip.CreateNewTripController(interactor, presenter);
 
         // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
