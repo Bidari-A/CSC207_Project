@@ -161,7 +161,6 @@ public class AppBuilder {
     }
 
 
-
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
