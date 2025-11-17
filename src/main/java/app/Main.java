@@ -13,6 +13,7 @@ public class Main {
                 .addLoginUseCase()
                 .addLogoutUseCase()
                 .addCreateNewTripView()
+                .addFlightSearchUseCase()
                 .build();
 
         application.pack();
