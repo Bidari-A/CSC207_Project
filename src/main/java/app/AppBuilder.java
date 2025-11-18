@@ -11,6 +11,9 @@ import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
+import interface_adapter.create_new_trip.CreateNewTripController;
+import interface_adapter.create_new_trip.CreateNewTripPresenter;
+import use_case.create_new_trip.CreateNewTripInteractor;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
@@ -28,6 +31,9 @@ import use_case.load_trip_list.LoadTripListOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.create_new_trip.CreateNewTripInputBoundary;
+import use_case.create_new_trip.CreateNewTripInputData;
+import use_case.create_new_trip.CreateNewTripOutputBoundary;
 import view.*;
 import view.CreateNewTripView;
 import javax.swing.*;
@@ -87,6 +93,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addCreateNewTripView() {
+        createNewTripViewModel = new CreateNewTripViewModel();
+        createNewTripView = new CreateNewTripView(createNewTripViewModel);
+        cardPanel.add(createNewTripView, createNewTripView.getViewName());
+        return this;
+    }
+
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary =
                 new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
@@ -113,7 +126,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addCreateNewTripUseCase() {
+    public AppBuilder addLoadTripListUseCase() {
         final LoadTripListOutputBoundary loadTripListOutputBoundary =
                 new TripListPresenter(viewManagerModel, tripListViewModel);
 
@@ -126,19 +139,6 @@ public class AppBuilder {
         loggedInView.setTripListController(tripListController);
         return this;
     }
-
-//    public AppBuilder addTripListController() {
-//        final LoadTripListOutputBoundary loadTripListOutputBoundary =
-//                new TripListPresenter(viewManagerModel, tripListViewModel);
-//
-//        final LoadTripListInputBoundary loadTripListInteractor =
-//                new LoadTripListInteractor(userDataAccessObject, loadTripListOutputBoundary);
-//
-//        final TripListController tripListController = new TripListController(loadTripListInteractor);
-//        loggedInView.setTripListController(tripListController);
-//        tripListView.setTripListController(tripListController);
-//        return this;
-//    }
 
 
 
@@ -158,12 +158,24 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addCreateNewTripView() {
-        createNewTripViewModel = new CreateNewTripViewModel();
-        createNewTripView = new CreateNewTripView(createNewTripViewModel);
-        cardPanel.add(createNewTripView, createNewTripView.getViewName());
+    public AppBuilder addCreateNewTripUseCase() {
+
+        final CreateNewTripOutputBoundary createNewTripPresenter =
+                new CreateNewTripPresenter(viewManagerModel);
+
+        final CreateNewTripInputBoundary createNewTripInteractor =
+                new CreateNewTripInteractor(createNewTripPresenter);
+
+        final CreateNewTripController controller =
+                new CreateNewTripController(createNewTripInteractor, createNewTripPresenter);
+
+
+        // Give the controller to LoggedInView
+        loggedInView.setCreateNewTripController(controller);
+
         return this;
     }
+
 
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
