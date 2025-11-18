@@ -18,6 +18,10 @@ public class CreateNewTripController {
         this.createNewTripPresenter = createNewTripPresenter;
     }
 
+    public void goBack() {
+        createNewTripInteractor.goBack();
+    }
+
     /**
      * Executes the Create New Trip Use Case.
      * Called when the user is on the Create New Trip screen
