@@ -140,19 +140,6 @@ public class AppBuilder {
         return this;
     }
 
-//    public AppBuilder addTripListController() {
-//        final LoadTripListOutputBoundary loadTripListOutputBoundary =
-//                new TripListPresenter(viewManagerModel, tripListViewModel);
-//
-//        final LoadTripListInputBoundary loadTripListInteractor =
-//                new LoadTripListInteractor(userDataAccessObject, loadTripListOutputBoundary);
-//
-//        final TripListController tripListController = new TripListController(loadTripListInteractor);
-//        loggedInView.setTripListController(tripListController);
-//        tripListView.setTripListController(tripListController);
-//        return this;
-//    }
-
 
 
     /**
