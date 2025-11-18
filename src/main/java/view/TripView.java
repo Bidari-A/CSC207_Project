@@ -28,7 +28,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
     private final JTextArea hotelArea = new JTextArea(4, 20);
 
     private final JTextField geminiInputField = new JTextField(25);
-    private final JButton backButton = new JButton("Back");
+//    private final JButton backButton = new JButton("Back");
 
     public TripView(TripViewModel tripViewModel) {
         this.tripViewModel = tripViewModel;
@@ -76,13 +76,13 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         geminiPanel.add(new JLabel("Ask Gemini:"));
         geminiPanel.add(geminiInputField);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(backButton);
+//        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+//        buttonPanel.add(backButton);
 
-        backButton.addActionListener(this);
+//        backButton.addActionListener(this);
 
         bottom.add(geminiPanel);
-        bottom.add(buttonPanel);
+//        bottom.add(buttonPanel);
 
         // Add to main layout
         add(top, BorderLayout.CENTER);
