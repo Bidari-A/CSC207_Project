@@ -39,6 +39,12 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JButton deleteButton;
     private final JButton completeButton;
 
+    private Runnable detailsAction;
+
+    public void setDetailsAction(Runnable action) {
+        this.detailsAction = action;
+    }
+
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
@@ -150,7 +156,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         logOut.addActionListener(this);
         tripListButton.addActionListener(this);
         newTripButton.addActionListener(this);
-        detailsButton.addActionListener(this);
+        detailsButton.addActionListener(e -> {
+            if (detailsAction != null) {
+                detailsAction.run();
+            }
+        });
         deleteButton.addActionListener(this);
         completeButton.addActionListener(this);
     }

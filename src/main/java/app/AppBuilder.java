@@ -3,8 +3,6 @@ package app;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.logged_in.ChangePasswordController;
-import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
@@ -14,9 +12,8 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
-import use_case.change_password.ChangePasswordInputBoundary;
-import use_case.change_password.ChangePasswordInteractor;
-import use_case.change_password.ChangePasswordOutputBoundary;
+import interface_adapter.trip.TripDetailsController;
+import interface_adapter.trip.TripViewModel;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -53,7 +50,9 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private TripViewModel tripViewModel;
     private TripView tripView;
+    private TripDetailsController tripDetailsController;
 
 
     public AppBuilder() {
@@ -120,6 +119,23 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addTripView() {
+        TripViewModel tripViewModel = new TripViewModel();
+        TripView tripView = new TripView(tripViewModel);
+
+        // Controller
+        tripDetailsController = new TripDetailsController(tripViewModel);
+
+        cardPanel.add(tripView, "trip view");
+
+        return this;
+    }
+
+    public AppBuilder addTripDetailsUseCase() {
+        tripDetailsController = new TripDetailsController(tripViewModel);
+        return this;
+    }
+
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -130,6 +146,17 @@ public class AppBuilder {
         viewManagerModel.firePropertyChange();
 
         return application;
+    }
+
+    public AppBuilder wireDetailsAction() {
+        loggedInView.setDetailsAction(() -> {
+            String tripName = loggedInViewModel.getState().getLastTripName();
+            tripDetailsController.openTripView(tripName);
+
+            viewManagerModel.setState("trip view");
+            viewManagerModel.firePropertyChange();
+        });
+        return this;
     }
 
 

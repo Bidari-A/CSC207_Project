@@ -9,10 +9,13 @@ public class LoggedInState {
     private String password = "";
     private String passwordError;
 
+    private String lastTripName = "";
+
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
+        lastTripName = copy.lastTripName;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -42,5 +45,13 @@ public class LoggedInState {
 
     public String getPasswordError() {
         return passwordError;
+    }
+
+    public String getLastTripName() {
+        return lastTripName;
+    }
+
+    public void setLastTripName(String lastTripName) {
+        this.lastTripName = lastTripName;
     }
 }
