@@ -2,22 +2,29 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
+import interface_adapter.trip_list.TripListController;
 
-public class CreateNewTripView extends JPanel {
+public class CreateNewTripView extends JPanel implements ActionListener {
     private final String viewName = "create new trip";
     private final CreateNewTripViewModel viewModel;
+    private CreateNewTripController createNewTripController;
+
 
     private final JTextField fromField = new JTextField();
     private final JTextField toField = new JTextField();
     private final JTextField dateField = new JTextField();
 
     private final JButton generateButton = new JButton("Create Trip");
-    private final JButton backButton = new JButton("Back");
+    JButton backButton = new JButton("Back");
 
     public CreateNewTripView(CreateNewTripViewModel viewModel) {
         this.viewModel = viewModel;
+        //this.viewModel.addPropertyChangeListener(this);
 
         // Main layout similar to TripListView
         this.setLayout(new BorderLayout(20, 20));
@@ -26,6 +33,9 @@ public class CreateNewTripView extends JPanel {
         // Title
         JLabel title = new JLabel("Create New Trip", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
+
+        // Back Button
+        backButton.addActionListener(this);
 
         // Top panel: back button slightly above, title centered
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -45,7 +55,7 @@ public class CreateNewTripView extends JPanel {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
-        // Make text fields same size
+        // make text fields same size
         int fieldWidth = 300;
         int fieldHeight = 28;
         Dimension fieldSize = new Dimension(fieldWidth, fieldHeight);
@@ -53,7 +63,7 @@ public class CreateNewTripView extends JPanel {
         toField.setPreferredSize(fieldSize);
         dateField.setPreferredSize(fieldSize);
 
-        // Labels, fixed width so fields line up
+        // labels with lined up fields
         JLabel fromLabel = new JLabel("From:");
         JLabel toLabel = new JLabel("To:");
         JLabel dateLabel = new JLabel("Date:");
@@ -89,7 +99,6 @@ public class CreateNewTripView extends JPanel {
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(buttonRow);
 
-        // Add everything to main panel
         this.add(topPanel, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
     }
@@ -97,4 +106,20 @@ public class CreateNewTripView extends JPanel {
     public String getViewName() {
         return viewName;
     }
-}
+
+
+    public void setCreateNewTripController(CreateNewTripController controller) {
+        this.createNewTripController = controller;
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+
+        if (source == backButton) {
+            //System.out.println("Back button clicked in CreateNewTripView");
+            // Navigate back to logged in view
+            createNewTripController.goBack();
+        }
+}}

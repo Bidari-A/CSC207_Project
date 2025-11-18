@@ -23,4 +23,8 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
     public void prepareScreen() {
         createNewTripPresenter.showCreateNewTripView();
     }
+
+    public void goBack() {
+        createNewTripPresenter.prepareBackView();
+    }
 }

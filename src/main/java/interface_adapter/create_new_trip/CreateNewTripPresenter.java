@@ -18,4 +18,14 @@ public class CreateNewTripPresenter implements CreateNewTripOutputBoundary {
         viewManagerModel.firePropertyChange();
     }
 
+    /**
+     * NEW: Navigate back to the logged-in view.
+     */
+
+    @Override
+    public void prepareBackView() {
+        viewManagerModel.setState("logged in");
+        viewManagerModel.firePropertyChange();
+    }
+
 }

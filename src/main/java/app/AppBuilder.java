@@ -169,7 +169,7 @@ public class AppBuilder {
         final CreateNewTripController controller =
                 new CreateNewTripController(createNewTripInteractor, createNewTripPresenter);
 
-
+        createNewTripView.setCreateNewTripController(controller);
         // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
 
