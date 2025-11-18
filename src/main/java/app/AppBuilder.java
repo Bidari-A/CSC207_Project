@@ -120,19 +120,13 @@ public class AppBuilder {
     }
 
     public AppBuilder addTripView() {
-        TripViewModel tripViewModel = new TripViewModel();
-        TripView tripView = new TripView(tripViewModel);
+        this.tripViewModel = new TripViewModel();
+        this.tripView = new TripView(this.tripViewModel);
 
-        // Controller
-        tripDetailsController = new TripDetailsController(tripViewModel);
+        this.tripDetailsController = new TripDetailsController(this.tripViewModel);
 
-        cardPanel.add(tripView, "trip view");
+        cardPanel.add(this.tripView, "trip view");
 
-        return this;
-    }
-
-    public AppBuilder addTripDetailsUseCase() {
-        tripDetailsController = new TripDetailsController(tripViewModel);
         return this;
     }
 

@@ -13,6 +13,7 @@ public class Main {
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
+                .wireDetailsAction()
                 .build();
 
         application.pack();
