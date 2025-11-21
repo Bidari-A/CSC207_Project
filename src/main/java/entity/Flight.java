@@ -2,6 +2,7 @@ package entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Flight {
     private final String airlineName;
@@ -14,5 +15,28 @@ public class Flight {
         this.price = price;
     }
 
-    // TODO: Implement Methods
+    // Implemented Methods
+    public String getAirlineName() {return airlineName;}
+    public Date getDepartureTimes() {return departureTimes;}
+    public float getPrice() {return price;}
+    @Override
+    public String toString() {
+        return "Flight [airline=" + airlineName + ", departure=" + departureTimes + ", price=" + price + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;                      // same reference
+        if (o == null || getClass() != o.getClass()) return false;  // null or different class
+
+        Flight flight = (Flight) o;                      // cast to Flight
+        return Float.compare(flight.price, price) == 0 &&
+                Objects.equals(airlineName, flight.airlineName) &&
+                Objects.equals(departureTimes, flight.departureTimes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(airlineName, departureTimes, price);
+    }
 }

@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Objects;
+
 public class Accommodation {
     private final String name;
     private final String address;
@@ -11,5 +13,34 @@ public class Accommodation {
         this.price = price;
     }
 
-    // TODO: Implement Methods
+    // Implemented Methods
+    public String getName() { return name; }
+
+    public String getAddress() { return address; }
+
+    public float getPrice() { return price; }
+
+    @Override
+    public String toString() {
+        return "Accommodation{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Accommodation)) return false;
+        Accommodation that = (Accommodation) o;
+        return Float.compare(that.price, price) == 0 &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(address, that.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, address, price);
+    }
 }

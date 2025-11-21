@@ -146,7 +146,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
      * @return the current user name
      */
     public String getCurrentUserName() {
-        return "";
+        return currentUsername;
     }
 
     /**
