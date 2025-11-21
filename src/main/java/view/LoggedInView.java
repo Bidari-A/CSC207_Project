@@ -8,6 +8,11 @@ import interface_adapter.trip_list.TripListController;
 import use_case.flight_search.FlightSearchInteractor;
 import interface_adapter.flight_search.FlightSearchViewModel;
 import interface_adapter.flight_search.FlightSearchController;
+import interface_adapter.hotel_search.HotelSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchController;
+import view.HotelSearchDialog;
+
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +34,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     // For opening the flight page
     private FlightSearchViewModel flightSearchViewModel;
     private FlightSearchController flightSearchController;
+
+    // For opening the hotels page
+    private HotelSearchViewModel hotelSearchViewModel;
+    private HotelSearchController hotelSearchController;
+    private JButton hotelSearchButton;
 
 
     // TODO to be assigned later..
@@ -152,9 +162,13 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         newTripButton = new JButton("New Trip");
         flightSearchButton = new JButton("Search Flights");
+        hotelSearchButton = new JButton("Search Hotels");
+
 
         bottomPanel.add(newTripButton);
         bottomPanel.add(flightSearchButton);
+        bottomPanel.add(hotelSearchButton);
+
 
 
         this.setLayout(new BorderLayout(20, 20));
@@ -170,6 +184,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         deleteButton.addActionListener(this);
         completeButton.addActionListener(this);
         flightSearchButton.addActionListener(this);
+        hotelSearchButton.addActionListener(this);
+
     }
 
     /**
@@ -200,11 +216,17 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             FlightSearchDialog dialog =
                     new FlightSearchDialog(parent, flightSearchViewModel, flightSearchController);
             dialog.setVisible(true);
+        } else if (source == hotelSearchButton) {
+            Window parent = SwingUtilities.getWindowAncestor(this);
+            HotelSearchDialog dialog =
+                    new HotelSearchDialog(parent, hotelSearchViewModel, hotelSearchController);
+            dialog.setVisible(true);
         } else if (source == deleteButton) {
             System.out.println("Delete clicked");
         } else if (source == completeButton) {
             System.out.println("Complete clicked");
         }
+
     }
 
     /**
@@ -237,5 +259,14 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setFlightSearchController(FlightSearchController flightSearchController) {
         this.flightSearchController = flightSearchController;
     }
+
+    public void setHotelSearchViewModel(HotelSearchViewModel hotelSearchViewModel) {
+        this.hotelSearchViewModel = hotelSearchViewModel;
+    }
+
+    public void setHotelSearchController(HotelSearchController hotelSearchController) {
+        this.hotelSearchController = hotelSearchController;
+    }
+
 
 }

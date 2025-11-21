@@ -38,6 +38,7 @@ public class FlightSearchDialog extends JDialog implements PropertyChangeListene
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         p.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
+        p.add(new JLabel("Please use airport code"));
         p.add(row("From:", fromField));
         p.add(row("To:", toField));
         p.add(row("Outbound:", outField));

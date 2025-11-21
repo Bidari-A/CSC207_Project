@@ -23,6 +23,12 @@ public class FlightSearchInteractor implements FlightSearchInputBoundary{
                 inputData.getOutboundDate(),
                 inputData.getReturnDate()
         );
+        // OR,
+        // String json = gateway.fetchRawJson(...);
+        // String summary = ((SerpApiFlightSearchGateway) gateway)
+        //        .summarizeFirstBestFlight(json);
+
+
         // STEP 2. What we want to output to the user! Stored in summary.
         String bestFlightsJson = extractFirstBestFlight(json);
 

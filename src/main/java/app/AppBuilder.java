@@ -42,6 +42,17 @@ import use_case.flight_search.FlightSearchOutputBoundary;
 import use_case.flight_search.FlightSearchGateway;
 import data_access.SerpApiFlightSearchGateway;
 
+// For hotel
+import interface_adapter.hotel_search.HotelSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchPresenter;
+import interface_adapter.hotel_search.HotelSearchController;
+import use_case.hotel_search.HotelSearchInputBoundary;
+import use_case.hotel_search.HotelSearchInteractor;
+import use_case.hotel_search.HotelSearchOutputBoundary;
+import use_case.hotel_search.HotelSearchGateway;
+import data_access.SerpApiHotelSearchGateway;
+
+
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -64,6 +75,7 @@ public class AppBuilder {
     private TripView tripView;
     private TripListView tripListView;
     private FlightSearchViewModel flightSearchViewModel;
+    private HotelSearchViewModel hotelSearchViewModel;
 
 
     public AppBuilder() {
@@ -157,6 +169,28 @@ public class AppBuilder {
 
         return this;
     }
+
+    public AppBuilder addHotelSearchUseCase() {
+        hotelSearchViewModel = new HotelSearchViewModel();
+
+        HotelSearchOutputBoundary outputBoundary =
+                new HotelSearchPresenter(hotelSearchViewModel);
+
+        HotelSearchGateway gateway = new SerpApiHotelSearchGateway();
+
+        HotelSearchInputBoundary interactor =
+                new HotelSearchInteractor(gateway, outputBoundary);
+
+        HotelSearchController controller =
+                new HotelSearchController(interactor);
+
+        // Inject into LoggedInView (same style as logout)
+        loggedInView.setHotelSearchViewModel(hotelSearchViewModel);
+        loggedInView.setHotelSearchController(controller);
+
+        return this;
+    }
+
 
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
