@@ -1,0 +1,9 @@
+{
+  "hotelA": { "name": "Hôtel Champs-Élysées" },
+  "hotelB": { "name": "Rome Grand Hotel" },
+  "hotelC": { "name": "San Francisco Bay Lodge" },
+  "hotelD": { "name": "Niagara Riverside Inn" },
+  "hotelE": { "name": "Tokyo Central Hotel" },
+  "hotelF": { "name": "Sydney Harbour Suites" },
+  "hotelZ": { "name": "Desert View Lodge" }
+}

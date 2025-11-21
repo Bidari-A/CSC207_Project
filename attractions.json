@@ -1,0 +1,12 @@
+{
+  "attr01": { "name": "Eiffel Tower" },
+  "attr02": { "name": "Louvre Museum" },
+  "attr03": { "name": "Colosseum" },
+  "attr04": { "name": "Golden Gate Bridge" },
+  "attr05": { "name": "Alcatraz Island" },
+  "attr06": { "name": "Niagara Falls" },
+  "attr07": { "name": "Tokyo Skytree" },
+  "attr08": { "name": "Shinjuku Gyoen Park" },
+  "attr09": { "name": "Sydney Opera House" },
+  "attr10": { "name": "Grand Canyon Viewpoint" }
+}
