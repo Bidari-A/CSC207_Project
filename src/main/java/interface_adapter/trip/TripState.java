@@ -14,6 +14,8 @@ public class TripState{
     private String hotelDetails = "";
     private String geminiInput = "";
 
+    private String prevViewName = "";
+
     public TripState() {}
 
     public TripState(TripState copy) {
@@ -51,4 +53,7 @@ public class TripState{
 
     public String getGeminiInput() { return geminiInput; }
     public void setGeminiInput(String geminiInput) { this.geminiInput = geminiInput; }
+
+    public String getPrevViewName() { return prevViewName; }
+    public void setPrevViewName(String prevViewName) { this.prevViewName = prevViewName; }
 }

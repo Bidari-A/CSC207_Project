@@ -3,6 +3,7 @@ package view;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.trip.TripController;
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.create_new_trip.CreateNewTripController;
 
@@ -23,6 +24,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private LogoutController logoutController;
     private TripListController tripListController;
     private CreateNewTripController createNewTripController;
+    private TripController tripController;
 
 
     // TODO to be assigned later..
@@ -180,10 +182,15 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             }
 
         } else if (source == newTripButton) {
-            //System.out.println("New Trip clicked");
+
             createNewTripController.openForm();
+
         } else if (source == detailsButton) {
-            System.out.println("Details clicked");
+
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+            tripController.execute(username, viewName);
+
         } else if (source == deleteButton) {
             System.out.println("Delete clicked");
         } else if (source == completeButton) {
@@ -216,6 +223,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setCreateNewTripController(CreateNewTripController createNewTripController) {
         this.createNewTripController = createNewTripController;
+    }
+    public void setTripController(TripController tripController) {
+        this.tripController = tripController;
     }
 
 }

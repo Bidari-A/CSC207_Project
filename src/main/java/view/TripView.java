@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripState;
 import interface_adapter.trip.TripViewModel;
 
@@ -18,6 +19,7 @@ import java.beans.PropertyChangeListener;
 public class TripView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final TripViewModel tripViewModel;
+    private TripController tripController;
 
     private final JLabel tripNameLabel = new JLabel();
     private final JLabel cityLabel = new JLabel();
@@ -100,7 +102,10 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
     /** Handle button clicks (minimalism). */
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Back clicked.");
+        Object source = e.getSource();
+        if (source == backButton) {
+            tripController.back();
+        }
     }
 
     /** Updates labels when ViewModel state changes. */
@@ -115,5 +120,9 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         flightArea.setText(s.getFlightDetails());
         hotelArea.setText(s.getHotelDetails());
         geminiInputField.setText(s.getGeminiInput());
+    }
+
+    public void setTripController(TripController tripController) {
+        this.tripController = tripController;
     }
 }
