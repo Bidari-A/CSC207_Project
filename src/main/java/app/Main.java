@@ -16,6 +16,8 @@ public class Main {
                 .addLoadTripListUseCase()
                 .addCreateNewTripView()
                 .addCreateNewTripUseCase()
+                .addTripView()
+                .addLoadTripDetailUseCase()
                 .build();
 
         application.pack();

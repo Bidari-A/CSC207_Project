@@ -4,6 +4,9 @@ import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.trip.TripController;
+import interface_adapter.trip.TripPresenter;
+import interface_adapter.trip.TripViewModel;
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListPresenter;
 import interface_adapter.trip_list.TripListViewModel;
@@ -19,6 +22,10 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.load_trip_detail.LoadTripDetailInputBoundary;
+import use_case.load_trip_detail.LoadTripDetailInteractor;
+import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
+import use_case.load_trip_detail.LoadTripDetailOutputData;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -57,7 +64,10 @@ public class AppBuilder {
     private LoginView loginView;
     private CreateNewTripViewModel createNewTripViewModel;
     private CreateNewTripView createNewTripView;
+
     private TripView tripView;
+    private TripViewModel tripViewModel;
+
     private TripListView tripListView;
     private TripListViewModel tripListViewModel;
 
@@ -137,6 +147,27 @@ public class AppBuilder {
 
         tripListView.setTripListController(tripListController);
         loggedInView.setTripListController(tripListController);
+        return this;
+    }
+
+    public AppBuilder addTripView(){
+        tripViewModel = new TripViewModel();
+        tripView = new TripView(tripViewModel);
+        cardPanel.add(tripView, tripViewModel.getViewName());
+        return this;
+    }
+
+    public AppBuilder addLoadTripDetailUseCase() {
+        final LoadTripDetailOutputBoundary loadTripDetailOutputBoundary =
+                new TripPresenter(tripViewModel, viewManagerModel);
+
+        final LoadTripDetailInputBoundary loadTripDetailInputBoundary =
+                new LoadTripDetailInteractor(userDataAccessObject, loadTripDetailOutputBoundary);
+
+        TripController tripController = new TripController(loadTripDetailInputBoundary);
+
+        tripView.setTripController(tripController);
+        loggedInView.setTripController(tripController);
         return this;
     }
 
