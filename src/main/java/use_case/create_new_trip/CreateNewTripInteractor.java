@@ -27,4 +27,19 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
     public void goBack() {
         createNewTripPresenter.prepareBackView();
     }
+
+    @Override
+    public void saveDraft(CreateNewTripInputData inputData){
+        CreateNewTripOutputData outputData =
+                new CreateNewTripOutputData(inputData.getFrom(), inputData.getTo(), inputData.getDate(), false);
+
+        createNewTripPresenter.presentSavedDraft(outputData);
+    }
+
+    @Override
+    public void submitDraft(CreateNewTripInputData inputData) {
+        CreateNewTripOutputData outputData =
+                new CreateNewTripOutputData(inputData.getFrom(), inputData.getTo(), inputData.getDate(), true);
+        createNewTripPresenter.presentSavedDraft(outputData);
+    }
 }

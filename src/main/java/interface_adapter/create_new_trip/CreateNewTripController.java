@@ -49,4 +49,12 @@ public class CreateNewTripController {
         createNewTripInteractor.prepareScreen();
 
     }
+
+    public void saveDraft(String from, String to, String date) {
+        createNewTripInteractor.saveDraft(new CreateNewTripInputData(from, to, date));
+    }
+
+    public void submitDraft(String from, String to, String date) {
+        createNewTripInteractor.submitDraft(new CreateNewTripInputData(from, to, date));
+    }
 }

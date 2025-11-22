@@ -3,6 +3,7 @@ package app;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.delete_current_trip.DeleteCurrentTripPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripPresenter;
@@ -22,6 +23,7 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.delete_current_trip.DeleteCurrentTripInteractor;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
@@ -41,6 +43,10 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInputData;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
+import interface_adapter.delete_current_trip.DeleteCurrentTripViewModel;
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
 import view.*;
 import view.CreateNewTripView;
 import javax.swing.*;
@@ -64,6 +70,7 @@ public class AppBuilder {
     private LoginView loginView;
     private CreateNewTripViewModel createNewTripViewModel;
     private CreateNewTripView createNewTripView;
+    private DeleteCurrentTripViewModel deleteCurrentTripViewModel;
 
     private TripView tripView;
     private TripViewModel tripViewModel;
@@ -192,7 +199,7 @@ public class AppBuilder {
     public AppBuilder addCreateNewTripUseCase() {
 
         final CreateNewTripOutputBoundary createNewTripPresenter =
-                new CreateNewTripPresenter(viewManagerModel);
+                new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel);
 
         final CreateNewTripInputBoundary createNewTripInteractor =
                 new CreateNewTripInteractor(createNewTripPresenter);
@@ -203,6 +210,21 @@ public class AppBuilder {
         createNewTripView.setCreateNewTripController(controller);
         // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
+
+        return this;
+    }
+
+    public AppBuilder addDeleteCurrentTripUseCase() {
+        final DeleteCurrentTripOutputBoundary deletePresenter =
+                new DeleteCurrentTripPresenter(loggedInViewModel); // optional ViewModel if needed
+
+        final DeleteCurrentTripInputBoundary deleteInteractor =
+                new DeleteCurrentTripInteractor(deletePresenter);
+
+        final DeleteCurrentTripController controller =
+                new DeleteCurrentTripController(deleteInteractor);
+
+        loggedInView.setDeleteCurrentTripController(controller);
 
         return this;
     }

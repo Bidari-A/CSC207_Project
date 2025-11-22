@@ -1,14 +1,15 @@
 package use_case.delete_current_trip;
 
-public class DeleteCurrentTripInteractor {
-    private final DeleteCurrentTripOutputBoundary deleteCurrentTripOutputBoundary;
-    public DeleteCurrentTripInteractor(DeleteCurrentTripOutputBoundary outputBoundary) {
-        this.deleteCurrentTripOutputBoundary = outputBoundary;
+public class DeleteCurrentTripInteractor implements DeleteCurrentTripInputBoundary {
+
+    private final DeleteCurrentTripOutputBoundary presenter;
+
+    public DeleteCurrentTripInteractor(DeleteCurrentTripOutputBoundary presenter) {
+        this.presenter = presenter;
     }
 
     @Override
-    public void execute(){
-        DeleteCurrentTripOutputData outputData = new DeleteCurrentTripOutputData("Trip deleted successfully.");
-        deleteCurrentTripOutputBoundary.prepareSuccessView(outputData);
+    public void deleteDraft(){
+        presenter.presentClearedDraft();
     }
 }

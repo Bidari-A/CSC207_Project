@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
@@ -25,6 +26,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private TripListController tripListController;
     private CreateNewTripController createNewTripController;
     private TripController tripController;
+    private DeleteCurrentTripController deleteCurrentTripController;
 
 
     // TODO to be assigned later..
@@ -226,6 +228,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     }
     public void setTripController(TripController tripController) {
         this.tripController = tripController;
+    }
+    public void setDeleteCurrentTripController(DeleteCurrentTripController deleteCurrentTripController) {
+        this.deleteCurrentTripController = deleteCurrentTripController;
     }
 
 }
