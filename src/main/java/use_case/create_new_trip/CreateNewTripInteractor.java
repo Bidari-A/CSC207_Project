@@ -11,12 +11,11 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
     @Override
     public void execute(CreateNewTripInputData inputData) {
         // TEMPORARY FAKE LOGIC
-        System.out.println("Generating fake trip...");
-        System.out.println("From: " + inputData.getFrom());
-        System.out.println("To: " + inputData.getTo());
-        System.out.println("Date: " + inputData.getDate());
+        CreateNewTripOutputData outputData =
+                new CreateNewTripOutputData(inputData.getFrom(), inputData.getTo(), inputData.getDate(), true);
 
         // later you will call createNewTripPresenter.prepareSuccessView(outputData)
+        createNewTripPresenter.presentSubmittedTrip(outputData);
     }
     //maybe check later
     @Override

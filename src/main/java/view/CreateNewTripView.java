@@ -37,6 +37,9 @@ public class CreateNewTripView extends JPanel implements ActionListener {
         // Back Button
         backButton.addActionListener(this);
 
+        //create button
+        generateButton.addActionListener(this);
+
         // Top panel: back button slightly above, title centered
         JPanel topPanel = new JPanel(new BorderLayout());
 
@@ -121,5 +124,12 @@ public class CreateNewTripView extends JPanel implements ActionListener {
             //System.out.println("Back button clicked in CreateNewTripView");
             // Navigate back to logged in view
             createNewTripController.goBack();
+        } else if (source == generateButton) {
+            //call the controller to create the trip
+            createNewTripController.execute(
+                    fromField.getText(),
+                    toField.getText(),
+                    dateField.getText()
+            );
         }
 }}

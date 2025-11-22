@@ -2,15 +2,20 @@ package interface_adapter.create_new_trip;
 
 import interface_adapter.ViewManagerModel;
 import use_case.create_new_trip.*;
+import interface_adapter.trip.*;
+
+import javax.swing.*;
 
 public class CreateNewTripPresenter implements CreateNewTripOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final CreateNewTripViewModel createNewTripViewModel;
+    private final TripViewModel tripViewModel;
 
-    public CreateNewTripPresenter(ViewManagerModel viewManagerModel, CreateNewTripViewModel createNewTripViewModel) {
+    public CreateNewTripPresenter(ViewManagerModel viewManagerModel, CreateNewTripViewModel createNewTripViewModel, TripViewModel tripViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.createNewTripViewModel = createNewTripViewModel;
+        this.tripViewModel = tripViewModel;
     }
 
     @Override
@@ -44,16 +49,25 @@ public class CreateNewTripPresenter implements CreateNewTripOutputBoundary {
 
     @Override
     public void presentSubmittedTrip(CreateNewTripOutputData data) {
-        CreateNewTripState state = createNewTripViewModel.getState();
-        state.setFrom("");
-        state.setTo("");
-        state.setDate("");
-        state.setPlanText("");
-        state.setError("");
+        // Update CreateNewTripViewModel
+        createNewTripViewModel.setState(createNewTripViewModel.getState());
 
-        viewManagerModel.setState("logged in");
-        viewManagerModel.firePropertyChange();
+        // Update TripViewModel only if available
+        if (tripViewModel != null) {
+            var tripState = tripViewModel.getState();
+            tripState.setTripName(data.getFrom() + " to " + data.getTo());
+            tripState.setCity(data.getTo());
+            tripState.setDate(data.getDate());
+            tripViewModel.firePropertyChange();
+        }
+
+        // Optionally switch view if TripViewModel exists
+        if (tripViewModel != null && viewManagerModel != null) {
+            viewManagerModel.setState(tripViewModel.getViewName());
+            viewManagerModel.firePropertyChange();
+        }
     }
+
 
     @Override
     public void presentError(String message) {

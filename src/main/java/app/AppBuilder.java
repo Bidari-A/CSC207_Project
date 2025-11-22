@@ -103,6 +103,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addTripView(){
+        tripViewModel = new TripViewModel();
+        tripView = new TripView(tripViewModel);
+        cardPanel.add(tripView, tripViewModel.getViewName());
+        return this;
+    }
+
     public AppBuilder addTripListView() {
         tripListViewModel = new TripListViewModel();
         tripListView = new TripListView(tripListViewModel);
@@ -157,13 +164,6 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addTripView(){
-        tripViewModel = new TripViewModel();
-        tripView = new TripView(tripViewModel);
-        cardPanel.add(tripView, tripViewModel.getViewName());
-        return this;
-    }
-
     public AppBuilder addLoadTripDetailUseCase() {
         final LoadTripDetailOutputBoundary loadTripDetailOutputBoundary =
                 new TripPresenter(tripViewModel, viewManagerModel);
@@ -199,7 +199,7 @@ public class AppBuilder {
     public AppBuilder addCreateNewTripUseCase() {
 
         final CreateNewTripOutputBoundary createNewTripPresenter =
-                new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel);
+                new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripViewModel);
 
         final CreateNewTripInputBoundary createNewTripInteractor =
                 new CreateNewTripInteractor(createNewTripPresenter);
