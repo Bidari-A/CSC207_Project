@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class SerpApiHotelSearchGateway implements HotelSearchGateway {
 
     private static final String API_KEY =
-            "2d01bcb72f977a8492841e90758de3c8ad79e19b307df2979d99f39d1127fb40";
+            "";
     // As the interface defines that we need implement this method called fetchRawJson
     // Query, means the search keyword. For example, Bali, YYZ, NYC.
     @Override
