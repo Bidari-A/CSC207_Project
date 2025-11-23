@@ -1,15 +1,27 @@
 package view;
 
-import interface_adapter.trip.TripController;
-import interface_adapter.trip.TripState;
-import interface_adapter.trip.TripViewModel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import interface_adapter.trip.TripController;
+import interface_adapter.trip.TripState;
+import interface_adapter.trip.TripViewModel;
 
 /**
  * Minimal Trip View UI.
@@ -41,6 +53,13 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         hotelArea.setEditable(false);
 
         setLayout(new BorderLayout(10, 10));
+
+        // Add title at the top
+        JLabel title = new JLabel("Trip Detail View", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 22));
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.add(title, BorderLayout.CENTER);
+        add(titlePanel, BorderLayout.NORTH);
 
         // ---- Left panel ----
         JPanel left = new JPanel();
@@ -103,7 +122,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source == backButton) {
+        if (source == backButton && tripController != null) {
             tripController.back();
         }
     }

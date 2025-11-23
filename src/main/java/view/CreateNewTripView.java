@@ -1,15 +1,27 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
-import interface_adapter.trip_list.TripListController;
 
-public class CreateNewTripView extends JPanel implements ActionListener {
+public class CreateNewTripView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "create new trip";
     private final CreateNewTripViewModel viewModel;
     private CreateNewTripController createNewTripController;
@@ -24,7 +36,7 @@ public class CreateNewTripView extends JPanel implements ActionListener {
 
     public CreateNewTripView(CreateNewTripViewModel viewModel) {
         this.viewModel = viewModel;
-        //this.viewModel.addPropertyChangeListener(this);
+        this.viewModel.addPropertyChangeListener(this);
 
         // Main layout similar to TripListView
         this.setLayout(new BorderLayout(20, 20));
@@ -132,4 +144,26 @@ public class CreateNewTripView extends JPanel implements ActionListener {
                     dateField.getText()
             );
         }
-}}
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        // Update fields from state when state changes
+        if ("state".equals(evt.getPropertyName())) {
+            interface_adapter.create_new_trip.CreateNewTripState state =
+                    (interface_adapter.create_new_trip.CreateNewTripState) evt.getNewValue();
+            fromField.setText(state.getFrom());
+            toField.setText(state.getTo());
+            dateField.setText(state.getDate());
+        }
+    }
+
+    /**
+     * Clears all input fields in the form.
+     */
+    public void clearFields() {
+        fromField.setText("");
+        toField.setText("");
+        dateField.setText("");
+    }
+}

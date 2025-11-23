@@ -17,8 +17,8 @@ import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
-import use_case.login.LoginUserDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
+import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
@@ -30,7 +30,9 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
-        LoadTripDetailDataAccessInterface {
+        LoadTripDetailDataAccessInterface,
+        use_case.complete_current_trip.CompleteCurrentTripDataAccessInterface,
+        use_case.delete_trip.DeleteTripDataAccessInterface {
 
     private static final String HEADER = "username,password";
 
@@ -174,5 +176,23 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
      */
     public void addTrip(String username, Trip trip) {
         userTrips.computeIfAbsent(username, k -> new ArrayList<>()).add(trip);
+    }
+
+    /**
+     * Gets a trip by name for a user.
+     * @param username the username
+     * @param tripName the name of the trip
+     * @return the trip if found, null otherwise
+     */
+    public Trip getTripByName(String username, String tripName) {
+        List<Trip> trips = userTrips.get(username);
+        if (trips != null) {
+            for (Trip trip : trips) {
+                if (trip.getName().equals(tripName)) {
+                    return trip;
+                }
+            }
+        }
+        return null;
     }
 }

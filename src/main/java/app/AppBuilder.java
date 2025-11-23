@@ -1,56 +1,68 @@
 package app;
 
+import java.awt.CardLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.complete_current_trip.CompleteCurrentTripController;
+import interface_adapter.complete_current_trip.CompleteCurrentTripPresenter;
+import interface_adapter.create_new_trip.CreateNewTripController;
+import interface_adapter.create_new_trip.CreateNewTripPresenter;
+import interface_adapter.create_new_trip.CreateNewTripViewModel;
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
 import interface_adapter.delete_current_trip.DeleteCurrentTripPresenter;
+import interface_adapter.delete_current_trip.DeleteCurrentTripViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
+import interface_adapter.login.LoginViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupPresenter;
+import interface_adapter.signup.SignupViewModel;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripPresenter;
 import interface_adapter.trip.TripViewModel;
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListPresenter;
 import interface_adapter.trip_list.TripListViewModel;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.login.LoginViewModel;
-import interface_adapter.create_new_trip.CreateNewTripViewModel;
-import interface_adapter.create_new_trip.CreateNewTripController;
-import interface_adapter.create_new_trip.CreateNewTripPresenter;
+import use_case.complete_current_trip.CompleteCurrentTripInputBoundary;
+import use_case.complete_current_trip.CompleteCurrentTripInteractor;
+import use_case.complete_current_trip.CompleteCurrentTripOutputBoundary;
+import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupPresenter;
-import interface_adapter.signup.SignupViewModel;
+import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
 import use_case.delete_current_trip.DeleteCurrentTripInteractor;
+import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
-import use_case.load_trip_detail.LoadTripDetailOutputData;
+import use_case.load_trip_list.LoadTripListInputBoundary;
+import use_case.load_trip_list.LoadTripListInteractor;
+import use_case.load_trip_list.LoadTripListOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
-import use_case.load_trip_list.LoadTripListInputBoundary;
-import use_case.load_trip_list.LoadTripListInteractor;
-import use_case.load_trip_list.LoadTripListOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import use_case.create_new_trip.CreateNewTripInputBoundary;
-import use_case.create_new_trip.CreateNewTripInputData;
-import use_case.create_new_trip.CreateNewTripOutputBoundary;
-import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
-import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
-import interface_adapter.delete_current_trip.DeleteCurrentTripViewModel;
-import interface_adapter.delete_current_trip.DeleteCurrentTripController;
-import view.*;
 import view.CreateNewTripView;
-import javax.swing.*;
-import java.awt.*;
+import view.LoggedInView;
+import view.LoginView;
+import view.SignupView;
+import view.TripListView;
+import view.TripView;
+import view.ViewManager;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -77,6 +89,7 @@ public class AppBuilder {
 
     private TripListView tripListView;
     private TripListViewModel tripListViewModel;
+    private TripListController tripListController;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -157,10 +170,14 @@ public class AppBuilder {
         final LoadTripListInputBoundary loadTripListInteractor =
                 new LoadTripListInteractor(userDataAccessObject, loadTripListOutputBoundary);
 
-        TripListController tripListController = new TripListController(loadTripListInteractor);
+        tripListController = new TripListController(loadTripListInteractor);
+
+        // Set the data access object for delete functionality
+        tripListController.setDeleteTripDataAccessObject(userDataAccessObject);
 
         tripListView.setTripListController(tripListController);
         loggedInView.setTripListController(tripListController);
+
         return this;
     }
 
@@ -169,12 +186,17 @@ public class AppBuilder {
                 new TripPresenter(tripViewModel, viewManagerModel);
 
         final LoadTripDetailInputBoundary loadTripDetailInputBoundary =
-                new LoadTripDetailInteractor(userDataAccessObject, loadTripDetailOutputBoundary);
+                new LoadTripDetailInteractor(userDataAccessObject, loadTripDetailOutputBoundary, loggedInViewModel);
 
         TripController tripController = new TripController(loadTripDetailInputBoundary);
 
         tripView.setTripController(tripController);
         loggedInView.setTripController(tripController);
+
+        // Also set tripController in TripListController so detail buttons work
+        if (tripListController != null) {
+            tripListController.setTripController(tripController);
+        }
         return this;
     }
 
@@ -199,7 +221,7 @@ public class AppBuilder {
     public AppBuilder addCreateNewTripUseCase() {
 
         final CreateNewTripOutputBoundary createNewTripPresenter =
-                new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripViewModel);
+                new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripViewModel, loggedInViewModel);
 
         final CreateNewTripInputBoundary createNewTripInteractor =
                 new CreateNewTripInteractor(createNewTripPresenter);
@@ -229,9 +251,24 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addCompleteCurrentTripUseCase() {
+        final CompleteCurrentTripOutputBoundary completePresenter =
+                new CompleteCurrentTripPresenter(loggedInViewModel);
+
+        final CompleteCurrentTripInputBoundary completeInteractor =
+                new CompleteCurrentTripInteractor(userDataAccessObject, completePresenter);
+
+        final CompleteCurrentTripController controller =
+                new CompleteCurrentTripController(completeInteractor);
+
+        loggedInView.setCompleteCurrentTripController(controller);
+
+        return this;
+    }
+
 
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        final JFrame application = new JFrame("Trip Planner");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

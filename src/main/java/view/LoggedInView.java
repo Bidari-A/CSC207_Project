@@ -1,19 +1,30 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import interface_adapter.complete_current_trip.CompleteCurrentTripController;
+import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.delete_current_trip.DeleteCurrentTripController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip_list.TripListController;
-import interface_adapter.create_new_trip.CreateNewTripController;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * The View for when the user is logged into the program.
@@ -27,6 +38,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private CreateNewTripController createNewTripController;
     private TripController tripController;
     private DeleteCurrentTripController deleteCurrentTripController;
+    private CompleteCurrentTripController completeCurrentTripController;
 
 
     // TODO to be assigned later..
@@ -81,10 +93,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         JLabel cityNameInfo = new JLabel("City: ");
         JLabel dateInfo = new JLabel("Date: ");
 
-        // TODO EDIT LATER
-        tripName = new JLabel("Holder Trip");
-        cityName = new JLabel("Holder City Name");
-        date = new JLabel("Holder Date");
+        // Initialize with empty values - will be updated from state
+        tripName = new JLabel("");
+        cityName = new JLabel("");
+        date = new JLabel("");
 
         Font infoFont = new Font("Arial", Font.PLAIN, 14);
         tripNameInfo.setFont(infoFont);
@@ -177,7 +189,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             // Get the current username from the logged in state
             LoggedInState state = loggedInViewModel.getState();
             String username = state.getUsername();
-            
+
             // Load trips (navigation will be handled by TripListPresenter)
             if (tripListController != null && username != null) {
                 tripListController.executeLoadTrips(username);
@@ -188,15 +200,26 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             createNewTripController.openForm();
 
         } else if (source == detailsButton) {
-
             LoggedInState state = loggedInViewModel.getState();
-            String username = state.getUsername();
-            tripController.execute(username, viewName);
+            // Only show details if there's a draft trip
+            if (state.hasDraft() && tripController != null) {
+                String username = state.getUsername();
+                tripController.execute(username, viewName);
+            }
 
         } else if (source == deleteButton) {
-            System.out.println("Delete clicked");
+            if (deleteCurrentTripController != null) {
+                deleteCurrentTripController.deleteDraft();
+            }
         } else if (source == completeButton) {
-            System.out.println("Complete clicked");
+            LoggedInState state = loggedInViewModel.getState();
+            if (completeCurrentTripController != null && state.hasDraft()) {
+                String username = state.getUsername();
+                String tripName = state.getDraftTripName();
+                String city = state.getDraftTripCity();
+                String date = state.getDraftTripDate();
+                completeCurrentTripController.execute(username, tripName, city, date);
+            }
         }
     }
 
@@ -208,6 +231,18 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         if ("state".equals(evt.getPropertyName())) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
+
+            // Update draft trip display if it exists
+            if (state.hasDraft()) {
+                tripName.setText(state.getDraftTripName());
+                cityName.setText(state.getDraftTripCity());
+                date.setText(state.getDraftTripDate());
+            } else {
+                // Clear the display if no draft
+                tripName.setText("");
+                cityName.setText("");
+                date.setText("");
+            }
         }
     }
 
@@ -231,6 +266,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     }
     public void setDeleteCurrentTripController(DeleteCurrentTripController deleteCurrentTripController) {
         this.deleteCurrentTripController = deleteCurrentTripController;
+    }
+
+    public void setCompleteCurrentTripController(CompleteCurrentTripController completeCurrentTripController) {
+        this.completeCurrentTripController = completeCurrentTripController;
     }
 
 }

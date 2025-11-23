@@ -36,7 +36,12 @@ public class TripPresenter implements LoadTripDetailOutputBoundary {
     @Override
     public void back() {
         final TripState tripState = tripViewModel.getState();
-        viewManagerModel.setState(tripState.getPrevViewName());
+        String prevView = tripState.getPrevViewName();
+        // Default to "logged in" if prevViewName is empty
+        if (prevView == null || prevView.isEmpty()) {
+            prevView = "logged in";
+        }
+        viewManagerModel.setState(prevView);
         viewManagerModel.firePropertyChange();
     }
 }
