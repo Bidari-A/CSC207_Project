@@ -12,12 +12,17 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()
+                .addTripListView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addLogoutUseCase()
+                .addLoadTripListUseCase()
                 .addCreateNewTripView()
                 .addFlightSearchUseCase()
                 .addHotelSearchUseCase()
+                .addCreateNewTripUseCase()
+                .addTripView()
+                .addLoadTripDetailUseCase()
                 .build();
 
 

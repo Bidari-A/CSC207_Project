@@ -1,0 +1,44 @@
+{
+  "trip000": {
+    "attractions": ["attr10"],
+    "hotels": ["hotelZ"],
+    "flights": ["flightZ88"],
+    "dates": "2024-11-01 to 2024-11-05"
+  },
+  "trip001": {
+    "attractions": ["attr01", "attr02"],
+    "hotels": ["hotelA"],
+    "flights": ["flightX34"],
+    "dates": "2025-06-10 to 2025-06-18"
+  },
+  "trip002": {
+    "attractions": ["attr03"],
+    "hotels": ["hotelB"],
+    "flights": ["flightB12"],
+    "dates": "2025-02-02 to 2025-02-08"
+  },
+  "trip003": {
+    "attractions": ["attr04", "attr05"],
+    "hotels": ["hotelC"],
+    "flights": ["flightC77"],
+    "dates": "2025-07-14 to 2025-07-20"
+  },
+  "trip004": {
+    "attractions": ["attr06"],
+    "hotels": ["hotelD"],
+    "flights": ["flightD90"],
+    "dates": "2025-03-01 to 2025-03-03"
+  },
+  "trip005": {
+    "attractions": ["attr07", "attr08"],
+    "hotels": ["hotelE"],
+    "flights": ["flightE55"],
+    "dates": "2025-09-10 to 2025-09-18"
+  },
+  "trip006": {
+    "attractions": ["attr09"],
+    "hotels": ["hotelF"],
+    "flights": ["flightF41"],
+    "dates": "2025-04-20 to 2025-04-25"
+  }
+}

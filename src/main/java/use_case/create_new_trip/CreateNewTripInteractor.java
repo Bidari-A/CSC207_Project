@@ -1,13 +1,11 @@
-
 package use_case.create_new_trip;
 
-/**
- * The Interactor for the Create New Trip Use Case.
- */
 public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
-    public CreateNewTripInteractor() {
-        // no dependencies yet (we will add presenter later)
+    private final CreateNewTripOutputBoundary createNewTripPresenter;
+
+    public CreateNewTripInteractor(CreateNewTripOutputBoundary createNewTripPresenter) {
+        this.createNewTripPresenter = createNewTripPresenter;
     }
 
     @Override
@@ -17,5 +15,16 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         System.out.println("From: " + inputData.getFrom());
         System.out.println("To: " + inputData.getTo());
         System.out.println("Date: " + inputData.getDate());
+
+        // later you will call createNewTripPresenter.prepareSuccessView(outputData)
+    }
+    //maybe check later
+    @Override
+    public void prepareScreen() {
+        createNewTripPresenter.showCreateNewTripView();
+    }
+
+    public void goBack() {
+        createNewTripPresenter.prepareBackView();
     }
 }

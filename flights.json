@@ -1,0 +1,44 @@
+{
+  "flightX34": {
+    "airline": "Air France",
+    "departure": "JFK",
+    "arrival": "CDG",
+    "date": "2025-06-10"
+  },
+  "flightB12": {
+    "airline": "Lufthansa",
+    "departure": "FRA",
+    "arrival": "FCO",
+    "date": "2025-02-02"
+  },
+  "flightC77": {
+    "airline": "United",
+    "departure": "ORD",
+    "arrival": "SFO",
+    "date": "2025-07-14"
+  },
+  "flightD90": {
+    "airline": "Delta",
+    "departure": "LAX",
+    "arrival": "YYZ",
+    "date": "2025-03-01"
+  },
+  "flightE55": {
+    "airline": "ANA",
+    "departure": "LAX",
+    "arrival": "HND",
+    "date": "2025-09-10"
+  },
+  "flightF41": {
+    "airline": "Qantas",
+    "departure": "MEL",
+    "arrival": "SYD",
+    "date": "2025-04-20"
+  },
+  "flightZ88": {
+    "airline": "American Airlines",
+    "departure": "PHX",
+    "arrival": "LAS",
+    "date": "2024-11-01"
+  }
+}

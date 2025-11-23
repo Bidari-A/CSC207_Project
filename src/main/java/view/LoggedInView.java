@@ -4,6 +4,7 @@ package view;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.trip.TripController;
 import interface_adapter.trip_list.TripListController;
 import use_case.flight_search.FlightSearchInteractor;
 import interface_adapter.flight_search.FlightSearchViewModel;
@@ -13,6 +14,7 @@ import interface_adapter.hotel_search.HotelSearchController;
 import view.HotelSearchDialog;
 
 
+import interface_adapter.create_new_trip.CreateNewTripController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +32,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final LoggedInViewModel loggedInViewModel;
     private LogoutController logoutController;
     private TripListController tripListController;
+    private CreateNewTripController createNewTripController;
+    private TripController tripController;
+
 
     // For opening the flight page
     private FlightSearchViewModel flightSearchViewModel;
@@ -204,12 +209,19 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             
             // Load trips (navigation will be handled by TripListPresenter)
             if (tripListController != null && username != null) {
-                String tripNameStr = tripName.getText();
-                tripListController.executeDetails(username, tripNameStr);
+                tripListController.executeLoadTrips(username);
             }
+
         } else if (source == newTripButton) {
-            System.out.println("New Trip clicked");
+
+            createNewTripController.openForm();
+
         } else if (source == detailsButton) {
+
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+            tripController.execute(username, viewName);
+
             System.out.println("Details clicked");
         } else if (source == flightSearchButton) {
             Window parent = SwingUtilities.getWindowAncestor(this);
@@ -251,6 +263,14 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setTripListController(TripListController tripListController) {
         this.tripListController = tripListController;
     }
+
+    public void setCreateNewTripController(CreateNewTripController createNewTripController) {
+        this.createNewTripController = createNewTripController;
+    }
+    public void setTripController(TripController tripController) {
+        this.tripController = tripController;
+    }
+
 
     public void setFlightSearchViewModel(FlightSearchViewModel flightSearchViewModel) {
         this.flightSearchViewModel = flightSearchViewModel;
