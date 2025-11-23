@@ -61,6 +61,18 @@ public class CreateNewTripView extends JPanel implements ActionListener {
         // Back Button
         backButton.addActionListener(this);
 
+
+        // Create Trip button
+        generateButton.addActionListener(e -> {
+            if (createNewTripController != null) {
+                createNewTripController.execute(
+                        getFromText(),
+                        getToText(),
+                        getStartDateText()
+                );
+            }
+        });
+
         // Top panel: back button slightly above, title centered
         JPanel topPanel = new JPanel(new BorderLayout());
 
@@ -195,7 +207,12 @@ public class CreateNewTripView extends JPanel implements ActionListener {
         if (source == backButton && createNewTripController != null) {
             createNewTripController.goBack();
         }
+        else if (source == generateButton) {
+
+        }
+
     }
+
 
     // Apply placeholder style and text
     private void applyPlaceholder(JTextField field) {
