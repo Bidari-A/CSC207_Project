@@ -26,22 +26,4 @@ public class TripListController {
         final LoadTripListInputData loadTripListInputData = new LoadTripListInputData(username);
         loadTripListUseCaseInteractor.execute(loadTripListInputData);
     }
-
-    /**
-     * Navigates to trip details view.
-     * @param username the username
-     */
-    public void executeDetails(String username) {
-        // TODO: Implement details functionality when needed
-        // This will navigate to a specific trip's detail view
-    }
-
-    /**
-     * Deletes a trip for the given username.
-     * @param username the username
-     */
-    public void executeDelete(String username) {
-        // TODO: Implement delete functionality when needed
-        // This will delete a trip and reload the trip list
-    }
 }

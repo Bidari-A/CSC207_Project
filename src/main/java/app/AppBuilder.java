@@ -168,6 +168,7 @@ public class AppBuilder {
 
         tripView.setTripController(tripController);
         loggedInView.setTripController(tripController);
+        tripListView.setTripController(tripController);
         return this;
     }
 
