@@ -1,10 +1,19 @@
 package view;
 
+
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip_list.TripListController;
+import use_case.flight_search.FlightSearchInteractor;
+import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.flight_search.FlightSearchController;
+import interface_adapter.hotel_search.HotelSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchController;
+import view.HotelSearchDialog;
+
+
 import interface_adapter.create_new_trip.CreateNewTripController;
 
 import javax.swing.*;
@@ -27,6 +36,16 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private TripController tripController;
 
 
+    // For opening the flight page
+    private FlightSearchViewModel flightSearchViewModel;
+    private FlightSearchController flightSearchController;
+
+    // For opening the hotels page
+    private HotelSearchViewModel hotelSearchViewModel;
+    private HotelSearchController hotelSearchController;
+    private JButton hotelSearchButton;
+
+
     // TODO to be assigned later..
     // tripHistoryController
     // detailController
@@ -45,6 +64,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private final JButton detailsButton;
     private final JButton deleteButton;
     private final JButton completeButton;
+    private final JButton flightSearchButton;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
@@ -146,7 +166,15 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         newTripButton = new JButton("New Trip");
+        flightSearchButton = new JButton("Search Flights");
+        hotelSearchButton = new JButton("Search Hotels");
+
+
         bottomPanel.add(newTripButton);
+        bottomPanel.add(flightSearchButton);
+        bottomPanel.add(hotelSearchButton);
+
+
 
         this.setLayout(new BorderLayout(20, 20));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -160,6 +188,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         detailsButton.addActionListener(this);
         deleteButton.addActionListener(this);
         completeButton.addActionListener(this);
+        flightSearchButton.addActionListener(this);
+        hotelSearchButton.addActionListener(this);
+
     }
 
     /**
@@ -191,11 +222,23 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             String username = state.getUsername();
             tripController.execute(username, viewName);
 
+            System.out.println("Details clicked");
+        } else if (source == flightSearchButton) {
+            Window parent = SwingUtilities.getWindowAncestor(this);
+            FlightSearchDialog dialog =
+                    new FlightSearchDialog(parent, flightSearchViewModel, flightSearchController);
+            dialog.setVisible(true);
+        } else if (source == hotelSearchButton) {
+            Window parent = SwingUtilities.getWindowAncestor(this);
+            HotelSearchDialog dialog =
+                    new HotelSearchDialog(parent, hotelSearchViewModel, hotelSearchController);
+            dialog.setVisible(true);
         } else if (source == deleteButton) {
             System.out.println("Delete clicked");
         } else if (source == completeButton) {
             System.out.println("Complete clicked");
         }
+
     }
 
     /**
@@ -227,5 +270,23 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setTripController(TripController tripController) {
         this.tripController = tripController;
     }
+
+
+    public void setFlightSearchViewModel(FlightSearchViewModel flightSearchViewModel) {
+        this.flightSearchViewModel = flightSearchViewModel;
+    }
+
+    public void setFlightSearchController(FlightSearchController flightSearchController) {
+        this.flightSearchController = flightSearchController;
+    }
+
+    public void setHotelSearchViewModel(HotelSearchViewModel hotelSearchViewModel) {
+        this.hotelSearchViewModel = hotelSearchViewModel;
+    }
+
+    public void setHotelSearchController(HotelSearchController hotelSearchController) {
+        this.hotelSearchController = hotelSearchController;
+    }
+
 
 }
