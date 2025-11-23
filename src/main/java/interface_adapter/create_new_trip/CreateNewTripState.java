@@ -7,9 +7,13 @@ public class CreateNewTripState {
 
     private String from = "";
     private String to = "";
-    private String date = "";
+    // private String date = "";
+    private String startDate = "";
+    private String endDate = "";
     private String planText = "";
     private String error = "";
+
+
 
     public String getFrom() {
         return from;
@@ -19,9 +23,13 @@ public class CreateNewTripState {
         return to;
     }
 
-    public String getDate() {
-        return date;
-    }
+    // public String getDate() {return date;}
+
+    public String getStartDate() { return startDate; }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
+
+    public String getEndDate() { return endDate; }
+    public void setEndDate(String endDate) { this.endDate = endDate; }
 
     public String getPlanText() {
         return planText;
@@ -39,9 +47,7 @@ public class CreateNewTripState {
         this.to = to;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+    // public void setDate(String date) {this.date = date; }
 
     public void setPlanText(String planText) {
         this.planText = planText;

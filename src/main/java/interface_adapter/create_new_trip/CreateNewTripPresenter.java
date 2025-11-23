@@ -2,20 +2,31 @@ package interface_adapter.create_new_trip;
 
 import interface_adapter.ViewManagerModel;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import interface_adapter.create_new_trip.CreateNewTripViewModel;
 
 public class CreateNewTripPresenter implements CreateNewTripOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
+    private final CreateNewTripViewModel createNewTripViewModel;
 
-    public CreateNewTripPresenter(ViewManagerModel viewManagerModel) {
+    public CreateNewTripPresenter(ViewManagerModel viewManagerModel, CreateNewTripViewModel createNewTripViewModel) {
         this.viewManagerModel = viewManagerModel;
+        this.createNewTripViewModel = createNewTripViewModel;
     }
 
     @Override
-    public void showCreateNewTripView() {
+    public void prepareScreen() {
         // This string must match CreateNewTripView.getViewName()
-        viewManagerModel.setState("create new trip");
+
+
+        // 1. Reset state
+        createNewTripViewModel.setState(new CreateNewTripState());
+
+
+        // 2. Switch view
+        viewManagerModel.setState(createNewTripViewModel.getViewName());
         viewManagerModel.firePropertyChange();
+
     }
 
     /**

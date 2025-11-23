@@ -21,7 +21,7 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
     //maybe check later
     @Override
     public void prepareScreen() {
-        createNewTripPresenter.showCreateNewTripView();
+        createNewTripPresenter.prepareScreen();
     }
 
     public void goBack() {

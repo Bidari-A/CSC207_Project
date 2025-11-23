@@ -192,13 +192,13 @@ public class AppBuilder {
     public AppBuilder addCreateNewTripUseCase() {
 
         final CreateNewTripOutputBoundary createNewTripPresenter =
-                new CreateNewTripPresenter(viewManagerModel);
+                new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel);
 
         final CreateNewTripInputBoundary createNewTripInteractor =
                 new CreateNewTripInteractor(createNewTripPresenter);
 
         final CreateNewTripController controller =
-                new CreateNewTripController(createNewTripInteractor, createNewTripPresenter);
+                new CreateNewTripController(createNewTripInteractor);
 
         createNewTripView.setCreateNewTripController(controller);
         // Give the controller to LoggedInView
