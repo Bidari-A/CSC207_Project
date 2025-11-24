@@ -1,30 +1,54 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
-import interface_adapter.trip_list.TripListController;
 
 public class CreateNewTripView extends JPanel implements ActionListener {
     private final String viewName = "create new trip";
     private final CreateNewTripViewModel viewModel;
     private CreateNewTripController createNewTripController;
 
-
     private final JTextField fromField = new JTextField();
     private final JTextField toField = new JTextField();
-    private final JTextField dateField = new JTextField();
+
+    // Date fields with formatting
+    private final JFormattedTextField startDateField;
+    private final JFormattedTextField endDateField;
 
     private final JButton generateButton = new JButton("Create Trip");
-    JButton backButton = new JButton("Back");
+    private final JButton backButton = new JButton("Back");
+
+    // Formatter for yyyy-MM-dd
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static final DateTimeFormatter LOCAL_DATE_FORMATTER =
+            DateTimeFormatter.ofPattern(DATE_PATTERN);
+    private static final String DATE_PLACEHOLDER = "yyyy-MM-dd";
 
     public CreateNewTripView(CreateNewTripViewModel viewModel) {
         this.viewModel = viewModel;
-        //this.viewModel.addPropertyChangeListener(this);
+
+        // Create Swing date formatter
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+        dateFormat.setLenient(false);
+        DateFormatter dateFormatter = new DateFormatter(dateFormat);
+
+        startDateField = new JFormattedTextField(dateFormatter);
+        endDateField = new JFormattedTextField(dateFormatter);
+
+        addPlaceholder(startDateField);
+        addPlaceholder(endDateField);
 
         // Main layout similar to TripListView
         this.setLayout(new BorderLayout(20, 20));
@@ -36,6 +60,18 @@ public class CreateNewTripView extends JPanel implements ActionListener {
 
         // Back Button
         backButton.addActionListener(this);
+
+
+        // Create Trip button
+        generateButton.addActionListener(e -> {
+            if (createNewTripController != null) {
+                createNewTripController.execute(
+                        getFromText(),
+                        getToText(),
+                        getStartDateText()
+                );
+            }
+        });
 
         // Top panel: back button slightly above, title centered
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -55,23 +91,26 @@ public class CreateNewTripView extends JPanel implements ActionListener {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
-        // make text fields same size
+        // Make text fields same size
         int fieldWidth = 300;
         int fieldHeight = 28;
         Dimension fieldSize = new Dimension(fieldWidth, fieldHeight);
         fromField.setPreferredSize(fieldSize);
         toField.setPreferredSize(fieldSize);
-        dateField.setPreferredSize(fieldSize);
+        startDateField.setPreferredSize(fieldSize);
+        endDateField.setPreferredSize(fieldSize);
 
-        // labels with lined up fields
+        // Labels with lined up fields
         JLabel fromLabel = new JLabel("From:");
         JLabel toLabel = new JLabel("To:");
-        JLabel dateLabel = new JLabel("Date:");
+        JLabel startDateLabel = new JLabel("Start date:");
+        JLabel endDateLabel = new JLabel("End date:");
 
-        Dimension labelSize = new Dimension(60, 20);
+        Dimension labelSize = new Dimension(80, 20);
         fromLabel.setPreferredSize(labelSize);
         toLabel.setPreferredSize(labelSize);
-        dateLabel.setPreferredSize(labelSize);
+        startDateLabel.setPreferredSize(labelSize);
+        endDateLabel.setPreferredSize(labelSize);
 
         // Row 1: From
         JPanel fromRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
@@ -83,19 +122,25 @@ public class CreateNewTripView extends JPanel implements ActionListener {
         toRow.add(toLabel);
         toRow.add(toField);
 
-        // Row 3: Date
-        JPanel dateRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        dateRow.add(dateLabel);
-        dateRow.add(dateField);
+        // Row 3: Start date
+        JPanel startDateRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        startDateRow.add(startDateLabel);
+        startDateRow.add(startDateField);
 
-        // Row 4: Button
+        // Row 4: End date
+        JPanel endDateRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        endDateRow.add(endDateLabel);
+        endDateRow.add(endDateField);
+
+        // Row 5: Button
         JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
         buttonRow.add(generateButton);
 
         // Add rows to center panel
         centerPanel.add(fromRow);
         centerPanel.add(toRow);
-        centerPanel.add(dateRow);
+        centerPanel.add(startDateRow);
+        centerPanel.add(endDateRow);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(buttonRow);
 
@@ -107,19 +152,93 @@ public class CreateNewTripView extends JPanel implements ActionListener {
         return viewName;
     }
 
-
     public void setCreateNewTripController(CreateNewTripController controller) {
         this.createNewTripController = controller;
     }
 
+    // Reset all fields to a "fresh" state (call this when the view is shown)
+    public void resetFields() {
+        fromField.setText("");
+        toField.setText("");
+        applyPlaceholder(startDateField);
+        applyPlaceholder(endDateField);
+    }
+
+    // Getters the controller can use
+
+    public String getFromText() {
+        return fromField.getText().trim();
+    }
+
+    public String getToText() {
+        return toField.getText().trim();
+    }
+
+    public String getStartDateText() {
+        String text = startDateField.getText().trim();
+        return DATE_PLACEHOLDER.equals(text) ? "" : text;
+    }
+
+    public String getEndDateText() {
+        String text = endDateField.getText().trim();
+        return DATE_PLACEHOLDER.equals(text) ? "" : text;
+    }
+
+    public LocalDate getStartDate() throws DateTimeParseException {
+        String text = getStartDateText();
+        if (text.isEmpty()) {
+            return null;
+        }
+        return LocalDate.parse(text, LOCAL_DATE_FORMATTER);
+    }
+
+    public LocalDate getEndDate() throws DateTimeParseException {
+        String text = getEndDateText();
+        if (text.isEmpty()) {
+            return null;
+        }
+        return LocalDate.parse(text, LOCAL_DATE_FORMATTER);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source == backButton) {
-            //System.out.println("Back button clicked in CreateNewTripView");
-            // Navigate back to logged in view
+        if (source == backButton && createNewTripController != null) {
             createNewTripController.goBack();
         }
-}}
+        else if (source == generateButton) {
+
+        }
+
+    }
+
+
+    // Apply placeholder style and text
+    private void applyPlaceholder(JTextField field) {
+        field.setForeground(Color.GRAY);
+        field.setText(DATE_PLACEHOLDER);
+    }
+
+    // Helper method to add placeholder behavior to date fields
+    private void addPlaceholder(JTextField field) {
+        applyPlaceholder(field);
+
+        field.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (field.getText().equals(DATE_PLACEHOLDER)) {
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (field.getText().isEmpty()) {
+                    applyPlaceholder(field);
+                }
+            }
+        });
+    }
+}
