@@ -1,6 +1,7 @@
 package app;
 
 import data_access.FileUserDataAccessObject;
+import data_access.FileUserTripDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -16,37 +17,44 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
+
 import use_case.create_new_trip.CreateNewTripInteractor;
+
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
-import use_case.load_trip_detail.LoadTripDetailOutputData;
+
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
+
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+
 import use_case.load_trip_list.LoadTripListInputBoundary;
 import use_case.load_trip_list.LoadTripListInteractor;
 import use_case.load_trip_list.LoadTripListOutputBoundary;
+
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+
 import use_case.create_new_trip.CreateNewTripInputBoundary;
-import use_case.create_new_trip.CreateNewTripInputData;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+
 import view.*;
-import view.CreateNewTripView;
+
 import javax.swing.*;
 import java.awt.*;
 
-// For flights
 import interface_adapter.flight_search.FlightSearchViewModel;
 import interface_adapter.flight_search.FlightSearchPresenter;
 import interface_adapter.flight_search.FlightSearchController;
@@ -56,7 +64,6 @@ import use_case.flight_search.FlightSearchOutputBoundary;
 import use_case.flight_search.FlightSearchGateway;
 import data_access.SerpApiFlightSearchGateway;
 
-// For hotel
 import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.hotel_search.HotelSearchPresenter;
 import interface_adapter.hotel_search.HotelSearchController;
@@ -66,6 +73,9 @@ import use_case.hotel_search.HotelSearchOutputBoundary;
 import use_case.hotel_search.HotelSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
 
+import use_case.delete_trip_list.DeleteTripInputBoundary;
+import use_case.delete_trip_list.DeleteTripOutputBoundary;
+import use_case.delete_trip_list.DeleteTripInteractor;
 
 
 public class AppBuilder {
@@ -77,6 +87,9 @@ public class AppBuilder {
 
     final FileUserDataAccessObject userDataAccessObject =
             new FileUserDataAccessObject("users.csv", userFactory);
+
+    final FileUserTripDataAccessObject userTripDataAccessObject =
+            new FileUserTripDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -136,10 +149,10 @@ public class AppBuilder {
     }
 
     public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary =
+        SignupOutputBoundary signupOutputBoundary =
                 new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
 
-        final SignupInputBoundary userSignupInteractor =
+        SignupInputBoundary userSignupInteractor =
                 new SignupInteractor(userDataAccessObject, signupOutputBoundary, userFactory);
 
         SignupController controller = new SignupController(userSignupInteractor);
@@ -148,10 +161,10 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary =
+        LoginOutputBoundary loginOutputBoundary =
                 new LoginPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
 
-        final LoginInputBoundary loginInteractor =
+        LoginInputBoundary loginInteractor =
                 new LoginInteractor(userDataAccessObject, loginOutputBoundary);
 
         LoginController loginController =
@@ -162,16 +175,24 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoadTripListUseCase() {
-        final LoadTripListOutputBoundary loadTripListOutputBoundary =
+        LoadTripListOutputBoundary loadOutput =
                 new TripListPresenter(viewManagerModel, tripListViewModel);
 
-        final LoadTripListInputBoundary loadTripListInteractor =
-                new LoadTripListInteractor(userDataAccessObject, loadTripListOutputBoundary);
+        LoadTripListInputBoundary loadInteractor =
+                new LoadTripListInteractor(null, loadOutput);
 
-        TripListController tripListController = new TripListController(loadTripListInteractor);
+        DeleteTripOutputBoundary deleteOutput =
+                new TripListPresenter(viewManagerModel, tripListViewModel);
 
-        tripListView.setTripListController(tripListController);
-        loggedInView.setTripListController(tripListController);
+        DeleteTripInputBoundary deleteInteractor =
+                new DeleteTripInteractor(null, deleteOutput);
+
+        TripListController controller =
+                new TripListController(loadInteractor, deleteInteractor);
+
+        tripListView.setTripListController(controller);
+        loggedInView.setTripListController(controller);
+
         return this;
     }
 
@@ -183,10 +204,10 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoadTripDetailUseCase() {
-        final LoadTripDetailOutputBoundary loadTripDetailOutputBoundary =
+        LoadTripDetailOutputBoundary loadTripDetailOutputBoundary =
                 new TripPresenter(tripViewModel, viewManagerModel);
 
-        final LoadTripDetailInputBoundary loadTripDetailInputBoundary =
+        LoadTripDetailInputBoundary loadTripDetailInputBoundary =
                 new LoadTripDetailInteractor(userDataAccessObject, loadTripDetailOutputBoundary);
 
         TripController tripController = new TripController(loadTripDetailInputBoundary);
@@ -197,61 +218,50 @@ public class AppBuilder {
         return this;
     }
 
-
-
-    /**
-     * Adds the Logout Use Case to the application.
-     * @return this builder
-     */
     public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary =
+        LogoutOutputBoundary logoutOutputBoundary =
                 new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
 
-        final LogoutInputBoundary logoutInteractor =
+        LogoutInputBoundary logoutInteractor =
                 new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
         return this;
     }
 
     public AppBuilder addCreateNewTripUseCase() {
-
-        final CreateNewTripOutputBoundary createNewTripPresenter =
+        CreateNewTripOutputBoundary presenter =
                 new CreateNewTripPresenter(viewManagerModel);
 
-        final CreateNewTripInputBoundary createNewTripInteractor =
-                new CreateNewTripInteractor(createNewTripPresenter);
+        CreateNewTripInputBoundary interactor =
+                new CreateNewTripInteractor(presenter);
 
-        final CreateNewTripController controller =
-                new CreateNewTripController(createNewTripInteractor, createNewTripPresenter);
+        CreateNewTripController controller =
+                new CreateNewTripController(interactor, presenter);
 
         createNewTripView.setCreateNewTripController(controller);
-        // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
 
         return this;
     }
 
-
     public AppBuilder addFlightSearchUseCase() {
-        // 1. ViewModel
         flightSearchViewModel = new FlightSearchViewModel();
-        // 2. Presenter
-        FlightSearchOutputBoundary flightSearchOutputBoundary =
-                new FlightSearchPresenter(flightSearchViewModel);
-        // 3. Gateway (calls SerpAPI)
-        FlightSearchGateway flightSearchGateway = new SerpApiFlightSearchGateway();
-        // 4. Interactor
-        FlightSearchInputBoundary flightSearchInteractor =
-                new FlightSearchInteractor(flightSearchGateway, flightSearchOutputBoundary);
-        // 5. Controller
-        FlightSearchController flightSearchController =
-                new FlightSearchController(flightSearchInteractor);
 
-        // 6. Inject into LoggedInView (like you do for logout)
+        FlightSearchOutputBoundary outputBoundary =
+                new FlightSearchPresenter(flightSearchViewModel);
+
+        FlightSearchGateway gateway = new SerpApiFlightSearchGateway();
+
+        FlightSearchInputBoundary interactor =
+                new FlightSearchInteractor(gateway, outputBoundary);
+
+        FlightSearchController controller =
+                new FlightSearchController(interactor);
+
         loggedInView.setFlightSearchViewModel(flightSearchViewModel);
-        loggedInView.setFlightSearchController(flightSearchController);
+        loggedInView.setFlightSearchController(controller);
 
         return this;
     }
@@ -270,16 +280,14 @@ public class AppBuilder {
         HotelSearchController controller =
                 new HotelSearchController(interactor);
 
-        // Inject into LoggedInView (same style as logout)
         loggedInView.setHotelSearchViewModel(hotelSearchViewModel);
         loggedInView.setHotelSearchController(controller);
 
         return this;
     }
 
-
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
