@@ -86,14 +86,24 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
         if (source == backButton) {
             // Navigate back to logged in view
             tripListController.goBack();
+            return;
         }
+
+        TripListState state = tripListViewModel.getState();
+        String username = state.getUsername();
+
+        // Handle DETAILS event
         if (cmd.startsWith("DETAILS_")) {
-            String tripId = cmd.substring("DETAILS_".length());
-            final TripListState tripListState = tripListViewModel.getState();
-            final String username = tripListState.getUsername();
+            String tripName = cmd.substring("DETAILS_".length());
+            tripController.execute(username, viewName, tripName);
+            return;
+        }
 
-            tripController.execute(username, viewName, tripId);
-
+        // NEW: Handle DELETE event
+        if (cmd.startsWith("DELETE_")) {
+            String tripName = cmd.substring("DELETE_".length());
+            tripListController.deleteTrip(tripName, username);
+            return;
         }
     }
 
@@ -158,11 +168,11 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
 
         JButton detailsButton = new JButton("Details");
-        detailsButton.setActionCommand("DETAILS_" + trip.getName());
+        detailsButton.setActionCommand("DETAILS_" + trip.getName()); // trip name as key
         detailsButton.addActionListener(this);
 
         JButton deleteButton = new JButton("Delete");
-        deleteButton.setActionCommand("DELETE_" + trip.getName());
+        deleteButton.setActionCommand("DELETE_" + trip.getName());   // NEW: use tripName
         deleteButton.addActionListener(this);
         deleteButton.setForeground(Color.RED);
 
