@@ -1,13 +1,18 @@
 package interface_adapter.trip_list;
 
 import interface_adapter.ViewManagerModel;
+
 import use_case.load_trip_list.LoadTripListOutputBoundary;
 import use_case.load_trip_list.LoadTripListOutputData;
 
+import use_case.delete_trip_list.DeleteTripOutputBoundary;
+import use_case.delete_trip_list.DeleteTripOutputData;
+
 /**
- * The Presenter for the Trip List Use Case.
+ * The Presenter for the Trip List Use Cases.
  */
-public class TripListPresenter implements LoadTripListOutputBoundary {
+public class TripListPresenter
+        implements LoadTripListOutputBoundary, DeleteTripOutputBoundary {
 
     private final TripListViewModel tripListViewModel;
     private final ViewManagerModel viewManagerModel;
@@ -18,42 +23,37 @@ public class TripListPresenter implements LoadTripListOutputBoundary {
         this.tripListViewModel = tripListViewModel;
     }
 
-    /**
-     * Updates the trip list view with trips.
-     * @param outputData the output data containing trips and username
-     */
     @Override
     public void prepareSuccessView(LoadTripListOutputData outputData) {
-        final TripListState tripListState = tripListViewModel.getState();
-        tripListState.setTrips(outputData.getTrips());
-        tripListState.setUsername(outputData.getUsername());
-        tripListState.setError(null);
-        this.tripListViewModel.firePropertyChange();
+        TripListState state = tripListViewModel.getState();
+        state.setTrips(outputData.getTrips());
+        state.setUsername(outputData.getUsername());
+        state.setError(null);
+        tripListViewModel.firePropertyChange();
 
-        // Navigate to trip list view
-        this.viewManagerModel.setState(tripListViewModel.getViewName());
-        this.viewManagerModel.firePropertyChange();
+        viewManagerModel.setState(tripListViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
     }
 
-    /**
-     * Displays an error in the trip list view.
-     * @param error the error message
-     */
     @Override
-    public void prepareFailView(String error) {
-        final TripListState tripListState = tripListViewModel.getState();
-        tripListState.setError(error);
+    public void prepareFailView(String errorMessage) {
+        TripListState state = tripListViewModel.getState();
+        state.setError(errorMessage);
         tripListViewModel.firePropertyChange();
     }
-
-    /**
-     * NEW: Navigate back to the logged-in view.
-     */
 
     @Override
     public void prepareBackView() {
         viewManagerModel.setState("logged in");
         viewManagerModel.firePropertyChange();
     }
-}
 
+    @Override
+    public void prepareSuccessView(DeleteTripOutputData outputData) {
+        TripListState state = tripListViewModel.getState();
+        state.setTrips(outputData.getUpdatedTrips());
+        state.setUsername(outputData.getUsername());
+        state.setError(null);
+        tripListViewModel.firePropertyChange();
+    }
+}
