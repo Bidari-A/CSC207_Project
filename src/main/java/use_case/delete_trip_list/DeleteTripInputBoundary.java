@@ -1,4 +1,5 @@
 package use_case.delete_trip_list;
 
-public class DeleteTripInputBoundart {
+public interface DeleteTripInputBoundary {
+    void delete(DeleteTripInputData data);
 }
