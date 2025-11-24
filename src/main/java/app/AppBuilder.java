@@ -49,6 +49,28 @@ import view.TripResultView;                                  // NEW
 import javax.swing.*;
 import java.awt.*;
 
+// For flights
+import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.flight_search.FlightSearchPresenter;
+import interface_adapter.flight_search.FlightSearchController;
+import use_case.flight_search.FlightSearchInputBoundary;
+import use_case.flight_search.FlightSearchInteractor;
+import use_case.flight_search.FlightSearchOutputBoundary;
+import use_case.flight_search.FlightSearchGateway;
+import data_access.SerpApiFlightSearchGateway;
+
+// For hotel
+import interface_adapter.hotel_search.HotelSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchPresenter;
+import interface_adapter.hotel_search.HotelSearchController;
+import use_case.hotel_search.HotelSearchInputBoundary;
+import use_case.hotel_search.HotelSearchInteractor;
+import use_case.hotel_search.HotelSearchOutputBoundary;
+import use_case.hotel_search.HotelSearchGateway;
+import data_access.SerpApiHotelSearchGateway;
+
+
+
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -73,6 +95,9 @@ public class AppBuilder {
 
     private TripListView tripListView;
     private TripListViewModel tripListViewModel;
+    private FlightSearchViewModel flightSearchViewModel;
+    private HotelSearchViewModel hotelSearchViewModel;
+
 
     // NEW: Trip result VM and view
     private TripResultViewModel tripResultViewModel;
@@ -183,6 +208,7 @@ public class AppBuilder {
 
         tripView.setTripController(tripController);
         loggedInView.setTripController(tripController);
+        tripListView.setTripController(tripController);
         return this;
     }
 

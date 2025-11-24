@@ -14,6 +14,12 @@ public class TripController {
         final LoadTripDetailInputData loadTripDetailInputData = new LoadTripDetailInputData(username, prevViewName);
         loadTripDetailInputBoundary.execute(loadTripDetailInputData);
     }
+
+    public void execute(String username, String prevViewName, String tripId) {
+        final LoadTripDetailInputData loadTripDetailInputData = new LoadTripDetailInputData(username, prevViewName
+        , tripId);
+        loadTripDetailInputBoundary.execute(loadTripDetailInputData);
+    }
     public void back() {
         loadTripDetailInputBoundary.back();
     }
