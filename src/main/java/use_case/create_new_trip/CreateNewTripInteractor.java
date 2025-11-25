@@ -1,4 +1,5 @@
 package use_case.create_new_trip;
+import use_case.create_new_trip.TripAIDataAccessInterface;
 
 import entity.Accommodation;
 import entity.Destination;
@@ -16,10 +17,13 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
     private final CreateNewTripUserDataAccessInterface userDataAccess;
 
     public CreateNewTripInteractor(CreateNewTripOutputBoundary createNewTripPresenter,
+                                   TripAIDataAccessInterface tripAIDataAccessObject) {
+    public CreateNewTripInteractor(CreateNewTripOutputBoundary createNewTripPresenter,
                                    TripAIDataAccessInterface tripAIDataAccessObject,
                                    CreateNewTripTripDataAccessInterface tripSaver,
                                    CreateNewTripUserDataAccessInterface userDataAccess) {
         this.createNewTripPresenter = createNewTripPresenter;
+        this.tripAIDataAccessObject = tripAIDataAccessObject;
         this.tripAIDataAccessObject = tripAIDataAccessObject;
         this.tripSaver = tripSaver;
         this.userDataAccess = userDataAccess;
@@ -103,6 +107,18 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         Trip savedTrip = tripSaver.saveTrip(trip);
         String tripId = savedTrip.getTripId();
         userDataAccess.updateUserTrips(currentUsername, tripId);
+
+        String prompt =
+                "You are a travel assistant. Create a SHORT, friendly trip summary.\n"
+                        + "From city: " + from + "\n"
+                        + "To city: " + to + "\n"
+                        + "Date of departure: " + date + "\n\n"
+                        + "Respond with:\n"
+                        + "1) One paragraph (3–4 sentences) describing the trip.\n"
+                        + "2) A bullet list of 5 main places to visit.\n"
+                        + "Keep it under 100 words. Plain text only, no markdown.";
+
+        String itinerary = tripAIDataAccessObject.generateTripPlan(prompt);
 
 
         CreateNewTripOutputData outputData = new CreateNewTripOutputData(

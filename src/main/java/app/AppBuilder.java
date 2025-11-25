@@ -3,8 +3,6 @@ package app;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +13,7 @@ import data_access.FileUserDataAccessObject;
 import data_access.FileUserDataAccessObject;
 import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
+import data_access.*;
 import data_access.*;
 import data_access.*;
 import entity.Trip;
