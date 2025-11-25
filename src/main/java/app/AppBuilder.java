@@ -12,9 +12,12 @@ import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
 import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
+import data_access.*;
 import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
+import entity.Trip;
+import entity.TripIdGenerator;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
@@ -29,9 +32,18 @@ import interface_adapter.hotel_search.HotelSearchController;
 import interface_adapter.hotel_search.HotelSearchPresenter;
 import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.trip.TripController;
+import interface_adapter.trip.TripPresenter;
+import interface_adapter.trip.TripViewModel;
+import interface_adapter.trip_list.TripListController;
+import interface_adapter.trip_list.TripListPresenter;
+import interface_adapter.trip_list.TripListViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.create_new_trip.CreateNewTripViewModel;
+import interface_adapter.create_new_trip.CreateNewTripController;
+import interface_adapter.create_new_trip.CreateNewTripPresenter;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
@@ -72,7 +84,14 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.create_new_trip.CreateNewTripInputBoundary;
+import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.create_new_trip.CreateNewTripInteractor;
+
+import view.*;
 import view.CreateNewTripView;
+import view.TripResultView;
+
 import view.LoggedInView;
 import view.LoginView;
 import view.SignupView;
@@ -81,6 +100,28 @@ import view.TripResultView;
 import view.TripView;
 import view.ViewManager;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
+// For flights
+import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.flight_search.FlightSearchPresenter;
+import interface_adapter.flight_search.FlightSearchController;
+import use_case.flight_search.FlightSearchInputBoundary;
+import use_case.flight_search.FlightSearchInteractor;
+import use_case.flight_search.FlightSearchOutputBoundary;
+import use_case.flight_search.FlightSearchGateway;
+
+// For hotel
+import interface_adapter.hotel_search.HotelSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchPresenter;
+import interface_adapter.hotel_search.HotelSearchController;
+import use_case.hotel_search.HotelSearchInputBoundary;
+import use_case.hotel_search.HotelSearchInteractor;
+import use_case.hotel_search.HotelSearchOutputBoundary;
+import use_case.hotel_search.HotelSearchGateway;
 
 
 public class AppBuilder {
@@ -109,6 +150,9 @@ public class AppBuilder {
     }
         TripIdGenerator.initializeFromExistingIds(existingTripIds);
     }
+
+    GeminiTripAIDataAccessObject geminiTripAIDataAccessObject =
+            new GeminiTripAIDataAccessObject("AIzaSyA5zxNvHTaPChaOCDhyqTDwegMZZcXI8YQ");
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
