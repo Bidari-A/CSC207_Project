@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.Date;
-import java.util.List;
 
 public class Flight {
     private final String airlineName;
@@ -14,5 +12,16 @@ public class Flight {
         this.price = price;
     }
 
-    // TODO: Implement Methods
+
+    public String getAirlineName() {return airlineName;}
+    public String getDepartureTimes() {return departureTimes;}
+    public float getPrice() {return price;}
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "airlineName='" + airlineName + '\'' +
+                ", departureTimes='" + departureTimes + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

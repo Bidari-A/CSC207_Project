@@ -1,44 +1,98 @@
 {
-  "trip000": {
-    "attractions": ["attr10"],
-    "hotels": ["hotelZ"],
-    "flights": ["flightZ88"],
-    "dates": "2024-11-01 to 2024-11-05"
+  "T000": {
+    "tripId": "T000",
+    "ownerUserName": "a",
+    "tripName": "trip to attr10",
+    "status": "CURRENT",
+    "dates": "2024-11-01 to 2024-11-05",
+    "destination": "Las Vegas",
+    "attractions": [
+      {
+        "name": "Grand Canyon",
+        "address": "Arizona, USA",
+        "description": "One of the world's natural wonders, a massive gorge carved by the Colorado River",
+        "price": 35.0
+      }
+    ],
+    "hotels": [
+      {
+        "name": "Desert View Lodge",
+        "address": "",
+        "price": 0.0
+      }
+    ],
+    "flights": [
+      {
+        "airlineName": "American Airlines",
+        "departureTimes": "PHX → LAS on 2024-11-01",
+        "price": 0.0
+      }
+    ]
   },
-  "trip001": {
-    "attractions": ["attr01", "attr02"],
-    "hotels": ["hotelA"],
-    "flights": ["flightX34"],
-    "dates": "2025-06-10 to 2025-06-18"
+  "T001": {
+    "tripId": "T001",
+    "tripName": "trip to attr01",
+    "ownerUserName": "a",
+    "status": "COMPLETED",
+    "dates": "2025-06-10 to 2025-06-18",
+    "destination": "Paris",
+    "attractions": [
+      {
+        "name": "Eiffel Tower",
+        "address": "Paris, France",
+        "description": "Iconic iron lattice tower and symbol of Paris",
+        "price": 29.0
+      },
+      {
+        "name": "Louvre Museum",
+        "address": "Paris, France",
+        "description": "World's largest art museum and historic monument",
+        "price": 17.0
+      }
+    ],
+    "hotels": [
+      {
+        "name": "Hôtel Champs-Élysées",
+        "address": "",
+        "price": 0.0
+      }
+    ],
+    "flights": [
+      {
+        "airlineName": "Air France",
+        "departureTimes": "JFK → CDG on 2025-06-10",
+        "price": 0.0
+      }
+    ]
   },
-  "trip002": {
-    "attractions": ["attr03"],
-    "hotels": ["hotelB"],
-    "flights": ["flightB12"],
-    "dates": "2025-02-02 to 2025-02-08"
-  },
-  "trip003": {
-    "attractions": ["attr04", "attr05"],
-    "hotels": ["hotelC"],
-    "flights": ["flightC77"],
-    "dates": "2025-07-14 to 2025-07-20"
-  },
-  "trip004": {
-    "attractions": ["attr06"],
-    "hotels": ["hotelD"],
-    "flights": ["flightD90"],
-    "dates": "2025-03-01 to 2025-03-03"
-  },
-  "trip005": {
-    "attractions": ["attr07", "attr08"],
-    "hotels": ["hotelE"],
-    "flights": ["flightE55"],
-    "dates": "2025-09-10 to 2025-09-18"
-  },
-  "trip006": {
-    "attractions": ["attr09"],
-    "hotels": ["hotelF"],
-    "flights": ["flightF41"],
-    "dates": "2025-04-20 to 2025-04-25"
+  "T002": {
+    "tripId": "T002",
+    "tripName": "trip to attr03",
+    "ownerUserName": "a",
+    "status": "COMPLETED",
+    "dates": "2025-02-02 to 2025-02-08",
+    "destination": "Rome",
+    "attractions": [
+      {
+        "name": "Colosseum",
+        "address": "Rome, Italy",
+        "description": "Ancient Roman amphitheater and iconic symbol of Rome",
+        "price": 16.0
+      }
+    ],
+    "hotels": [
+      {
+        "name": "Rome Grand Hotel",
+        "address": "",
+        "price": 0.0
+      }
+    ],
+    "flights": [
+      {
+        "airlineName": "Lufthansa",
+        "departureTimes": "FRA → FCO on 2025-02-02",
+        "price": 0.0
+      }
+    ]
   }
 }

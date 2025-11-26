@@ -1,17 +1,31 @@
 package view;
 
-import interface_adapter.trip.TripController;
-import interface_adapter.trip_list.TripListController;
-import interface_adapter.trip_list.TripListState;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+
 import entity.Trip;
+import interface_adapter.trip.TripController;
+import interface_adapter.trip_list.TripListController;
+import interface_adapter.trip_list.TripListState;
 import interface_adapter.trip_list.TripListViewModel;
 
 /**
@@ -150,7 +164,7 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
         rowPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Trip name label
-        JLabel tripNameLabel = new JLabel(trip.getName());
+        JLabel tripNameLabel = new JLabel(trip.getTripName());
         tripNameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         rowPanel.add(tripNameLabel, BorderLayout.WEST);
 
@@ -158,11 +172,11 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
 
         JButton detailsButton = new JButton("Details");
-        detailsButton.setActionCommand("DETAILS_" + trip.getName());
+        detailsButton.setActionCommand("DETAILS_" + trip.getTripId());
         detailsButton.addActionListener(this);
 
         JButton deleteButton = new JButton("Delete");
-        deleteButton.setActionCommand("DELETE_" + trip.getName());
+        deleteButton.setActionCommand("DELETE_" + trip.getTripId());
         deleteButton.addActionListener(this);
         deleteButton.setForeground(Color.RED);
 
