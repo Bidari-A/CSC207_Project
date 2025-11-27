@@ -1,6 +1,7 @@
 package use_case.login;
 
 import entity.User;
+import entity.Trip;
 
 /**
  * DAO interface for the Login Use Case.
@@ -30,4 +31,6 @@ public interface LoginUserDataAccessInterface {
     void setCurrentUsername(String name);
 
     String getCurrentUsername();
+
+    Trip getTrip(String currentTripId);
 }

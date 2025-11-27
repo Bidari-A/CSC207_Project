@@ -1,6 +1,7 @@
 package use_case.load_trip_detail;
 
 import entity.Trip;
+import entity.User;
 
 public interface LoadTripDetailDataAccessInterface {
     /**
@@ -9,4 +10,6 @@ public interface LoadTripDetailDataAccessInterface {
      * @return the Trip object, or null if not found
      */
     Trip getTrip(String tripId);
+
+    User get(String username);
 }

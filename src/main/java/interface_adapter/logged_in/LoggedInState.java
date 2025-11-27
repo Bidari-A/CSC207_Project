@@ -9,6 +9,10 @@ public class LoggedInState {
     private String password = "";
     private String passwordError;
 
+    private String currentTripName = "";
+    private String cityName = "";
+    private String date = "";
+
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
         password = copy.password;
@@ -42,5 +46,26 @@ public class LoggedInState {
 
     public String getPasswordError() {
         return passwordError;
+    }
+
+    public String getCurrentTripName() {
+        return currentTripName;
+    }
+    public void setCurrentTripName(String currentTripName) {
+        this.currentTripName = currentTripName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getDate() {
+        return date;
+    }
+    public void setDate(String date) {
+        this.date = date;
     }
 }
