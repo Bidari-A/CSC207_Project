@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 // As we have defined the interface for the FlightSearchGateway,
 public class SerpApiFlightSearchGateway implements FlightSearchGateway{
     private static final String API_KEY =
-            "";
+            "2d01bcb72f977a8492841e90758de3c8ad79e19b307df2979d99f39d1127fb40";
     // As the interface defines that we need implement this method called fetchRawJson
     public String fetchRawJson(String from, String to, String outboundDate, String returnDate){
 
@@ -75,13 +75,16 @@ public class SerpApiFlightSearchGateway implements FlightSearchGateway{
         // 2. Extract essentials
         String airline = extractStringValue(firstBest, "\"airline\"");
         String departureTime = extractStringValue(firstBest, "\"time\""); // first time = first departure
+        String returnArrivalTime = extractLastStringValue(firstBest, "\"arrival_airport\"");
         String price = extractNumberValue(firstBest, "\"price\"");
 
         // 3. Bullet-point summary
         return "- Airline: " + airline + "\n"
                 + "- Departure: " + departureTime + "\n"
+                + "- Return Arrival: " + returnArrivalTime + "\n"
                 + "- Price: $" + price + " USD";
     }
+
 
     // Helper to extract a string value like "name": "Puri Bali Hotel"
     private String extractStringValue(String json, String key) {
@@ -104,6 +107,58 @@ public class SerpApiFlightSearchGateway implements FlightSearchGateway{
         while (i < json.length() && (Character.isDigit(json.charAt(i)) || json.charAt(i) == '.')) i++;
         return json.substring(start, i);
     }
+    /**
+     * Convenience method:
+     * Fetches the raw JSON and immediately returns
+     * the first best_flights summary in bullet-point format.
+     */
+    public String getFormattedFirstFlightSummary(String from,
+                                                 String to,
+                                                 String outboundDate,
+                                                 String returnDate) {
+
+        String rawJson = fetchRawJson(from, to, outboundDate, returnDate);
+        return summarizeFirstBestFlight(rawJson);
+    }
+    // Extracts the LAST arrival_airport.time string in the object
+// Extracts the LAST arrival_airport.time string in the object
+    private String extractLastStringValue(String json, String key) {
+        // key is expected to be "\"arrival_airport\""
+        int idx = json.lastIndexOf(key);
+        if (idx < 0) {
+            return "";
+        }
+
+        // Find "time" after the last arrival_airport
+        int timeKey = json.indexOf("\"time\"", idx);
+        if (timeKey < 0) {
+            return "";
+        }
+
+        // Find the colon after "time"
+        int colon = json.indexOf(':', timeKey);
+        if (colon < 0) {
+            return "";
+        }
+
+        // First quote after colon
+        int firstQuote = json.indexOf('"', colon);
+        if (firstQuote < 0) {
+            return "";
+        }
+
+        // Second quote after that (end of the value)
+        int secondQuote = json.indexOf('"', firstQuote + 1);
+        if (secondQuote < 0) {
+            return "";
+
+        }
+
+        // Return just the value between quotes, e.g. 2025-11-26 17:10
+        return json.substring(firstQuote + 1, secondQuote);
+    }
+
+
     // Here, we define enc(ode) to encode s into UTF_8
     private String enc(String s) {
         return URLEncoder.encode(s, StandardCharsets.UTF_8);

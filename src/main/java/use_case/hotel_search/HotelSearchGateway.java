@@ -10,4 +10,6 @@ public interface HotelSearchGateway {
      * @return raw JSON string
      */
     String fetchRawJson(String query, String checkInDate, String checkOutDate);
+
+    String summarizeFirstHotel(String json);
 }

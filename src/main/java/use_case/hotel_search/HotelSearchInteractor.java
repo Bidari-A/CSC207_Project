@@ -24,7 +24,7 @@ public class HotelSearchInteractor implements HotelSearchInputBoundary {
             // String summary = ((SerpApiHotelSearchGateway) gateway)
             //        .summarizeFirstHotel(json, checkIn, checkOut, 1);
 
-            String firstHotel = extractFirstHotel(json);
+            String firstHotel = gateway.summarizeFirstHotel(json);
             HotelSearchOutputData out = new HotelSearchOutputData(firstHotel);
             presenter.prepareSuccessView(out);
         } catch (Exception e) {

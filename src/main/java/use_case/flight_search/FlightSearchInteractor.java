@@ -30,7 +30,7 @@ public class FlightSearchInteractor implements FlightSearchInputBoundary{
 
 
         // STEP 2. What we want to output to the user! Stored in summary.
-        String bestFlightsJson = extractFirstBestFlight(json);
+        String bestFlightsJson = gateway.summarizeFirstBestFlight(json);
 
         String summary = bestFlightsJson;  // put raw JSON into summary
         FlightSearchOutputData out = new FlightSearchOutputData(summary);
