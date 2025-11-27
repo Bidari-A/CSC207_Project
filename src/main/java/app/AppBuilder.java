@@ -1,6 +1,10 @@
 package app;
 
 import java.awt.CardLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -8,6 +12,8 @@ import javax.swing.WindowConstants;
 
 import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
+import entity.Trip;
+import entity.TripIdGenerator;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_new_trip.CreateNewTripController;
@@ -76,6 +82,15 @@ public class AppBuilder {
     {
         // Integrate trip DAO with user DAO
         userDataAccessObject.setTripDataAccessObject(tripDataAccessObject);
+    }
+
+    {
+        // Initialize ID generator from existing trips
+        Collection<String> existingTripIds = new ArrayList<>();
+        for (Trip trip:tripDataAccessObject.getAllTrips()){
+        existingTripIds.add(trip.getTripId());
+    }
+        TripIdGenerator.initializeFromExistingIds(existingTripIds);
     }
 
     private SignupView signupView;
