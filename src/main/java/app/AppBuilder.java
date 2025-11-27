@@ -37,6 +37,8 @@ import interface_adapter.trip.TripViewModel;
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListPresenter;
 import interface_adapter.trip_list.TripListViewModel;
+import interface_adapter.complete_current_trip.CompleteCurrentTripController;
+import interface_adapter.complete_current_trip.CompleteCurrentTripPresenter;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
@@ -46,6 +48,10 @@ import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
 import use_case.load_trip_list.LoadTripListInputBoundary;
 import use_case.load_trip_list.LoadTripListInteractor;
 import use_case.load_trip_list.LoadTripListOutputBoundary;
+import use_case.complete_current_trip.CompleteCurrentTripDataAccessInterface;
+import use_case.complete_current_trip.CompleteCurrentTripInputBoundary;
+import use_case.complete_current_trip.CompleteCurrentTripOutputBoundary;
+import use_case.complete_current_trip.CompleteCurrentTripInteractor;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -262,6 +268,24 @@ public class AppBuilder {
         // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
 
+        return this;
+    }
+
+    /**
+     * add the complete current trip use case to the application
+     * @return this builder
+     */
+    public AppBuilder addCompletedTripUseCase() {
+        final CompleteCurrentTripOutputBoundary completeCurrentTripOutputBoundary =
+                new CompleteCurrentTripPresenter(loggedInViewModel);
+
+        final CompleteCurrentTripDataAccessInterface completeCurrentTripDataAccessInterface =
+                userDataAccessObject;
+
+        final CompleteCurrentTripInputBoundary completeCurrentTripInputBoundary =
+                new CompleteCurrentTripInteractor(completeCurrentTripDataAccessInterface,completeCurrentTripOutputBoundary);
+        final CompleteCurrentTripController controller = new CompleteCurrentTripController(completeCurrentTripInputBoundary);
+        loggedInView.setCompleteCurrentTripController(controller);
         return this;
     }
 

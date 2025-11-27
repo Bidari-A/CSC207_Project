@@ -34,12 +34,36 @@ public class LoginInteractor implements LoginInputBoundary {
 
                 userDataAccessObject.setCurrentUsername(username);
                 String currentTripId = user.getCurrentTripId();
-                Trip currentTrip = userDataAccessObject.getTrip(currentTripId);
-                String currentTripName = currentTrip.getTripName();
-                String cityName = currentTrip.getDestination();
-                String date = currentTrip.getDates();
 
+                // Handle case where user has no current trip
+                String currentTripName;
+                String cityName;
+                String date;
 
+                if (currentTripId == null || currentTripId.isEmpty()) {
+                    // No current trip - use placeholder values
+                    currentTripName = "No current trip";
+                    cityName = "N/A";
+                    date = "N/A";
+                } else {
+                    Trip currentTrip = userDataAccessObject.getTrip(currentTripId);
+                    if (currentTrip == null) {
+                        // Trip ID exists but trip not found - use placeholder values
+                        currentTripName = "No current trip";
+                        cityName = "N/A";
+                        date = "N/A";
+                    } else {
+                        currentTripName = currentTrip.getTripName();
+                        cityName = currentTrip.getDestination();
+                        if (cityName == null || cityName.isEmpty()) {
+                            cityName = "N/A";
+                        }
+                        date = currentTrip.getDates();
+                        if (date == null || date.isEmpty()) {
+                            date = "N/A";
+                        }
+                    }
+                }
 
                 final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), currentTripName, cityName, date);
                 loginPresenter.prepareSuccessView(loginOutputData);

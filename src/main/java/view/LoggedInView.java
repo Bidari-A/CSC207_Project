@@ -6,6 +6,7 @@ import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip_list.TripListController;
+import interface_adapter.complete_current_trip.CompleteCurrentTripController;
 import use_case.flight_search.FlightSearchInteractor;
 import interface_adapter.flight_search.FlightSearchViewModel;
 import interface_adapter.flight_search.FlightSearchController;
@@ -34,6 +35,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private TripListController tripListController;
     private CreateNewTripController createNewTripController;
     private TripController tripController;
+    private CompleteCurrentTripController completeCurrentTripController;
 
 
     // For opening the flight page
@@ -206,7 +208,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             // Get the current username from the logged in state
             LoggedInState state = loggedInViewModel.getState();
             String username = state.getUsername();
-            
+
             // Load trips (navigation will be handled by TripListPresenter)
             if (tripListController != null && username != null) {
                 tripListController.executeLoadTrips(username);
@@ -236,7 +238,15 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         } else if (source == deleteButton) {
             System.out.println("Delete clicked");
         } else if (source == completeButton) {
-            System.out.println("Complete clicked");
+            System.out.println("Complete button clicked");
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+            System.out.println("Username: " + username + ", Controller: " + (completeCurrentTripController != null));
+            if (completeCurrentTripController != null && username != null) {
+                completeCurrentTripController.execute(username);
+            } else {
+                System.out.println("Cannot execute: controller is " + (completeCurrentTripController == null ? "null" : "not null") + ", username is " + (username == null ? "null" : username));
+            }
         }
 
     }
@@ -249,9 +259,25 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         if ("state".equals(evt.getPropertyName())) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
-            tripName.setText(state.getCurrentTripName());
-            cityName.setText(state.getCityName());
-            date.setText(state.getDate());
+
+            // Show placeholder text if trip info is empty
+            String tripNameText = state.getCurrentTripName();
+            if (tripNameText == null || tripNameText.isEmpty() || tripNameText.equals("No current trip")) {
+                tripNameText = "No current trip";
+            }
+            tripName.setText(tripNameText);
+
+            String cityNameText = state.getCityName();
+            if (cityNameText == null || cityNameText.isEmpty() || cityNameText.equals("N/A")) {
+                cityNameText = "N/A";
+            }
+            cityName.setText(cityNameText);
+
+            String dateText = state.getDate();
+            if (dateText == null || dateText.isEmpty() || dateText.equals("N/A")) {
+                dateText = "N/A";
+            }
+            date.setText(dateText);
         }
     }
 
@@ -291,5 +317,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.hotelSearchController = hotelSearchController;
     }
 
-
+    public void setCompleteCurrentTripController(CompleteCurrentTripController completeCurrentTripController) {
+        this.completeCurrentTripController = completeCurrentTripController;
+    }
 }

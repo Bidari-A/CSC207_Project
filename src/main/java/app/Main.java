@@ -23,6 +23,7 @@ public class Main {
                 .addCreateNewTripUseCase()
                 .addTripView()
                 .addLoadTripDetailUseCase()
+                .addCompletedTripUseCase()
                 .build();
 
 

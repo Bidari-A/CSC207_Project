@@ -19,6 +19,7 @@ import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
+import use_case.complete_current_trip.CompleteCurrentTripDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
@@ -28,6 +29,7 @@ import use_case.signup.SignupUserDataAccessInterface;
  */
 public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
+        CompleteCurrentTripDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
@@ -189,5 +191,32 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
             return tripDataAccessObject.get(tripId);
         }
         return null;
+    }
+
+    @Override
+    public User getUser(String username) {
+        return get(username);
+    }
+
+    @Override
+    public void updateTripStatus(Trip trip, String newStatus) {
+        if (tripDataAccessObject != null) {
+            tripDataAccessObject.updateTripStatus(trip, newStatus);
+        }
+    }
+
+    @Override
+    public void clearUserCurrentTrip(String username) {
+        User user = get(username);
+        if (user != null) {
+            // create a new User with currentTripId set to null (User Immutable)
+            User updatedUser = userFactory.create(
+                    user.getUsername(),
+                    user.getPassword(),
+                    null,
+                    user.getTripList()
+            );
+            save(updatedUser);
+        }
     }
 }

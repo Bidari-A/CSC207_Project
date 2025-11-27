@@ -288,4 +288,36 @@ public class FileTripDataAccessObject {
     public List<Trip> getAllTrips() {
         return new ArrayList<>(trips.values());
     }
+
+    /**
+     * update the status of a trip.
+     * Since the Trip Object is immutable, create a new Trip with updated status.
+     * @param trip the trip to update
+     * @param newStatus the new status (e.g.: "CURRENT"->"COMPLETED")
+     * @return the updated trip
+     */
+    public Trip updateTripStatus(Trip trip, String newStatus) {
+        Trip updatedTrip = new Trip(
+                trip.getTripId(),
+                trip.getTripName(),
+                trip.getOwnerUserName(),
+                newStatus,
+                trip.getDates(),
+                trip.getDestination(),
+                trip.getHotels(),
+                trip.getFlights(),
+                trip.getAttractions()
+        );
+        return save(updatedTrip);
+    }
+
+    public List<Trip> getTripsByUserAndStatus(String username, String status) {
+        List<Trip> userTrips = new ArrayList<>();
+        for (Trip trip: trips.values()){
+            if (trip.getOwnerUserName().equals(username) && trip.getStatus().equals(status)){
+                userTrips.add(trip);
+            }
+        }
+        return userTrips;
+    }
 }
