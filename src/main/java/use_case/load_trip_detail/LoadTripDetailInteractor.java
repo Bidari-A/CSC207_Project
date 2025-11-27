@@ -7,7 +7,6 @@ import entity.Accommodation;
 import entity.Destination;
 import entity.Flight;
 import entity.Trip;
-import entity.User;
 
 public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
     private final LoadTripDetailDataAccessInterface loadTripDetailDataAccessInterface;
@@ -22,51 +21,58 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
     public void execute(LoadTripDetailInputData loadTripDetailInputData) {
         final String prevViewName = loadTripDetailInputData.getPrevViewName();
         String tripId = loadTripDetailInputData.getTripId();
-        String username = loadTripDetailInputData.getUsername();
 
-        if (tripId == null) {
-            User user = loadTripDetailDataAccessInterface.get(username);
-            tripId = user.getCurrentTripId();
-        }
-        // Load trip from database using trip ID
-        Trip trip = loadTripDetailDataAccessInterface.getTrip(tripId);
+        if (tripId != null && !tripId.isEmpty()) {
+            // Load trip from database using trip ID
+            Trip trip = loadTripDetailDataAccessInterface.getTrip(tripId);
 
-        if (trip != null) {
-            // Format trip data for display
-            String tripName = trip.getTripName();
-            String dates = trip.getDates();
+            if (trip != null) {
+                // Format trip data for display
+                String tripName = trip.getTripName();
+                String dates = trip.getDates();
 
-            // Format attractions (Destination objects)
-            String attractions = formatAttractions(trip.getAttractions());
-            if (attractions.isEmpty()) {
-                attractions = "No attractions selected";
+                // Format attractions (Destination objects)
+                String attractions = formatAttractions(trip.getAttractions());
+                if (attractions.isEmpty()) {
+                    attractions = "No attractions selected";
+                }
+
+                // Format flights
+                String flightDetails = formatFlights(trip.getFlights());
+                if (flightDetails.isEmpty()) {
+                    flightDetails = "No flights selected";
+                }
+
+                // Format hotels
+                String hotelDetails = formatHotels(trip.getHotels());
+                if (hotelDetails.isEmpty()) {
+                    hotelDetails = "No hotels selected";
+                }
+
+                // Use the destination field from the trip entity
+                String cityName = trip.getDestination();
+                if (cityName == null || cityName.isEmpty()) {
+                    // Fallback to extracting from trip name if destination is not set
+                    cityName = extractCityName(tripName);
+                }
+
+                final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
+                        tripName, cityName, dates,
+                        attractions, flightDetails, hotelDetails, prevViewName);
+
+                loadTripDetailOutputBoundary.prepareTripView(loadTripDetailOutputData);
+            } else {
+                // Trip not found - show empty/default data
+                final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
+                        "Trip not found", "", "",
+                        "Trip not found", "Trip not found", "Trip not found", prevViewName);
+                loadTripDetailOutputBoundary.prepareTripView(loadTripDetailOutputData);
             }
-
-            // Format flights
-            String flightDetails = formatFlights(trip.getFlights());
-            if (flightDetails.isEmpty()) {
-                flightDetails = "No flights selected";
-            }
-
-            // Format hotels
-            String hotelDetails = formatHotels(trip.getHotels());
-            if (hotelDetails.isEmpty()) {
-                hotelDetails = "No hotels selected";
-            }
-
-            // Extract city name from trip name or use a default
-            String cityName = extractCityName(tripName);
-
-            final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
-                    tripName, cityName, dates,
-                    attractions, flightDetails, hotelDetails, prevViewName);
-
-            loadTripDetailOutputBoundary.prepareTripView(loadTripDetailOutputData);
         } else {
-            // Trip not found - show empty/default data
+            // No trip ID provided - show empty/default data
             final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
-                    "Trip not found", "", "",
-                    "Trip not found", "Trip not found", "Trip not found", prevViewName);
+                    "No trip selected", "", "",
+                    "No trip ID provided", "No trip ID provided", "No trip ID provided", prevViewName);
             loadTripDetailOutputBoundary.prepareTripView(loadTripDetailOutputData);
         }
     }
