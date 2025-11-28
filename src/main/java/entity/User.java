@@ -1,36 +1,33 @@
 package entity;
 
-/**
- * A simple entity representing a user. Users have a username and password..
- */
-public class User {
+import java.util.List;
 
-    private final String name;
+public class User {
+    private final String username;
     private final String password;
 
-    /**
-     * Creates a new user with the given non-empty name and non-empty password.
-     * @param name the username
-     * @param password the password
-     * @throws IllegalArgumentException if the password or name are empty
-     */
+    private final String currentTripId;     // may be null
+    private final List<String> tripList;    // list of trip IDs
 
-    public User(String name, String password) {
-        if ("".equals(name)) {
-            throw new IllegalArgumentException("Username cannot be empty");
-        }
-        if ("".equals(password)) {
-            throw new IllegalArgumentException("Password cannot be empty");
-        }
-        this.name = name;
+    public User(String username, String password,
+                String currentTripId, List<String> tripList) {
+        this.username = username;
         this.password = password;
+        this.currentTripId = currentTripId;
+        this.tripList = tripList;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
+    public String getCurrentTripId() { return currentTripId; }
+    public List<String> getTripList() { return tripList; }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", currentTripId='" + currentTripId + '\'' +
+                ", tripList=" + tripList +
+                '}';
     }
 }

@@ -28,6 +28,10 @@ public class LoginPresenter implements LoginOutputBoundary {
         // On success, update the loggedInViewModel's state
         final LoggedInState loggedInState = loggedInViewModel.getState();
         loggedInState.setUsername(response.getUsername());
+        loggedInState.setCityName(response.getCityName());
+        loggedInState.setCurrentTripName(response.getCurrentTripName());
+        loggedInState.setDate(response.getDate());
+
         this.loggedInViewModel.firePropertyChange();
 
         // and clear everything from the LoginViewModel's state

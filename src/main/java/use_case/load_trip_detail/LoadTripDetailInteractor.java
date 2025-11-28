@@ -1,5 +1,10 @@
 package use_case.load_trip_detail;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import entity.*;
+
 public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
     private final LoadTripDetailDataAccessInterface loadTripDetailDataAccessInterface;
     private final LoadTripDetailOutputBoundary loadTripDetailOutputBoundary;
@@ -11,30 +16,111 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
 
     @Override
     public void execute(LoadTripDetailInputData loadTripDetailInputData) {
-        // TODO
-        if (loadTripDetailInputData.getTripId() != null) {
-            String testName = loadTripDetailInputData.getTripId();
-            // Here TODO DATABASE STUFF WITH TRIPID
-            final String prevViewName = loadTripDetailInputData.getPrevViewName();
+        final String prevViewName = loadTripDetailInputData.getPrevViewName();
+        String tripId = loadTripDetailInputData.getTripId();
+        String username = loadTripDetailInputData.getUsername();
+
+        if (tripId == null) {
+            User user = loadTripDetailDataAccessInterface.get(username);
+            tripId = user.getCurrentTripId();
+        }
+        // Load trip from database using trip ID
+        Trip trip = loadTripDetailDataAccessInterface.getTrip(tripId);
+
+        if (trip != null) {
+            // Format trip data for display
+            String tripName = trip.getTripName();
+            String dates = trip.getDates();
+
+            // Format attractions (Destination objects)
+            String attractions = formatAttractions(trip.getAttractions());
+            if (attractions.isEmpty()) {
+                attractions = "No attractions selected";
+            }
+
+            // Format flights
+            String flightDetails = formatFlights(trip.getFlights());
+            if (flightDetails.isEmpty()) {
+                flightDetails = "No flights selected";
+            }
+
+            // Format hotels
+            String hotelDetails = formatHotels(trip.getHotels());
+            if (hotelDetails.isEmpty()) {
+                hotelDetails = "No hotels selected";
+            }
+
+            // Use the destination field from the trip entity
+            String cityName = trip.getDestination();
+            if (cityName == null || cityName.isEmpty()) {
+                // Fallback to extracting from trip name if destination is not set
+                cityName = extractCityName(tripName);
+            }
+
             final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
-                    testName, "Paris", "June 12 - June 20, 2025",
-                    "Eiffel Tower\nLouvre Museum", "Air France AF-347\nYYZ → CDG\nDepart: 7:00 PM",
-                    "Hotel Le Meurice\n5-star luxury suite", prevViewName);
+                    tripName, cityName, dates,
+                    attractions, flightDetails, hotelDetails, prevViewName);
 
             loadTripDetailOutputBoundary.prepareTripView(loadTripDetailOutputData);
-            System.out.println("I sense a tripID");
         } else {
-            // grab from database TODO
-            // ...
-            final String prevViewName = loadTripDetailInputData.getPrevViewName();
-            // TODO: Change Place Holder Values
+            // Trip not found - show empty/default data
             final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
-                    "Paris Vacation", "Paris", "June 12 - June 20, 2025",
-                    "Eiffel Tower\nLouvre Museum", "Air France AF-347\nYYZ → CDG\nDepart: 7:00 PM",
-                    "Hotel Le Meurice\n5-star luxury suite", prevViewName);
-
+                    "Trip not found", "", "",
+                    "Trip not found", "Trip not found", "Trip not found", prevViewName);
             loadTripDetailOutputBoundary.prepareTripView(loadTripDetailOutputData);
         }
+    }
+
+    /**
+     * Formats a list of flights into a display string.
+     */
+    private String formatFlights(List<Flight> flights) {
+        return flights.stream()
+                .map(flight -> flight.getAirlineName() + "\n" + flight.getDepartureTimes())
+                .collect(Collectors.joining("\n\n"));
+    }
+
+    /**
+     * Formats a list of hotels into a display string.
+     */
+    private String formatHotels(List<Accommodation> hotels) {
+        return hotels.stream()
+                .map(hotel -> hotel.getName() + "\n" + hotel.getAddress() +
+                        (hotel.getPrice() > 0 ? "\n$" + hotel.getPrice() : ""))
+                .collect(Collectors.joining("\n\n"));
+    }
+
+    /**
+     * Formats a list of attractions (Destination objects) into a display string.
+     */
+    private String formatAttractions(List<Destination> attractions) {
+        return attractions.stream()
+                .map(attraction -> attraction.getName() + "\n" +
+                        attraction.getAddress() + "\n" +
+                        attraction.getDescription() +
+                        (attraction.getPrice() > 0 ? "\nPrice: $" + String.format("%.2f", attraction.getPrice()) : ""))
+                .collect(Collectors.joining("\n\n"));
+    }
+
+    /**
+     * Extracts city name from trip name (simple heuristic).
+     */
+    private String extractCityName(String tripName) {
+        // Try to extract city from trip name like "trip to attr10" or "Summer in Tokyo"
+        if (tripName.contains(" to ")) {
+            String[] parts = tripName.split(" to ");
+            if (parts.length > 1) {
+                return parts[1].trim();
+            }
+        }
+        if (tripName.contains(" in ")) {
+            String[] parts = tripName.split(" in ");
+            if (parts.length > 1) {
+                return parts[1].trim();
+            }
+        }
+        // Default: return first word or whole name
+        return tripName.split(" ")[0];
     }
 
     @Override

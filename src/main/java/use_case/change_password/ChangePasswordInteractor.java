@@ -30,7 +30,7 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary {
 
             userDataAccessObject.changePassword(user);
 
-            final ChangePasswordOutputData changePasswordOutputData = new ChangePasswordOutputData(user.getName());
+            final ChangePasswordOutputData changePasswordOutputData = new ChangePasswordOutputData(user.getUsername());
             userPresenter.prepareSuccessView(changePasswordOutputData);
         }
     }

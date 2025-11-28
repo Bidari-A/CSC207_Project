@@ -1,21 +1,49 @@
 package use_case.login;
 
-import data_access.InMemoryUserDataAccessObject;
-import entity.UserFactory;
-import entity.User;
+import java.io.File;
+
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import data_access.FileUserDataAccessObject;
+import entity.User;
+import entity.UserFactory;
 
 class LoginInteractorTest {
+
+    private static final String TEST_JSON_PATH = "test_login_users.json";
+    private FileUserDataAccessObject userRepository;
+    private UserFactory factory;
+
+    @BeforeEach
+    void setUp() {
+        // Clean up any existing test file
+        File testFile = new File(TEST_JSON_PATH);
+        if (testFile.exists()) {
+            testFile.delete();
+        }
+
+        factory = new UserFactory();
+        userRepository = new FileUserDataAccessObject(TEST_JSON_PATH, factory);
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Clean up test file after each test
+        File testFile = new File(TEST_JSON_PATH);
+        if (testFile.exists()) {
+            testFile.delete();
+        }
+    }
 
     @Test
     void successTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // For the success test, we need to add Paul to the data access repository before we log in.
-        UserFactory factory = new UserFactory();
         User user = factory.create("Paul", "password");
         userRepository.save(user);
 
@@ -24,7 +52,7 @@ class LoginInteractorTest {
             @Override
             public void prepareSuccessView(LoginOutputData user) {
                 assertEquals("Paul", user.getUsername());
-                assertEquals("Paul", userRepository.getCurrentUsername());
+                assertEquals("Paul", LoginInteractorTest.this.userRepository.getCurrentUsername());
             }
 
             @Override
@@ -46,11 +74,9 @@ class LoginInteractorTest {
     @Test
     void failurePasswordMismatchTest() {
         LoginInputData inputData = new LoginInputData("Paul", "wrong");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // For this failure test, we need to add Paul to the data access repository before we log in, and
         // the passwords should not match.
-        UserFactory factory = new UserFactory();
         User user = factory.create("Paul", "password");
         userRepository.save(user);
 
@@ -80,7 +106,6 @@ class LoginInteractorTest {
     @Test
     void failureUserDoesNotExistTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add Paul to the repo so that when we check later they already exist
 

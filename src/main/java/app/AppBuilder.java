@@ -1,73 +1,68 @@
 package app;
 
+import java.awt.CardLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
+import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
+import entity.Trip;
+import entity.TripIdGenerator;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_new_trip.CreateNewTripController;
+import interface_adapter.create_new_trip.CreateNewTripPresenter;
+import interface_adapter.create_new_trip.CreateNewTripViewModel;
+import interface_adapter.create_trip_result.TripResultViewModel;
+import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
+import interface_adapter.login.LoginViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupPresenter;
+import interface_adapter.signup.SignupViewModel;   // NEW
 import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripPresenter;
 import interface_adapter.trip.TripViewModel;
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListPresenter;
 import interface_adapter.trip_list.TripListViewModel;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.login.LoginViewModel;
-import interface_adapter.create_new_trip.CreateNewTripViewModel;
-import interface_adapter.create_new_trip.CreateNewTripController;
-import interface_adapter.create_new_trip.CreateNewTripPresenter;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupPresenter;
-import interface_adapter.signup.SignupViewModel;
-import interface_adapter.create_trip_result.TripResultViewModel;   // NEW
-
+import use_case.create_new_trip.CreateNewTripInputBoundary;
+import use_case.create_new_trip.CreateNewTripInteractor;
+import use_case.create_new_trip.CreateNewTripOutputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
+import use_case.load_trip_list.LoadTripListInputBoundary;
+import use_case.load_trip_list.LoadTripListInteractor;
+import use_case.load_trip_list.LoadTripListOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
-import use_case.logout.LogoutOutputBoundary;
-import use_case.load_trip_list.LoadTripListInputBoundary;
-import use_case.load_trip_list.LoadTripListInteractor;
-import use_case.load_trip_list.LoadTripListOutputBoundary;
+import use_case.logout.LogoutOutputBoundary;                                  // NEW
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import use_case.create_new_trip.CreateNewTripInputBoundary;
-import use_case.create_new_trip.CreateNewTripOutputBoundary;
-import use_case.create_new_trip.CreateNewTripInteractor;
-
-import view.*;
 import view.CreateNewTripView;
-import view.TripResultView;                                  // NEW
-
-import javax.swing.*;
-import java.awt.*;
-
-// For flights
-import interface_adapter.flight_search.FlightSearchViewModel;
-import interface_adapter.flight_search.FlightSearchPresenter;
-import interface_adapter.flight_search.FlightSearchController;
-import use_case.flight_search.FlightSearchInputBoundary;
-import use_case.flight_search.FlightSearchInteractor;
-import use_case.flight_search.FlightSearchOutputBoundary;
-import use_case.flight_search.FlightSearchGateway;
-import data_access.SerpApiFlightSearchGateway;
-
-// For hotel
-import interface_adapter.hotel_search.HotelSearchViewModel;
-import interface_adapter.hotel_search.HotelSearchPresenter;
-import interface_adapter.hotel_search.HotelSearchController;
-import use_case.hotel_search.HotelSearchInputBoundary;
-import use_case.hotel_search.HotelSearchInteractor;
-import use_case.hotel_search.HotelSearchOutputBoundary;
-import use_case.hotel_search.HotelSearchGateway;
-import data_access.SerpApiHotelSearchGateway;
+import view.LoggedInView;
+import view.LoginView;
+import view.SignupView;
+import view.TripListView;
+import view.TripResultView;
+import view.TripView;
+import view.ViewManager;
 
 
 
@@ -79,7 +74,24 @@ public class AppBuilder {
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     final FileUserDataAccessObject userDataAccessObject =
-            new FileUserDataAccessObject("users.csv", userFactory);
+            new FileUserDataAccessObject("users.json", userFactory);
+
+    final FileTripDataAccessObject tripDataAccessObject =
+            new FileTripDataAccessObject("trips.json");
+
+    {
+        // Integrate trip DAO with user DAO
+        userDataAccessObject.setTripDataAccessObject(tripDataAccessObject);
+    }
+
+    {
+        // Initialize ID generator from existing trips
+        Collection<String> existingTripIds = new ArrayList<>();
+        for (Trip trip:tripDataAccessObject.getAllTrips()){
+        existingTripIds.add(trip.getTripId());
+    }
+        TripIdGenerator.initializeFromExistingIds(existingTripIds);
+    }
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;

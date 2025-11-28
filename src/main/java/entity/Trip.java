@@ -1,44 +1,40 @@
 package entity;
 
-import java.util.Date;
 import java.util.List;
 
 public class Trip {
-    private final String name;
-    private final String cityName;
-    private final String tripDates;
-    private final List<Destination> destinations;
-    private final List<Accommodation> accommodations;
+    private final String tripId;
+    private final String tripName;
+    private final String ownerUserName;
+    private final String status;
+    private final String dates;
+    private final String destination; // Main destination location (from "To" field)
+    private final List<Accommodation> hotels;
     private final List<Flight> flights;
+    private final List<Destination> attractions; // List of Destination objects
 
-    public Trip(String name, String cityName, String tripDates, List<Destination> destinations, List<Accommodation> accommodations, List<Flight> flights) {
-        this.name = name;
-        this.cityName = cityName;
-        this.tripDates = tripDates;
-        this.destinations = destinations;
-        this.accommodations = accommodations;
+    public Trip(String tripId, String tripName, String ownerUserName, String status,
+                String dates, String destination,
+                List<Accommodation> hotels, List<Flight> flights, List<Destination> attractions) {
+        this.tripId = tripId;
+        this.tripName = tripName;
+        this.ownerUserName = ownerUserName;
+        this.status = status;
+        this.dates = dates;
+        this.destination = destination;
+        this.hotels = hotels;
         this.flights = flights;
+        this.attractions = attractions;
     }
 
-    public String getName() {
-        return this.name;
-    }
-    public String getCityName() {
-        return this.cityName;
-    }
-    public String getTripDates() {
-        return this.tripDates;
-    }
-    public List<Destination> getDestinations() {
-        return this.destinations;
-    }
-    public List<Accommodation> getAccommodations() {
-        return this.accommodations;
-    }
-    public List<Flight> getFlights() {
-        return this.flights;
-    }
-
-    // TODO: Implement Methods
-
+    // Getters
+    public String getTripId() { return this.tripId; }
+    public String getTripName() { return this.tripName; }
+    public String getOwnerUserName() { return this.ownerUserName; }
+    public String getStatus() { return this.status; }
+    public String getDates() { return this.dates; }
+    public String getDestination() { return this.destination; }
+    public List<Accommodation> getHotels() { return this.hotels; }
+    public List<Flight> getFlights() { return this.flights; }
+    public List<Destination> getAttractions() { return this.attractions; }
 }

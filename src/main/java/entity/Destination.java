@@ -12,5 +12,18 @@ public class Destination {
         this.description = description;
         this.price = price;
     }
-    // TODO: Implement Methods
+
+    public String getName() {return name;}
+    public String getAddress() {return address;}
+    public String getDescription() {return description;}
+    public float getPrice() {return price;}
+    @Override
+    public String toString() {
+        return "Destination{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

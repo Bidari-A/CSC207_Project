@@ -1,5 +1,6 @@
 package use_case.login;
 
+import entity.Trip;
 import entity.User;
 
 /**
@@ -32,8 +33,15 @@ public class LoginInteractor implements LoginInputBoundary {
                 final User user = userDataAccessObject.get(loginInputData.getUsername());
 
                 userDataAccessObject.setCurrentUsername(username);
+                String currentTripId = user.getCurrentTripId();
+                Trip currentTrip = userDataAccessObject.getTrip(currentTripId);
+                String currentTripName = currentTrip.getTripName();
+                String cityName = currentTrip.getDestination();
+                String date = currentTrip.getDates();
 
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getName());
+
+
+                final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), currentTripName, cityName, date);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

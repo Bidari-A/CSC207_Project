@@ -121,10 +121,10 @@ class TripListViewTest {
     void testPropertyChangeWithTrips() {
         // Create trips
         List<Trip> trips = new ArrayList<>();
-        trips.add(new Trip("Paris Vacation", "Paris",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        trips.add(new Trip("Tokyo Adventure", "Tokyo",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T001", "Paris Vacation", "testuser", "CURRENT", "2025-01-01 to 2025-01-07",
+                "Paris", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T002", "Tokyo Adventure", "testuser", "COMPLETED", "2025-02-01 to 2025-02-07",
+                "Tokyo", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         TripListState state = new TripListState();
         state.setTrips(trips);
@@ -204,8 +204,8 @@ class TripListViewTest {
     void testDetailsButtonExists() {
         // Create trips and set state
         List<Trip> trips = new ArrayList<>();
-        trips.add(new Trip("Paris Vacation", "Paris",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T001", "Paris Vacation", "testuser", "CURRENT", "2025-01-01 to 2025-01-07",
+                "Paris", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         TripListState state = new TripListState();
         state.setTrips(trips);
@@ -233,7 +233,7 @@ class TripListViewTest {
             // Verify button exists and has correct action command
             assertNotNull(detailsButton[0], "Details button should not be null");
             assertEquals("Details", detailsButton[0].getText());
-            assertEquals("DETAILS_Paris Vacation", detailsButton[0].getActionCommand());
+            assertEquals("DETAILS_T001", detailsButton[0].getActionCommand());
         } catch (Exception e) {
             fail("Failed to access details button: " + e.getMessage());
         }
@@ -243,8 +243,8 @@ class TripListViewTest {
     void testDeleteButtonExists() {
         // Create trips and set state
         List<Trip> trips = new ArrayList<>();
-        trips.add(new Trip("Tokyo Adventure", "Tokyo",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T002", "Tokyo Adventure", "testuser", "COMPLETED", "2025-02-01 to 2025-02-07",
+                "Tokyo", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         TripListState state = new TripListState();
         state.setTrips(trips);
@@ -272,7 +272,7 @@ class TripListViewTest {
             // Verify button exists and has correct properties
             assertNotNull(deleteButton[0], "Delete button should not be null");
             assertEquals("Delete", deleteButton[0].getText());
-            assertEquals("DELETE_Tokyo Adventure", deleteButton[0].getActionCommand());
+            assertEquals("DELETE_T002", deleteButton[0].getActionCommand());
             assertEquals(Color.RED, deleteButton[0].getForeground());
         } catch (Exception e) {
             fail("Failed to access delete button: " + e.getMessage());
@@ -283,12 +283,12 @@ class TripListViewTest {
     void testMultipleTripsDisplay() {
         // Create multiple trips
         List<Trip> trips = new ArrayList<>();
-        trips.add(new Trip("Trip 1", "City 1",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        trips.add(new Trip("Trip 2", "City 2",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        trips.add(new Trip("Trip 3", "City 3",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T003", "Trip 1", "testuser", "CURRENT", "2025-03-01 to 2025-03-07",
+                "City 1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T004", "Trip 2", "testuser", "CURRENT", "2025-04-01 to 2025-04-07",
+                "City 2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T005", "Trip 3", "testuser", "COMPLETED", "2025-05-01 to 2025-05-07",
+                "City 3", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         TripListState state = new TripListState();
         state.setTrips(trips);
@@ -351,8 +351,8 @@ class TripListViewTest {
     void testTripRowCreation() {
         // Create a trip
         List<Trip> trips = new ArrayList<>();
-        trips.add(new Trip("Test Trip", "Test City",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        trips.add(new Trip("T006", "Test Trip", "testuser", "CURRENT", "2025-06-01 to 2025-06-07",
+                "Test City", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         TripListState state = new TripListState();
         state.setTrips(trips);
@@ -456,24 +456,24 @@ class TripListViewTest {
             List<Trip> exampleTrips = new ArrayList<>();
 
             // Trip 1: Paris Vacation
-            exampleTrips.add(new Trip("Paris Vacation", "Paris",
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+            exampleTrips.add(new Trip("T015", "Paris Vacation", "testuser", "CURRENT", "2025-01-01 to 2025-01-07",
+                    "Paris", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
             // Trip 2: Tokyo Adventure
-            exampleTrips.add(new Trip("Tokyo Adventure", "Tokyo",
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+            exampleTrips.add(new Trip("T016", "Tokyo Adventure", "testuser", "COMPLETED", "2025-02-01 to 2025-02-07",
+                    "Tokyo", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
             // Trip 3: New York City
-            exampleTrips.add(new Trip("New York City", "New York",
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+            exampleTrips.add(new Trip("T017", "New York City", "testuser", "CURRENT", "2025-03-01 to 2025-03-07",
+                    "New York", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
             // Trip 4: London Explorer
-            exampleTrips.add(new Trip("London Explorer", "London",
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+            exampleTrips.add(new Trip("T018", "London Explorer", "testuser", "CURRENT", "2025-04-01 to 2025-04-07",
+                    "London", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
             // Trip 5: Rome Cultural Tour
-            exampleTrips.add(new Trip("Rome Cultural Tour", "Rome",
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+            exampleTrips.add(new Trip("T019", "Rome Cultural Tour", "testuser", "COMPLETED", "2025-05-01 to 2025-05-07",
+                    "Rome", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
             // Set up the state with example trips
             TripListState state = new TripListState();
@@ -548,32 +548,32 @@ class TripListViewTest {
         List<Trip> exampleTrips = new ArrayList<>();
 
         // Trip 1: Paris Vacation
-        exampleTrips.add(new Trip("Paris Vacation", "Paris",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        exampleTrips.add(new Trip("T020", "Paris Vacation", "testuser", "CURRENT", "2025-01-01 to 2025-01-07",
+                "Paris", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Trip 2: Tokyo Adventure
-        exampleTrips.add(new Trip("Tokyo Adventure", "Tokyo",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        exampleTrips.add(new Trip("T021", "Tokyo Adventure", "testuser", "COMPLETED", "2025-02-01 to 2025-02-07",
+                "Tokyo", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Trip 3: New York City
-        exampleTrips.add(new Trip("New York City", "New York",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        exampleTrips.add(new Trip("T022", "New York City", "testuser", "CURRENT", "2025-03-01 to 2025-03-07",
+                "New York", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Trip 4: London Explorer
-        exampleTrips.add(new Trip("London Explorer", "London",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        exampleTrips.add(new Trip("T023", "London Explorer", "testuser", "CURRENT", "2025-04-01 to 2025-04-07",
+                "London", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Trip 5: Rome Cultural Tour
-        exampleTrips.add(new Trip("Rome Cultural Tour", "Rome",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        exampleTrips.add(new Trip("T024", "Rome Cultural Tour", "testuser", "COMPLETED", "2025-05-01 to 2025-05-07",
+                "Rome", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Trip 6: Barcelona Beach Trip
-        exampleTrips.add(new Trip("Barcelona Beach Trip", "Barcelona",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        exampleTrips.add(new Trip("T025", "Barcelona Beach Trip", "testuser", "CURRENT", "2025-06-01 to 2025-06-07",
+                "Barcelona", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Trip 7: Dubai Luxury Experience
-        exampleTrips.add(new Trip("Dubai Luxury Experience", "Dubai",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        exampleTrips.add(new Trip("T026", "Dubai Luxury Experience", "testuser", "COMPLETED", "2025-07-01 to 2025-07-07",
+                "Dubai", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Create state and set trips
         TripListState state = new TripListState();

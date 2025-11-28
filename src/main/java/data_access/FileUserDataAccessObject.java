@@ -1,29 +1,30 @@
 package data_access;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import entity.Trip;
 import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
-import use_case.login.LoginUserDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
+import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
- * DAO for user data implemented using a File to persist the data.
+ * DAO for user data implemented using a JSON file to persist the data.
  */
 public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
@@ -32,80 +33,93 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
         LoadTripDetailDataAccessInterface {
 
-    private static final String HEADER = "username,password";
-
-    private final File csvFile;
-    private final Map<String, Integer> headers = new LinkedHashMap<>();
+    private final File jsonFile;
     private final Map<String, User> accounts = new HashMap<>();
-    private final Map<String, List<Trip>> userTrips = new HashMap<>();
-
+    private final UserFactory userFactory;
     private String currentUsername;
+    private FileTripDataAccessObject tripDataAccessObject; // Reference to trip DAO
 
     /**
-     * Construct this DAO for saving to and reading from a local file.
-     * @param csvPath the path of the file to save to
+     * Construct this DAO for saving to and reading from a local JSON file.
+     * @param jsonPath the path of the JSON file to save to
      * @param userFactory factory for creating user objects
      * @throws RuntimeException if there is an IOException when accessing the file
      */
-    public FileUserDataAccessObject(String csvPath, UserFactory userFactory) {
+    public FileUserDataAccessObject(String jsonPath, UserFactory userFactory) {
+        this.jsonFile = new File(jsonPath);
+        this.userFactory = userFactory;
 
-        csvFile = new File(csvPath);
-        headers.put("username", 0);
-        headers.put("password", 1);
-
-        if (csvFile.length() == 0) {
+        if (jsonFile.exists() && jsonFile.length() > 0) {
+            load();
+        } else {
+            // Create empty JSON file if it doesn't exist
             save();
-        }
-        else {
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
-                final String header = reader.readLine();
-
-                if (!header.equals(HEADER)) {
-                    throw new RuntimeException(String.format("header should be%n: %s%n but was:%n%s", HEADER, header));
-                }
-
-                String row;
-                while ((row = reader.readLine()) != null) {
-                    final String[] col = row.split(",");
-                    final String username = String.valueOf(col[headers.get("username")]);
-                    final String password = String.valueOf(col[headers.get("password")]);
-                    final User user = userFactory.create(username, password);
-                    accounts.put(username, user);
-                }
-            }
-            catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
         }
     }
 
+    /**
+     * Loads users from the JSON file.
+     */
+    private void load() {
+        try (FileReader reader = new FileReader(jsonFile)) {
+            JSONObject jsonObject = new JSONObject(new JSONTokener(reader));
+
+            for (String key : jsonObject.keySet()) {
+                JSONObject userJson = jsonObject.getJSONObject(key);
+                String username = userJson.getString("username");
+                String password = userJson.getString("password");
+                String currentTripId = userJson.has("currentTripId") && !userJson.isNull("currentTripId")
+                        ? userJson.getString("currentTripId") : null;
+
+                List<String> tripList = new ArrayList<>();
+                if (userJson.has("tripList") && !userJson.isNull("tripList")) {
+                    JSONArray tripListArray = userJson.getJSONArray("tripList");
+                    for (int i = 0; i < tripListArray.length(); i++) {
+                        tripList.add(tripListArray.getString(i));
+                    }
+                }
+
+                User user = userFactory.create(username, password, currentTripId, tripList);
+                accounts.put(username, user);
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException("Error loading users from JSON file", ex);
+        }
+    }
+
+    /**
+     * Saves users to the JSON file.
+     */
     private void save() {
-        final BufferedWriter writer;
-        try {
-            writer = new BufferedWriter(new FileWriter(csvFile));
-            writer.write(String.join(",", headers.keySet()));
-            writer.newLine();
+        try (FileWriter writer = new FileWriter(jsonFile)) {
+            JSONObject jsonObject = new JSONObject();
 
             for (User user : accounts.values()) {
-                final String line = String.format("%s,%s",
-                        user.getName(), user.getPassword());
-                writer.write(line);
-                writer.newLine();
+                JSONObject userJson = new JSONObject();
+                userJson.put("username", user.getUsername());
+                userJson.put("password", user.getPassword());
+                userJson.put("currentTripId", user.getCurrentTripId() != null ? user.getCurrentTripId() : JSONObject.NULL);
+
+                JSONArray tripListArray = new JSONArray();
+                for (String tripId : user.getTripList()) {
+                    tripListArray.put(tripId);
+                }
+                userJson.put("tripList", tripListArray);
+
+                // Use username as key to match JSON format
+                jsonObject.put(user.getUsername(), userJson);
             }
 
-            writer.close();
-
-        }
-        catch (IOException ex) {
-            throw new RuntimeException(ex);
+            writer.write(jsonObject.toString(2)); // Pretty print with 2-space indent
+        } catch (IOException ex) {
+            throw new RuntimeException("Error saving users to JSON file", ex);
         }
     }
 
     @Override
     public void save(User user) {
-        accounts.put(user.getName(), user);
-        this.save();
+        accounts.put(user.getUsername(), user);
+        save();
     }
 
     @Override
@@ -131,8 +145,16 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
     @Override
     public void changePassword(User user) {
         // Replace the User object in the map
-        accounts.put(user.getName(), user);
+        accounts.put(user.getUsername(), user);
         save();
+    }
+
+    /**
+     * Sets the trip data access object for integration.
+     * @param tripDataAccessObject the trip DAO
+     */
+    public void setTripDataAccessObject(FileTripDataAccessObject tripDataAccessObject) {
+        this.tripDataAccessObject = tripDataAccessObject;
     }
 
     /**
@@ -140,9 +162,12 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
      * @param username the username
      * @return list of trips for the user
      */
-    public List<Trip> getTrips(String username){
-        List<Trip> trips = userTrips.get(username);
-        return trips != null ? new ArrayList<>(trips): new ArrayList<>();
+    @Override
+    public List<Trip> getTrips(String username) {
+        if (tripDataAccessObject != null) {
+            return tripDataAccessObject.getTripsByUser(username);
+        }
+        return new ArrayList<>();
     }
 
     /**
@@ -150,29 +175,19 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
      * @return the current user name
      */
     public String getCurrentUserName() {
-        return "";
+        return currentUsername;
     }
 
     /**
-     * Deletes a trip for a user.
-     * @param username the username
-     * @param tripName the name of the trip to delete
-     * @return true if the trip was deleted, false otherwise
+     * Gets a trip by its ID.
+     * @param tripId the trip ID
+     * @return the Trip object, or null if not found
      */
-    public boolean deleteTrip(String username, String tripName) {
-        List<Trip> trips = userTrips.get(username);
-        if (trips != null) {
-            return trips.removeIf(trip -> trip.getName().equals(tripName));
+    @Override
+    public Trip getTrip(String tripId) {
+        if (tripDataAccessObject != null) {
+            return tripDataAccessObject.get(tripId);
         }
-        return false;
-    }
-
-    /**
-     * Adds a trip for a user. This is a helper method that can be used when creating trips.
-     * @param username the username
-     * @param trip the trip to add
-     */
-    public void addTrip(String username, Trip trip) {
-        userTrips.computeIfAbsent(username, k -> new ArrayList<>()).add(trip);
+        return null;
     }
 }
