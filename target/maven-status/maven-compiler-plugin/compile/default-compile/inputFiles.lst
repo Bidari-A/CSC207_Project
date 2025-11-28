@@ -31,6 +31,8 @@
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/create_new_trip/CreateNewTripViewModel.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/create_trip_result/TripResultState.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/create_trip_result/TripResultViewModel.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/delete_current_trip/DeleteCurrentTripController.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/delete_current_trip/DeleteCurrentTripPresenter.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/flight_search/FlightSearchController.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/flight_search/FlightSearchPresenter.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/flight_search/FlightSearchState.java
@@ -78,6 +80,12 @@
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/create_new_trip/CreateNewTripInteractor.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/create_new_trip/CreateNewTripOutputBoundary.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/create_new_trip/CreateNewTripOutputData.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/delete_current_trip/DeleteCurrentTripDataAccessInterface.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/delete_current_trip/DeleteCurrentTripInputBoundary.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/delete_current_trip/DeleteCurrentTripInputData.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/delete_current_trip/DeleteCurrentTripInteractor.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/delete_current_trip/DeleteCurrentTripOutputBoundary.java
+/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/delete_current_trip/DeleteCurrentTripOutputData.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/flight_search/FlightSearchGateway.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/flight_search/FlightSearchInputBoundary.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/flight_search/FlightSearchInputData.java

@@ -3,14 +3,10 @@ package view;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
+import java.text.*;
+import java.time.*;
+import java.time.format.*;
 
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;

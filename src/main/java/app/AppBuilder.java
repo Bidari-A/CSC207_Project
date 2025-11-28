@@ -18,42 +18,48 @@ import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.complete_current_trip.CompleteCurrentTripController;
+import interface_adapter.complete_current_trip.CompleteCurrentTripPresenter;
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.create_trip_result.TripResultViewModel;
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
+import interface_adapter.delete_current_trip.DeleteCurrentTripPresenter;
 import interface_adapter.flight_search.FlightSearchViewModel;
 import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
-import interface_adapter.logout.LogoutController;
+import interface_adapter.logout.LogoutController;   // NEW
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
-import interface_adapter.signup.SignupViewModel;   // NEW
+import interface_adapter.signup.SignupViewModel;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripPresenter;
 import interface_adapter.trip.TripViewModel;
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListPresenter;
 import interface_adapter.trip_list.TripListViewModel;
-import interface_adapter.complete_current_trip.CompleteCurrentTripController;
-import interface_adapter.complete_current_trip.CompleteCurrentTripPresenter;
+import use_case.complete_current_trip.CompleteCurrentTripDataAccessInterface;
+import use_case.complete_current_trip.CompleteCurrentTripInputBoundary;
+import use_case.complete_current_trip.CompleteCurrentTripInteractor;
+import use_case.complete_current_trip.CompleteCurrentTripOutputBoundary;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
+import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripInteractor;
+import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
 import use_case.load_trip_list.LoadTripListInputBoundary;
 import use_case.load_trip_list.LoadTripListInteractor;
 import use_case.load_trip_list.LoadTripListOutputBoundary;
-import use_case.complete_current_trip.CompleteCurrentTripDataAccessInterface;
-import use_case.complete_current_trip.CompleteCurrentTripInputBoundary;
-import use_case.complete_current_trip.CompleteCurrentTripOutputBoundary;
-import use_case.complete_current_trip.CompleteCurrentTripInteractor;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -111,6 +117,9 @@ public class AppBuilder {
         
         // Integrate trip DAO with user DAO
         userDataAccessObject.setTripDataAccessObject(tripDataAccessObject);
+        
+        // Integrate user-trip DAO with user DAO
+        userDataAccessObject.setUserTripDataAccessObject(userTripDataAccessObject);
     }
 
     {
@@ -309,6 +318,24 @@ public class AppBuilder {
                 new CompleteCurrentTripInteractor(completeCurrentTripDataAccessInterface,completeCurrentTripOutputBoundary);
         final CompleteCurrentTripController controller = new CompleteCurrentTripController(completeCurrentTripInputBoundary);
         loggedInView.setCompleteCurrentTripController(controller);
+        return this;
+    }
+
+    /**
+     * Adds the Delete Current Trip Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addDeleteCurrentTripUseCase() {
+        final DeleteCurrentTripOutputBoundary deleteCurrentTripOutputBoundary =
+                new DeleteCurrentTripPresenter(loggedInViewModel);
+
+        final DeleteCurrentTripDataAccessInterface deleteCurrentTripDataAccessInterface =
+                userDataAccessObject;
+
+        final DeleteCurrentTripInputBoundary deleteCurrentTripInputBoundary =
+                new DeleteCurrentTripInteractor(deleteCurrentTripDataAccessInterface, deleteCurrentTripOutputBoundary);
+        final DeleteCurrentTripController controller = new DeleteCurrentTripController(deleteCurrentTripInputBoundary);
+        loggedInView.setDeleteCurrentTripController(controller);
         return this;
     }
 

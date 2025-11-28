@@ -1,28 +1,36 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+import interface_adapter.complete_current_trip.CompleteCurrentTripController;
+import interface_adapter.create_new_trip.CreateNewTripController;
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
+import interface_adapter.flight_search.FlightSearchController;
+import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchController;
+import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip_list.TripListController;
-import interface_adapter.complete_current_trip.CompleteCurrentTripController;
-import use_case.flight_search.FlightSearchInteractor;
-import interface_adapter.flight_search.FlightSearchViewModel;
-import interface_adapter.flight_search.FlightSearchController;
-import interface_adapter.hotel_search.HotelSearchViewModel;
-import interface_adapter.hotel_search.HotelSearchController;
-import view.HotelSearchDialog;
-
-
-import interface_adapter.create_new_trip.CreateNewTripController;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * The View for when the user is logged into the program.
@@ -36,6 +44,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private CreateNewTripController createNewTripController;
     private TripController tripController;
     private CompleteCurrentTripController completeCurrentTripController;
+    private DeleteCurrentTripController deleteCurrentTripController;
 
 
     // For opening the flight page
@@ -236,7 +245,15 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     new HotelSearchDialog(parent, hotelSearchViewModel, hotelSearchController);
             dialog.setVisible(true);
         } else if (source == deleteButton) {
-            System.out.println("Delete clicked");
+            System.out.println("Delete button clicked");
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+            System.out.println("Username: " + username + ", Controller: " + (deleteCurrentTripController != null));
+            if (deleteCurrentTripController != null && username != null) {
+                deleteCurrentTripController.execute(username);
+            } else {
+                System.out.println("Cannot execute: controller is " + (deleteCurrentTripController == null ? "null" : "not null") + ", username is " + (username == null ? "null" : username));
+            }
         } else if (source == completeButton) {
             System.out.println("Complete button clicked");
             LoggedInState state = loggedInViewModel.getState();
@@ -319,5 +336,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setCompleteCurrentTripController(CompleteCurrentTripController completeCurrentTripController) {
         this.completeCurrentTripController = completeCurrentTripController;
+    }
+
+    public void setDeleteCurrentTripController(DeleteCurrentTripController deleteCurrentTripController) {
+        this.deleteCurrentTripController = deleteCurrentTripController;
     }
 }

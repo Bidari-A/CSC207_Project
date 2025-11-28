@@ -12,8 +12,8 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import entity.Destination;
 import entity.AttractionIdGenerator;
+import entity.Destination;
 
 /**
  * DAO for attraction (Destination) data implemented using a JSON file.

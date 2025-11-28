@@ -1,13 +1,25 @@
 package view;
 
+import java.awt.FlowLayout;
+import java.awt.Window;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import interface_adapter.hotel_search.HotelSearchController;
 import interface_adapter.hotel_search.HotelSearchState;
 import interface_adapter.hotel_search.HotelSearchViewModel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class HotelSearchDialog extends JDialog implements PropertyChangeListener {
 

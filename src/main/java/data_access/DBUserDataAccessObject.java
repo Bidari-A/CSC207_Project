@@ -18,6 +18,7 @@ import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.complete_current_trip.CompleteCurrentTripDataAccessInterface;
+import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -31,6 +32,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         CompleteCurrentTripDataAccessInterface,
+        DeleteCurrentTripDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
@@ -41,6 +43,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private final UserFactory userFactory;
     private String currentUsername;
     private FileTripDataAccessObject tripDataAccessObject;
+    private FileUserTripDataAccessObject userTripDataAccessObject;
 
     /**
      * Construct this DAO for saving to and reading from a JSON file.
@@ -161,6 +164,14 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     /**
+     * Sets the user-trip data access object for integration.
+     * @param userTripDataAccessObject the user-trip relationship DAO
+     */
+    public void setUserTripDataAccessObject(FileUserTripDataAccessObject userTripDataAccessObject) {
+        this.userTripDataAccessObject = userTripDataAccessObject;
+    }
+
+    /**
      * Gets trips for a user.
      * @param username the username
      * @return list of trips for the user
@@ -210,6 +221,40 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                     user.getTripList()
             );
             save(updatedUser);
+        }
+    }
+
+    // Methods for DeleteCurrentTripDataAccessInterface
+
+    @Override
+    public boolean deleteTrip(String tripId) {
+        if (tripDataAccessObject != null) {
+            return tripDataAccessObject.delete(tripId);
+        }
+        return false;
+    }
+
+    @Override
+    public void removeTripFromUserTripList(String username, String tripId) {
+        User user = get(username);
+        if (user != null) {
+            // Create a new trip list without the deleted trip
+            List<String> updatedTripList = new ArrayList<>(user.getTripList());
+            updatedTripList.remove(tripId);
+
+            // Create a new User with updated tripList (User is immutable)
+            User updatedUser = userFactory.create(
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getCurrentTripId(),
+                    updatedTripList
+            );
+            save(updatedUser);
+
+            // Also update userTripData.json if available
+            if (userTripDataAccessObject != null) {
+                userTripDataAccessObject.removeTripFromUser(username, tripId);
+            }
         }
     }
 }

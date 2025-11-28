@@ -1,12 +1,21 @@
 package view;
 
-import interface_adapter.create_trip_result.TripResultViewModel;
-import interface_adapter.create_trip_result.TripResultState;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+
+import interface_adapter.create_trip_result.TripResultState;
+import interface_adapter.create_trip_result.TripResultViewModel;
 
 public class TripResultView extends JPanel implements PropertyChangeListener {
 

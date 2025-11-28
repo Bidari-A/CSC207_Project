@@ -1,14 +1,25 @@
 package view;
 
+import java.awt.FlowLayout;
+import java.awt.Window;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import interface_adapter.flight_search.FlightSearchController;
 import interface_adapter.flight_search.FlightSearchState;
 import interface_adapter.flight_search.FlightSearchViewModel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 // We are using JDialog instead of JPanel!! This gives more flexibility.
 public class FlightSearchDialog extends JDialog implements PropertyChangeListener {
