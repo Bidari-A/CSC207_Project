@@ -3,15 +3,17 @@ package app;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.FileAttractionDataAccessObject;
+import data_access.FileFlightDataAccessObject;
+import data_access.FileHotelDataAccessObject;
 import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
+import data_access.FileUserTripDataAccessObject;
 import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
@@ -82,10 +84,31 @@ public class AppBuilder {
     final FileUserDataAccessObject userDataAccessObject =
             new FileUserDataAccessObject("users.json", userFactory);
 
+    // Initialize separate DAOs for hotels, flights, and attractions
+    final FileHotelDataAccessObject hotelDataAccessObject =
+            new FileHotelDataAccessObject("hotels.json");
+    
+    final FileFlightDataAccessObject flightDataAccessObject =
+            new FileFlightDataAccessObject("flights.json");
+    
+    final FileAttractionDataAccessObject attractionDataAccessObject =
+            new FileAttractionDataAccessObject("attractions.json");
+    
+    final FileUserTripDataAccessObject userTripDataAccessObject =
+            new FileUserTripDataAccessObject("userTripData.json");
+
     final FileTripDataAccessObject tripDataAccessObject =
             new FileTripDataAccessObject("trips.json");
 
     {
+        // Integrate separate DAOs with trip DAO
+        tripDataAccessObject.setHotelDAO(hotelDataAccessObject);
+        tripDataAccessObject.setFlightDAO(flightDataAccessObject);
+        tripDataAccessObject.setAttractionDAO(attractionDataAccessObject);
+        
+        // Migrate existing inline data to separate DAOs
+        tripDataAccessObject.migrateToSeparateDAOs();
+        
         // Integrate trip DAO with user DAO
         userDataAccessObject.setTripDataAccessObject(tripDataAccessObject);
     }

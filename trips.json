@@ -1,82 +1,52 @@
 {
   "T002": {
-    "hotels": [{
-      "address": "",
-      "price": 0,
-      "name": "Rome Grand Hotel"
-    }],
+    "hotelIds": ["H0001"],
     "destination": "Rome",
     "ownerUserName": "a",
     "tripId": "T002",
     "tripName": "trip to attr03",
     "dates": "2025-02-02 to 2025-02-08",
-    "attractions": [{
-      "address": "Rome, Italy",
-      "price": 16,
-      "name": "Colosseum",
-      "description": "Ancient Roman amphitheater and iconic symbol of Rome"
-    }],
-    "flights": [{
-      "price": 0,
-      "departureTimes": "FRA → FCO on 2025-02-02",
-      "airlineName": "Lufthansa"
-    }],
+    "attractionIds": ["A0001"],
+    "flightIds": ["F0001"],
     "status": "COMPLETED"
   },
+  "T003": {
+    "hotelIds": ["H0004"],
+    "destination": "Tokyo",
+    "ownerUserName": "h",
+    "tripId": "T003",
+    "tripName": "Trip to Tokyo",
+    "dates": "2025-03-15 to 2025-03-22",
+    "attractionIds": [
+      "A0005",
+      "A0006"
+    ],
+    "flightIds": ["F0004"],
+    "status": "CURRENT"
+  },
   "T000": {
-    "hotels": [{
-      "address": "",
-      "price": 0,
-      "name": "Desert View Lodge"
-    }],
+    "hotelIds": ["H0002"],
     "destination": "Las Vegas",
     "ownerUserName": "a",
     "tripId": "T000",
     "tripName": "trip to attr10",
     "dates": "2024-11-01 to 2024-11-05",
-    "attractions": [{
-      "address": "Arizona, USA",
-      "price": 35,
-      "name": "Grand Canyon",
-      "description": "One of the world's natural wonders, a massive gorge carved by the Colorado River"
-    }],
-    "flights": [{
-      "price": 0,
-      "departureTimes": "PHX → LAS on 2024-11-01",
-      "airlineName": "American Airlines"
-    }],
+    "attractionIds": ["A0002"],
+    "flightIds": ["F0002"],
     "status": "CURRENT"
   },
   "T001": {
-    "hotels": [{
-      "address": "",
-      "price": 0,
-      "name": "Hôtel Champs-Élysées"
-    }],
+    "hotelIds": ["H0003"],
     "destination": "Paris",
     "ownerUserName": "a",
     "tripId": "T001",
     "tripName": "trip to attr01",
     "dates": "2025-06-10 to 2025-06-18",
-    "attractions": [
-      {
-        "address": "Paris, France",
-        "price": 29,
-        "name": "Eiffel Tower",
-        "description": "Iconic iron lattice tower and symbol of Paris"
-      },
-      {
-        "address": "Paris, France",
-        "price": 17,
-        "name": "Louvre Museum",
-        "description": "World's largest art museum and historic monument"
-      }
+    "attractionIds": [
+      "A0003",
+      "A0004"
     ],
-    "flights": [{
-      "price": 0,
-      "departureTimes": "JFK → CDG on 2025-06-10",
-      "airlineName": "Air France"
-    }],
+    "flightIds": ["F0003"],
     "status": "COMPLETED"
   }
 }

@@ -1,0 +1,44 @@
+{
+  "A0001": {
+    "address": "Rome, Italy",
+    "price": 16,
+    "attractionId": "A0001",
+    "name": "Colosseum",
+    "description": "Ancient Roman amphitheater and iconic symbol of Rome"
+  },
+  "A0002": {
+    "address": "Arizona, USA",
+    "price": 35,
+    "attractionId": "A0002",
+    "name": "Grand Canyon",
+    "description": "One of the world's natural wonders, a massive gorge carved by the Colorado River"
+  },
+  "A0005": {
+    "address": "Tokyo, Japan",
+    "price": 0,
+    "attractionId": "A0005",
+    "name": "Senso-ji Temple",
+    "description": "Tokyo's oldest temple and one of its most significant Buddhist sites"
+  },
+  "A0006": {
+    "address": "Tokyo, Japan",
+    "price": 18,
+    "attractionId": "A0006",
+    "name": "Tokyo Skytree",
+    "description": "World's tallest tower offering panoramic views of Tokyo"
+  },
+  "A0003": {
+    "address": "Paris, France",
+    "price": 29,
+    "attractionId": "A0003",
+    "name": "Eiffel Tower",
+    "description": "Iconic iron lattice tower and symbol of Paris"
+  },
+  "A0004": {
+    "address": "Paris, France",
+    "price": 17,
+    "attractionId": "A0004",
+    "name": "Louvre Museum",
+    "description": "World's largest art museum and historic monument"
+  }
+}

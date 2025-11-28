@@ -1,0 +1,26 @@
+{
+  "F0001": {
+    "price": 450,
+    "departureTimes": "FRA → FCO on 2025-02-02",
+    "flightId": "F0001",
+    "airlineName": "Lufthansa"
+  },
+  "F0002": {
+    "price": 320,
+    "departureTimes": "PHX → LAS on 2024-11-01",
+    "flightId": "F0002",
+    "airlineName": "American Airlines"
+  },
+  "F0003": {
+    "price": 650,
+    "departureTimes": "JFK → CDG on 2025-06-10",
+    "flightId": "F0003",
+    "airlineName": "Air France"
+  },
+  "F0004": {
+    "price": 850,
+    "departureTimes": "LAX → NRT on 2025-03-15",
+    "flightId": "F0004",
+    "airlineName": "Japan Airlines"
+  }
+}

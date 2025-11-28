@@ -13,5 +13,11 @@
       "T002"
     ],
     "username": "a"
+  },
+  "h": {
+    "password": "123",
+    "currentTripId": "T003",
+    "tripList": ["T003"],
+    "username": "h"
   }
 }

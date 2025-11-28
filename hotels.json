@@ -1,0 +1,26 @@
+{
+  "H0004": {
+    "address": "Tokyo, Japan",
+    "price": 180,
+    "name": "Tokyo Skyline Hotel",
+    "hotelId": "H0004"
+  },
+  "H0001": {
+    "address": "Rome, Italy",
+    "price": 150,
+    "name": "Rome Grand Hotel",
+    "hotelId": "H0001"
+  },
+  "H0003": {
+    "address": "Paris, France",
+    "price": 200,
+    "name": "Hôtel Champs-Élysées",
+    "hotelId": "H0003"
+  },
+  "H0002": {
+    "address": "Las Vegas, NV, USA",
+    "price": 120,
+    "name": "Desert View Lodge",
+    "hotelId": "H0002"
+  }
+}
