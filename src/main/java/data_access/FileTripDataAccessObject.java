@@ -18,6 +18,7 @@ import entity.Destination;
 import entity.Flight;
 import entity.Trip;
 import entity.TripIdGenerator;
+import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 
 /**
  * DAO for trip data implemented using a JSON file to persist the data.
