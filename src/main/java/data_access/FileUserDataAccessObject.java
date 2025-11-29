@@ -224,22 +224,23 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         return null;
     }
 
-    public void updateUserTrips(String username, String newTripId) {
-        User user = accounts.get(username);
-        if (user == null) {
-            throw new RuntimeException("User not found: " + username);
+    // DeleteCurrentTripDataAccessInterface methods
+    @Override
+    public User getUser(String username) {
+        return get(username);
+    }
+
+    @Override
+    public boolean deleteTrip(String tripId) {
+        if (tripDataAccessObject != null) {
+            return tripDataAccessObject.delete(tripId);
         }
+        return false;
+    }
 
-        List<String> tripList = user.getTripList();
-
-        // Only add the id
-        if (!tripList.contains(newTripId)) {
-            tripList.add(newTripId);
-        }
-
-        // Put back in map and save to file
-        accounts.put(username, user);
-        save();
+    @Override
+    public void saveUser(User user) {
+        save(user);
     }
 
 

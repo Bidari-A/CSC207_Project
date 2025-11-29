@@ -12,6 +12,7 @@ import javax.swing.WindowConstants;
 
 import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
+import data_access.FileUserDataAccessObject;
 import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
 import data_access.*;
@@ -90,7 +91,6 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
-
 import view.*;
 import view.CreateNewTripView;
 import view.TripResultView;
