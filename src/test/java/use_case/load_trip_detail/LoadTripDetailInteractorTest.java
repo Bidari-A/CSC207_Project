@@ -430,6 +430,6 @@ public class LoadTripDetailInteractorTest {
         new LoadTripDetailInteractor(userRepository, presenter).execute(input);
     }
 
-
+    //Comment !
 
 }
