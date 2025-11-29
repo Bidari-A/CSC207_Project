@@ -37,12 +37,12 @@
     "attractions": [{
       "address": "Arizona, USA",
       "price": 35,
-        "name": "Grand Canyon",
+      "name": "Grand Canyon",
       "description": "One of the world's natural wonders, a massive gorge carved by the Colorado River"
     }],
     "flights": [{
       "price": 0,
-        "departureTimes": "PHX → LAS on 2024-11-01",
+      "departureTimes": "PHX → LAS on 2024-11-01",
       "airlineName": "American Airlines"
     }],
     "status": "CURRENT"
@@ -74,7 +74,7 @@
     ],
     "flights": [{
       "price": 0,
-        "departureTimes": "JFK → CDG on 2025-06-10",
+      "departureTimes": "JFK → CDG on 2025-06-10",
       "airlineName": "Air France"
     }],
     "status": "COMPLETED"
@@ -109,6 +109,6 @@
       "departureTimes": "JFK → NRT on 2025-12-01",
       "airlineName": "Japan Airlines"
     }],
-    "status": "CURRENT"
+    "status": "COMPLETED"
   }
 }

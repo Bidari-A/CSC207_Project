@@ -186,6 +186,44 @@ class DeleteCurrentTripInteractorTest {
         mockDataAccess.saveUser(user);
 
         // Create the current trip
+        Trip currentTrip = createTestTrip(currentTripId, username, "CURRENT");
+        mockDataAccess.saveTrip(currentTrip);
+        
+        // Create another trip (not current)
+        Trip otherTrip = createTestTrip(otherTripId, username, "COMPLETED");
+        mockDataAccess.saveTrip(otherTrip);
+
+        // Execute
+        DeleteCurrentTripInputData inputData = new DeleteCurrentTripInputData(username);
+        interactor.execute(inputData);
+
+        // Verify success
+        assertTrue(mockPresenter.successCalled, "Success view should be prepared");
+        assertFalse(mockPresenter.failCalled, "Fail view should not be prepared");
+        
+        // Verify trip was deleted from trips
+        assertTrue(mockDataAccess.isTripDeleted(currentTripId), "Current trip should be deleted");
+        assertFalse(mockDataAccess.isTripDeleted(otherTripId), "Other trip should not be deleted");
+        
+        // Verify only the current trip was removed from tripList, other trip remains
+        User updatedUser = mockDataAccess.getUser(username);
+        assertNull(updatedUser.getCurrentTripId(), "Current trip ID should be null");
+        assertFalse(updatedUser.getTripList().contains(currentTripId), "Current trip ID should be removed from trip list");
+        assertTrue(updatedUser.getTripList().contains(otherTripId), "Other trip ID should remain in trip list");
+    }
+
+    @Test
+    void testSuccessWhenCurrentTripNotInTripList() {
+        // Setup: Edge case - currentTripId exists but is not in tripList
+        String username = "testuser";
+        String currentTripId = "T001";
+        String otherTripId = "T002";
+        List<String> tripList = new ArrayList<>();
+        tripList.add(otherTripId);  // tripList doesn't include currentTripId
+        User user = userFactory.create(username, "password", currentTripId, tripList);
+        mockDataAccess.saveUser(user);
+
+        // Create the current trip
         Trip trip = createTestTrip(currentTripId, username, "CURRENT");
         mockDataAccess.saveTrip(trip);
 
@@ -196,10 +234,48 @@ class DeleteCurrentTripInteractorTest {
         // Verify success
         assertTrue(mockPresenter.successCalled, "Success view should be prepared");
         
-        // Verify only the current trip was removed from tripList, other trip remains
+        // Verify trip was deleted
+        assertTrue(mockDataAccess.isTripDeleted(currentTripId), "Trip should be deleted");
+        
+        // Verify user's currentTripId is cleared
         User updatedUser = mockDataAccess.getUser(username);
-        assertFalse(updatedUser.getTripList().contains(currentTripId), "Current trip ID should be removed");
+        assertNull(updatedUser.getCurrentTripId(), "Current trip ID should be null");
+        
+        // Verify tripList is unchanged (since currentTripId wasn't in it)
+        assertEquals(1, updatedUser.getTripList().size(), "Trip list should still have one trip");
         assertTrue(updatedUser.getTripList().contains(otherTripId), "Other trip ID should remain");
+    }
+
+    @Test
+    void testSuccessWithEmptyTripList() {
+        // Setup: User has currentTripId but empty tripList
+        String username = "testuser";
+        String tripId = "T001";
+        List<String> tripList = new ArrayList<>();  // Empty tripList
+        User user = userFactory.create(username, "password", tripId, tripList);
+        mockDataAccess.saveUser(user);
+
+        // Create a trip with CURRENT status
+        Trip trip = createTestTrip(tripId, username, "CURRENT");
+        mockDataAccess.saveTrip(trip);
+
+        // Execute
+        DeleteCurrentTripInputData inputData = new DeleteCurrentTripInputData(username);
+        interactor.execute(inputData);
+
+        // Verify success
+        assertTrue(mockPresenter.successCalled, "Success view should be prepared");
+        assertFalse(mockPresenter.failCalled, "Fail view should not be prepared");
+        
+        // Verify trip was deleted
+        assertTrue(mockDataAccess.isTripDeleted(tripId), "Trip should be deleted");
+        
+        // Verify user's currentTripId is cleared
+        User updatedUser = mockDataAccess.getUser(username);
+        assertNull(updatedUser.getCurrentTripId(), "Current trip ID should be null");
+        
+        // Verify tripList remains empty
+        assertTrue(updatedUser.getTripList().isEmpty(), "Trip list should remain empty");
     }
 
     // Helper method to create a test trip
