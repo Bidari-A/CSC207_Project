@@ -37,4 +37,12 @@ public class Trip {
     public List<Accommodation> getHotels() { return this.hotels; }
     public List<Flight> getFlights() { return this.flights; }
     public List<Destination> getAttractions() { return this.attractions; }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setDates(String dates) {
+        this.dates = dates;
+    }
 }
