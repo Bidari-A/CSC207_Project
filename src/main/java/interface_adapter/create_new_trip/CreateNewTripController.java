@@ -10,8 +10,6 @@ import use_case.create_new_trip.CreateNewTripInputData;
 public class CreateNewTripController {
 
     private final CreateNewTripInputBoundary createNewTripInteractor;
-    private String currentUsername;
-
 
     public CreateNewTripController(CreateNewTripInputBoundary createNewTripInteractor) {
         this.createNewTripInteractor = createNewTripInteractor;
@@ -20,17 +18,14 @@ public class CreateNewTripController {
         createNewTripInteractor.goBack();
     }
 
-    public void execute(String from, String to, String startDate,
-                        String endDate) {
-        String username = this.currentUsername;   // cached earlier in openForm
+    public void execute(String from, String to, String startDate,  String endDate) {
         CreateNewTripInputData inputData =
-                new CreateNewTripInputData(from, to, startDate, endDate, username);
+                new CreateNewTripInputData(from, to, startDate, endDate);
         createNewTripInteractor.execute(inputData);
     }
 
-    public void openForm(String username) {
+    public void openForm() {
         // no more direct call to the view here
-        this.currentUsername = username;
         createNewTripInteractor.prepareScreen();
     }
 }
