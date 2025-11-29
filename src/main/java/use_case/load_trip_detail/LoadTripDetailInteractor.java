@@ -109,15 +109,11 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
         // Try to extract city from trip name like "trip to attr10" or "Summer in Tokyo"
         if (tripName.contains(" to ")) {
             String[] parts = tripName.split(" to ");
-            if (parts.length > 1) {
-                return parts[1].trim();
-            }
+            return parts[1].trim();
         }
         if (tripName.contains(" in ")) {
             String[] parts = tripName.split(" in ");
-            if (parts.length > 1) {
-                return parts[1].trim();
-            }
+            return parts[1].trim();
         }
         // Default: return first word or whole name
         return tripName.split(" ")[0];
