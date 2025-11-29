@@ -17,6 +17,8 @@ import entity.Trip;
 import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.complete_current_trip.CompleteCurrentTripDataAccessInterface;
+import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -31,7 +33,9 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
-        LoadTripDetailDataAccessInterface {
+        LoadTripDetailDataAccessInterface,
+        DeleteCurrentTripDataAccessInterface,
+        CompleteCurrentTripDataAccessInterface {
 
     private final File jsonFile;
     private final Map<String, User> accounts = new HashMap<>();
@@ -189,5 +193,32 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
             return tripDataAccessObject.get(tripId);
         }
         return null;
+    }
+
+    // DeleteCurrentTripDataAccessInterface methods
+    @Override
+    public User getUser(String username) {
+        return get(username);
+    }
+
+    @Override
+    public boolean deleteTrip(String tripId) {
+        if (tripDataAccessObject != null) {
+            return tripDataAccessObject.delete(tripId);
+        }
+        return false;
+    }
+
+    @Override
+    public void saveUser(User user) {
+        save(user);
+    }
+
+    // CompleteCurrentTripDataAccessInterface methods
+    @Override
+    public void saveTrip(Trip trip) {
+        if (tripDataAccessObject != null) {
+            tripDataAccessObject.save(trip);
+        }
     }
 }
