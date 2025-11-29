@@ -1,18 +1,18 @@
-package use_case;
+package use_case.delete_trip_list;
 
+import entity.Trip;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.trip_list.TripListPresenter;
 import interface_adapter.trip_list.TripListState;
 import interface_adapter.trip_list.TripListViewModel;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import use_case.delete_trip_list.DeleteTripOutputData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class DeleteTripListTest {
 
@@ -23,44 +23,100 @@ public class DeleteTripListTest {
     @BeforeEach
     void setup() {
         tripListViewModel = new TripListViewModel();
-
-        // ⭐ Mock ViewManagerModel（避免 NPE）
-        viewManagerModel = mock(ViewManagerModel.class);
-        doNothing().when(viewManagerModel).setState(any());
-        doNothing().when(viewManagerModel).firePropertyChange();
-
+        viewManagerModel = new ViewManagerModel();
         presenter = new TripListPresenter(viewManagerModel, tripListViewModel);
     }
 
-    /**
-     * Test: presenter updates ViewModel on success
-     */
+
+    // ============================================================
+    // 1) 测试成功删除后 Presenter 是否正确更新 ViewModel
+    // ============================================================
     @Test
     void testPresenterSuccessUpdatesViewModel() {
 
-        List<entity.Trip> trips = new ArrayList<>();
-        DeleteTripOutputData data = new DeleteTripOutputData(trips, "T002");
+        // 模拟删除后的剩余 Trip 列表
+        List<Trip> updatedTrips = new ArrayList<>();
+        updatedTrips.add(new Trip(
+                "T100",
+                "TripToTokyo",
+                "a",
+                "CURRENT",
+                "2025-01-01 to 2025-01-05",
+                "Tokyo",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()
+        ));
 
-        presenter.prepareSuccessView(data);
+        // Create outputData
+        DeleteTripOutputData outputData =
+                new DeleteTripOutputData(updatedTrips, "a");
+
+        // 调用 presenter
+        presenter.prepareSuccessView(outputData);
 
         TripListState state = tripListViewModel.getState();
 
-        assertEquals(trips, state.getTrips());
-        assertEquals("T002", state.getUsername());
+        assertNotNull(state);
+        assertEquals("a", state.getUsername());
+        assertEquals(updatedTrips, state.getTrips());
         assertNull(state.getError());
 
-        verify(viewManagerModel, times(1)).setState("trip list");
-        verify(viewManagerModel, times(1)).firePropertyChange();
+        // 额外检查：viewManagerModel 应该跳回同一个 view (trip list)
+        assertEquals("trip list", viewManagerModel.getState());
     }
 
-    /**
-     * Test: presenter fail case sets error message
-     */
+
+    // ============================================================
+    // 2) 测试删除失败时 Presenter 是否设置 error
+    // ============================================================
     @Test
-    void testPresenterFailUpdate() {
-        presenter.prepareFailView("Failed");
+    void testPresenterFailUpdatesViewModel() {
+
+        presenter.prepareFailView("Delete failed!");
 
         TripListState state = tripListViewModel.getState();
-        assertEquals("Failed", state.getError());
+
+        assertNotNull(state);
+        assertEquals("Delete failed!", state.getError());
+    }
+
+
+    // ============================================================
+    // 3) 测试 TripListController 是否会调用 interactor.delete()
+    //    ⭐ 你使用 TripListController，所以 test 应该测试它
+    // ============================================================
+    @Test
+    void testControllerCallsDeleteInteractor() {
+
+        final boolean[] called = {false};
+
+        // Mock interactor
+        DeleteTripInputBoundary mockInteractor = new DeleteTripInputBoundary() {
+            @Override
+            public void delete(DeleteTripInputData data) {
+                called[0] = true;
+
+                // 检查参数是否传对
+                assertEquals("a", data.getUsername());
+                assertEquals("T001", data.getTripId());
+            }
+        };
+
+        // 使用 TripListController（你项目里确实使用这个 controller）
+        interface_adapter.trip_list.TripListController controller =
+                new interface_adapter.trip_list.TripListController(
+                        // 构造需要 LoadTripListInputBoundary，但我们不会用它
+                        null
+                );
+
+        // 给 controller 注入 deleteTrip 用到的 interactor
+        controller.setDeleteTripUseCaseInteractor(mockInteractor);
+
+        // 调用 delete
+        controller.deleteTrip("a", "T001");
+
+        // 验证 interactor 是否被调用
+        assertTrue(called[0], "Interactor should be called by controller");
     }
 }
