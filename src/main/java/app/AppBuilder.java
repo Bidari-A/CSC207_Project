@@ -10,6 +10,8 @@ import javax.swing.WindowConstants;
 
 import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
+import data_access.SerpApiFlightSearchGateway;
+import data_access.SerpApiHotelSearchGateway;
 import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
@@ -20,7 +22,11 @@ import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.create_trip_result.TripResultViewModel;
 import interface_adapter.delete_current_trip.DeleteCurrentTripController;
 import interface_adapter.delete_current_trip.DeleteCurrentTripPresenter;
+import interface_adapter.flight_search.FlightSearchController;
+import interface_adapter.flight_search.FlightSearchPresenter;
 import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchController;
+import interface_adapter.hotel_search.HotelSearchPresenter;
 import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
@@ -43,6 +49,14 @@ import use_case.create_new_trip.CreateNewTripOutputBoundary;
 import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
 import use_case.delete_current_trip.DeleteCurrentTripInteractor;
 import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
+import use_case.flight_search.FlightSearchGateway;
+import use_case.flight_search.FlightSearchInputBoundary;
+import use_case.flight_search.FlightSearchInteractor;
+import use_case.flight_search.FlightSearchOutputBoundary;
+import use_case.hotel_search.HotelSearchGateway;
+import use_case.hotel_search.HotelSearchInputBoundary;
+import use_case.hotel_search.HotelSearchInteractor;
+import use_case.hotel_search.HotelSearchOutputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
@@ -264,6 +278,50 @@ public class AppBuilder {
         createNewTripView.setCreateNewTripController(controller);
         // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
+
+        return this;
+    }
+
+
+    public AppBuilder addFlightSearchUseCase() {
+        // 1. ViewModel
+        flightSearchViewModel = new FlightSearchViewModel();
+        // 2. Presenter
+        FlightSearchOutputBoundary flightSearchOutputBoundary =
+                new FlightSearchPresenter(flightSearchViewModel);
+        // 3. Gateway (calls SerpAPI)
+        FlightSearchGateway flightSearchGateway = new SerpApiFlightSearchGateway();
+        // 4. Interactor
+        FlightSearchInputBoundary flightSearchInteractor =
+                new FlightSearchInteractor(flightSearchGateway, flightSearchOutputBoundary);
+        // 5. Controller
+        FlightSearchController flightSearchController =
+                new FlightSearchController(flightSearchInteractor);
+
+        // 6. Inject into LoggedInView (like you do for logout)
+        loggedInView.setFlightSearchViewModel(flightSearchViewModel);
+        loggedInView.setFlightSearchController(flightSearchController);
+
+        return this;
+    }
+
+    public AppBuilder addHotelSearchUseCase() {
+        hotelSearchViewModel = new HotelSearchViewModel();
+
+        HotelSearchOutputBoundary outputBoundary =
+                new HotelSearchPresenter(hotelSearchViewModel);
+
+        HotelSearchGateway gateway = new SerpApiHotelSearchGateway();
+
+        HotelSearchInputBoundary interactor =
+                new HotelSearchInteractor(gateway, outputBoundary);
+
+        HotelSearchController controller =
+                new HotelSearchController(interactor);
+
+        // Inject into LoggedInView (same style as logout)
+        loggedInView.setHotelSearchViewModel(hotelSearchViewModel);
+        loggedInView.setHotelSearchController(controller);
 
         return this;
     }
