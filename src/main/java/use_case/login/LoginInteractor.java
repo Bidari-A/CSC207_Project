@@ -34,15 +34,23 @@ public class LoginInteractor implements LoginInputBoundary {
 
                 userDataAccessObject.setCurrentUsername(username);
                 String currentTripId = user.getCurrentTripId();
-                Trip currentTrip = userDataAccessObject.getTrip(currentTripId);
-                String currentTripName = currentTrip.getTripName();
-                String cityName = currentTrip.getDestination();
-                String date = currentTrip.getDates();
+                // Check if user has a currentTrip
+                if (currentTripId == null) {
+                    final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(),
+                            "", "", "");
+                    loginPresenter.prepareSuccessView(loginOutputData);
+                } else {
+                    Trip currentTrip = userDataAccessObject.getTrip(currentTripId);
+                    String currentTripName = currentTrip.getTripName();
+                    String cityName = currentTrip.getDestination();
+                    String date = currentTrip.getDates();
 
 
 
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), currentTripName, cityName, date);
-                loginPresenter.prepareSuccessView(loginOutputData);
+                    final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), currentTripName, cityName, date);
+                    loginPresenter.prepareSuccessView(loginOutputData);
+                }
+
             }
         }
     }

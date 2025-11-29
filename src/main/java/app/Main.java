@@ -1,9 +1,6 @@
 package app;
 
-import data_access.SerpApiFlightSearchGateway;
-import data_access.SerpApiHotelSearchGateway;
-
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,6 +20,7 @@ public class Main {
                 .addCreateNewTripUseCase()
                 .addTripView()
                 .addLoadTripDetailUseCase()
+                .addDeleteCurrentTripUseCase()
                 .build();
 
 

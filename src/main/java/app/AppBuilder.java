@@ -3,8 +3,6 @@ package app;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +18,8 @@ import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.create_trip_result.TripResultViewModel;
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
+import interface_adapter.delete_current_trip.DeleteCurrentTripPresenter;
 import interface_adapter.flight_search.FlightSearchViewModel;
 import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -40,6 +40,9 @@ import interface_adapter.trip_list.TripListViewModel;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripInteractor;
+import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
@@ -50,8 +53,8 @@ import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
-import use_case.logout.LogoutInteractor;
-import use_case.logout.LogoutOutputBoundary;                                  // NEW
+import use_case.logout.LogoutInteractor;                                  // NEW
+import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -262,6 +265,23 @@ public class AppBuilder {
         // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
 
+        return this;
+    }
+
+    /**
+     * Adds the Delete Current Trip Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addDeleteCurrentTripUseCase() {
+        final DeleteCurrentTripOutputBoundary deleteCurrentTripOutputBoundary =
+                new DeleteCurrentTripPresenter(loggedInViewModel);
+
+        final DeleteCurrentTripInputBoundary deleteCurrentTripInteractor =
+                new DeleteCurrentTripInteractor(userDataAccessObject, deleteCurrentTripOutputBoundary, userFactory);
+
+        final DeleteCurrentTripController deleteCurrentTripController =
+                new DeleteCurrentTripController(deleteCurrentTripInteractor);
+        loggedInView.setDeleteCurrentTripController(deleteCurrentTripController);
         return this;
     }
 

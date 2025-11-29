@@ -17,6 +17,7 @@ import entity.Trip;
 import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -31,7 +32,8 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
-        LoadTripDetailDataAccessInterface {
+        LoadTripDetailDataAccessInterface,
+        DeleteCurrentTripDataAccessInterface {
 
     private final File jsonFile;
     private final Map<String, User> accounts = new HashMap<>();
@@ -171,6 +173,34 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     /**
+     * Gets trips for a user filtered by status.
+     * Only returns trips that are in the user's tripList and match the specified status.
+     * @param username the username
+     * @param status the status to filter by (e.g., "COMPLETED", "CURRENT")
+     * @return list of trips for the user with the specified status
+     */
+    @Override
+    public List<Trip> getTrips(String username, String status) {
+        if (tripDataAccessObject != null) {
+            User user = get(username);
+            if (user == null) {
+                return new ArrayList<>();
+            }
+            
+            // Only return trips that are in the user's tripList and match the status
+            List<Trip> userTrips = new ArrayList<>();
+            for (String tripId : user.getTripList()) {
+                Trip trip = tripDataAccessObject.get(tripId);
+                if (trip != null && status.equals(trip.getStatus())) {
+                    userTrips.add(trip);
+                }
+            }
+            return userTrips;
+        }
+        return new ArrayList<>();
+    }
+
+    /**
      * Gets the current user name.
      * @return the current user name
      */
@@ -190,4 +220,24 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         }
         return null;
     }
+
+    // DeleteCurrentTripDataAccessInterface methods
+    @Override
+    public User getUser(String username) {
+        return get(username);
+    }
+
+    @Override
+    public boolean deleteTrip(String tripId) {
+        if (tripDataAccessObject != null) {
+            return tripDataAccessObject.delete(tripId);
+        }
+        return false;
+    }
+
+    @Override
+    public void saveUser(User user) {
+        save(user);
+    }
+
 }
