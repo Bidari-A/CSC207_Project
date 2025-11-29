@@ -3,6 +3,8 @@ package app;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -58,6 +60,7 @@ import interface_adapter.trip_list.TripListViewModel;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.create_new_trip.CreateNewTripUserDataAccessInterface;
 import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
 import use_case.delete_current_trip.DeleteCurrentTripInteractor;
 import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
@@ -152,7 +155,8 @@ public class AppBuilder {
     }
 
     GeminiTripAIDataAccessObject geminiTripAIDataAccessObject =
-            new GeminiTripAIDataAccessObject("AIzaSyA5zxNvHTaPChaOCDhyqTDwegMZZcXI8YQ");
+            new GeminiTripAIDataAccessObject("AIzaSyDJBJrQscLfUsVG3UYHXSfbrCF85njyqyI");
+
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -314,7 +318,8 @@ public class AppBuilder {
                 new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripResultViewModel);
 
         final CreateNewTripInputBoundary createNewTripInteractor =
-                new CreateNewTripInteractor(createNewTripPresenter);
+                new CreateNewTripInteractor(createNewTripPresenter,geminiTripAIDataAccessObject,
+                        tripDataAccessObject, userDataAccessObject);
 
         final CreateNewTripController controller =
                 new CreateNewTripController(createNewTripInteractor);
