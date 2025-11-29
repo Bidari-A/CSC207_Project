@@ -359,7 +359,7 @@ class DeleteCurrentTripInteractorTest {
         flights.add(new Flight("Test Airline", "2025-01-01", 500.0f));
         
         List<Destination> attractions = new ArrayList<>();
-        attractions.add(new Destination("Test Attraction", "Test Location", "Test Description", 50.0f));
+        attractions.add(new Destination("Test Attraction"));
         
         return new Trip(tripId, "Test Trip", ownerUsername, status, 
                        "2025-01-01 to 2025-01-05", "Test Destination", 
