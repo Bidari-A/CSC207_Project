@@ -1,5 +1,4 @@
 package use_case.create_new_trip;
-import use_case.create_new_trip.TripAIDataAccessInterface;
 
 public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
@@ -18,23 +17,36 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         System.out.println("Generating fake trip...");
         System.out.println("From: " + inputData.getFrom());
         System.out.println("To: " + inputData.getTo());
-        System.out.println("Date: " + inputData.getDate());
+        System.out.println("Date: " + inputData.getStartDate());
+        System.out.println("Date: " + inputData.getEndDate());
 
         String from = inputData.getFrom();
         String to = inputData.getTo();
-        String date = inputData.getDate();
+        String startDate = inputData.getStartDate();
+        String endDate = inputData.getEndDate();
 
         String tripName = from + " to " + to;
 
         String prompt =
-                "You are a travel assistant. Create a SHORT, friendly trip summary.\n"
-                        + "From city: " + from + "\n"
-                        + "To city: " + to + "\n"
-                        + "Date of departure: " + date + "\n\n"
-                        + "Respond with:\n"
-                        + "1) One paragraph (3–4 sentences) describing the trip.\n"
-                        + "2) A bullet list of 5 main places to visit.\n"
-                        + "Keep it under 100 words. Plain text only, no markdown.";
+                "You are a travel assistant. Using the trip information below, generate a plan.\n"
+                        + "From: " + from + "\n"
+                        + "To: " + to + "\n"
+                        + "Start Date: " + startDate + "\n"
+                        + "End Date: " + endDate + "\n\n"
+                        + "Your response must be plain text in exactly this structure:\n\n"
+                        + "TRIP SUMMARY:\n"
+                        + "<A natural paragraph between 50 and 150 words that describes the trip, "
+                        + "taking into account the length of stay between the start and end dates.>\n\n"
+                        + "DESTINATIONS:\n"
+                        + "- <Attraction or destination 1>\n"
+                        + "- <Attraction or destination 2>\n"
+                        + "- <Attraction or destination 3>\n"
+                        + "- <More attractions appropriate for the trip duration>\n\n"
+                        + "Rules:\n"
+                        + "1. TRIP SUMMARY must be between 50 and 150 words.\n"
+                        + "2. Under DESTINATIONS, list between 3 and 12 items, each on its own line starting with '- '.\n"
+                        + "3. Do not add any other headings or sections. Do not use markdown, numbering, or extra labels.";
+
 
         String itinerary = tripAIDataAccessObject.generateTripPlan(prompt);
 
@@ -43,8 +55,8 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
                 tripName,
                 from,
                 to,
-                date,   // startDate
-                date,   // endDate (same for now)
+                startDate,   // startDate
+                startDate,   // endDate (same for now)
                 itinerary
         );
 

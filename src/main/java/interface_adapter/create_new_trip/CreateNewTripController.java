@@ -18,9 +18,9 @@ public class CreateNewTripController {
         createNewTripInteractor.goBack();
     }
 
-    public void execute(String from, String to, String date) {
+    public void execute(String from, String to, String startDate,  String endDate) {
         CreateNewTripInputData inputData =
-                new CreateNewTripInputData(from, to, date);
+                new CreateNewTripInputData(from, to, startDate, endDate);
         createNewTripInteractor.execute(inputData);
     }
 
