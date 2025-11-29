@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.FileDeleteTripDataAccessObject;
 import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
 import entity.Trip;
@@ -40,6 +41,10 @@ import interface_adapter.trip_list.TripListViewModel;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.delete_trip_list.DeleteTripInputBoundary;
+import use_case.delete_trip_list.DeleteTripInteractor;
+import use_case.delete_trip_list.DeleteTripOutputBoundary;
+import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
@@ -221,6 +226,22 @@ public class AppBuilder {
         tripView.setTripController(tripController);
         loggedInView.setTripController(tripController);
         tripListView.setTripController(tripController);
+        return this;
+    }
+
+    public AppBuilder addDeleteTripUseCase() {
+
+        DeleteTripUserDataAccessInterface deleteTripDAO =
+                new FileDeleteTripDataAccessObject(tripDataAccessObject);
+
+        DeleteTripOutputBoundary deleteTripPresenter =
+                new TripListPresenter(viewManagerModel, tripListViewModel);
+
+        DeleteTripInputBoundary deleteTripInteractor =
+                new DeleteTripInteractor(deleteTripDAO, deleteTripPresenter);
+
+        tripListView.getTripListController().setDeleteTripUseCaseInteractor(deleteTripInteractor);
+
         return this;
     }
 
