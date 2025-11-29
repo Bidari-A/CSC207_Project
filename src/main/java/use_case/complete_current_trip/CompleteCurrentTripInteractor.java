@@ -4,6 +4,7 @@ import entity.Trip;
 import entity.User;
 import entity.UserFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,8 +62,13 @@ public class CompleteCurrentTripInteractor implements CompleteCurrentTripInputBo
         );
         userDataAccessObject.saveTrip(completedTrip);
 
-        // Update user: clear currentTripId (set to null)
-        User updatedUser = userFactory.create(username, user.getPassword(), null, user.getTripList());
+        // Update user: add tripId to tripList and clear currentTripId (set to null)
+        List<String> tripList = new ArrayList<>(user.getTripList());
+        // Add the completed trip to tripList if not already present
+        if (!tripList.contains(currentTripId)) {
+            tripList.add(currentTripId);
+        }
+        User updatedUser = userFactory.create(username, user.getPassword(), null, tripList);
         userDataAccessObject.saveUser(updatedUser);
 
         // Prepare success view
