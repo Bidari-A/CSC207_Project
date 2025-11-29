@@ -18,12 +18,13 @@ import entity.Destination;
 import entity.Flight;
 import entity.Trip;
 import entity.TripIdGenerator;
+import use_case.create_new_trip.CreateNewTripTripDataAccessInterface;
 
 /**
  * DAO for trip data implemented using a JSON file to persist the data.
  * Supports full CRUD operations: create, read, update, delete.
  */
-public class FileTripDataAccessObject {
+public class FileTripDataAccessObject implements CreateNewTripTripDataAccessInterface {
     private final File jsonFile;
     private final Map<String, Trip> trips = new HashMap<>();
 
@@ -115,10 +116,7 @@ public class FileTripDataAccessObject {
             for (int i = 0; i < attractionsArray.length(); i++) {
                 JSONObject attractionJson = attractionsArray.getJSONObject(i);
                 String name = attractionJson.has("name") ? attractionJson.getString("name") : "";
-                String address = attractionJson.has("address") ? attractionJson.getString("address") : "";
-                String description = attractionJson.has("description") ? attractionJson.getString("description") : "";
-                float price = attractionJson.has("price") ? (float) attractionJson.getDouble("price") : 0.0f;
-                attractions.add(new Destination(name, address, description, price));
+                attractions.add(new Destination(name));
             }
         }
 
@@ -172,9 +170,6 @@ public class FileTripDataAccessObject {
                 for (Destination attraction : trip.getAttractions()) {
                     JSONObject attractionJson = new JSONObject();
                     attractionJson.put("name", attraction.getName());
-                    attractionJson.put("address", attraction.getAddress());
-                    attractionJson.put("description", attraction.getDescription());
-                    attractionJson.put("price", attraction.getPrice());
                     attractionsArray.put(attractionJson);
                 }
                 tripJson.put("attractions", attractionsArray);
@@ -186,6 +181,16 @@ public class FileTripDataAccessObject {
         } catch (IOException ex) {
             throw new RuntimeException("Error saving trips to JSON file", ex);
         }
+    }
+
+//    @Override
+//    public void saveTrip(Trip trip) {
+//        save(trip);   // reuse your already-correct logic
+//    }
+
+    @Override
+    public Trip saveTrip(Trip trip) {
+        return save(trip);
     }
 
     /**
