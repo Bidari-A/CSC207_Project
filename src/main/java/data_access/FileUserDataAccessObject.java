@@ -263,23 +263,6 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
 
-    // DeleteCurrentTripDataAccessInterface methods
-    @Override
-    public User getUser(String username) {
-        return get(username);
-    }
 
-    @Override
-    public boolean deleteTrip(String tripId) {
-        if (tripDataAccessObject != null) {
-            return tripDataAccessObject.delete(tripId);
-        }
-        return false;
-    }
-
-    @Override
-    public void saveUser(User user) {
-        save(user);
-    }
 
 }
