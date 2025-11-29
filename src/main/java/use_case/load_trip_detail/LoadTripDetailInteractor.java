@@ -93,10 +93,12 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
     /**
      * Formats a list of attractions (Destination objects) into a display string.
      */
-
     private String formatAttractions(List<Destination> attractions) {
         return attractions.stream()
-                .map(Destination::getName)
+                .map(attraction -> attraction.getName() + "\n" +
+                        attraction.getAddress() + "\n" +
+                        attraction.getDescription() +
+                        (attraction.getPrice() > 0 ? "\nPrice: $" + String.format("%.2f", attraction.getPrice()) : ""))
                 .collect(Collectors.joining("\n\n"));
     }
 
