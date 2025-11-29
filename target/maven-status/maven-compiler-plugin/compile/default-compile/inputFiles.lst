@@ -13,8 +13,6 @@
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/entity/UserFactory.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/ViewManagerModel.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/ViewModel.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/complete_current_trip/CompleteCurrentTripController.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/complete_current_trip/CompleteCurrentTripPresenter.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/create_new_trip/CreateNewTripController.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/create_new_trip/CreateNewTripPresenter.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/interface_adapter/create_new_trip/CreateNewTripState.java
@@ -59,12 +57,6 @@
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/change_password/ChangePasswordOutputBoundary.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/change_password/ChangePasswordOutputData.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/change_password/ChangePasswordUserDataAccessInterface.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/complete_current_trip/CompleteCurrentTripDataAccessInterface.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/complete_current_trip/CompleteCurrentTripInputBoundary.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/complete_current_trip/CompleteCurrentTripInputData.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/complete_current_trip/CompleteCurrentTripInteractor.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/complete_current_trip/CompleteCurrentTripOutputBoundary.java
-/Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/complete_current_trip/CompleteCurrentTripOutputData.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/create_new_trip/CreateNewTripInputBoundary.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/create_new_trip/CreateNewTripInputData.java
 /Users/hanmeilin/cursor/CSC207_Project_11_27/src/main/java/use_case/create_new_trip/CreateNewTripInteractor.java

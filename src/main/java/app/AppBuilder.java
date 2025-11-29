@@ -3,8 +3,6 @@ package app;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +18,8 @@ import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
 import interface_adapter.create_trip_result.TripResultViewModel;
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
+import interface_adapter.delete_current_trip.DeleteCurrentTripPresenter;
 import interface_adapter.flight_search.FlightSearchViewModel;
 import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -37,13 +37,12 @@ import interface_adapter.trip.TripViewModel;
 import interface_adapter.trip_list.TripListController;
 import interface_adapter.trip_list.TripListPresenter;
 import interface_adapter.trip_list.TripListViewModel;
-import interface_adapter.delete_current_trip.DeleteCurrentTripController;
-import interface_adapter.delete_current_trip.DeleteCurrentTripPresenter;
-import interface_adapter.complete_current_trip.CompleteCurrentTripController;
-import interface_adapter.complete_current_trip.CompleteCurrentTripPresenter;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
+import use_case.delete_current_trip.DeleteCurrentTripInteractor;
+import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInputBoundary;
 import use_case.load_trip_detail.LoadTripDetailInteractor;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
@@ -54,17 +53,11 @@ import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
-import use_case.logout.LogoutInteractor;
-import use_case.logout.LogoutOutputBoundary;                                  // NEW
+import use_case.logout.LogoutInteractor;                                  // NEW
+import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
-import use_case.delete_current_trip.DeleteCurrentTripInteractor;
-import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
-import use_case.complete_current_trip.CompleteCurrentTripInputBoundary;
-import use_case.complete_current_trip.CompleteCurrentTripInteractor;
-import use_case.complete_current_trip.CompleteCurrentTripOutputBoundary;
 import view.CreateNewTripView;
 import view.LoggedInView;
 import view.LoginView;
@@ -289,23 +282,6 @@ public class AppBuilder {
         final DeleteCurrentTripController deleteCurrentTripController =
                 new DeleteCurrentTripController(deleteCurrentTripInteractor);
         loggedInView.setDeleteCurrentTripController(deleteCurrentTripController);
-        return this;
-    }
-
-    /**
-     * Adds the Complete Current Trip Use Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addCompleteCurrentTripUseCase() {
-        final CompleteCurrentTripOutputBoundary completeCurrentTripOutputBoundary =
-                new CompleteCurrentTripPresenter(loggedInViewModel);
-
-        final CompleteCurrentTripInputBoundary completeCurrentTripInteractor =
-                new CompleteCurrentTripInteractor(userDataAccessObject, completeCurrentTripOutputBoundary, userFactory);
-
-        final CompleteCurrentTripController completeCurrentTripController =
-                new CompleteCurrentTripController(completeCurrentTripInteractor);
-        loggedInView.setCompleteCurrentTripController(completeCurrentTripController);
         return this;
     }
 

@@ -3,7 +3,6 @@ view/LoginView.class
 use_case/delete_current_trip/DeleteCurrentTripDataAccessInterface.class
 use_case/change_password/ChangePasswordUserDataAccessInterface.class
 entity/Trip.class
-use_case/complete_current_trip/CompleteCurrentTripInputBoundary.class
 use_case/load_trip_list/LoadTripListUserDataAccessInterface.class
 view/HotelSearchDialog.class
 interface_adapter/ViewManagerModel.class
@@ -33,13 +32,11 @@ use_case/create_new_trip/CreateNewTripOutputBoundary.class
 use_case/load_trip_list/LoadTripListInteractor.class
 use_case/change_password/ChangePasswordOutputData.class
 use_case/load_trip_list/LoadTripListInputBoundary.class
-use_case/complete_current_trip/CompleteCurrentTripOutputBoundary.class
 interface_adapter/logged_in/ChangePasswordController.class
 interface_adapter/signup/SignupPresenter.class
 interface_adapter/trip_list/TripListController.class
 use_case/flight_search/FlightSearchOutputBoundary.class
 interface_adapter/login/LoginPresenter.class
-use_case/complete_current_trip/CompleteCurrentTripInputData.class
 view/SignupView$4.class
 use_case/load_trip_detail/LoadTripDetailOutputBoundary.class
 app/Main.class
@@ -52,7 +49,6 @@ interface_adapter/logout/LogoutPresenter.class
 interface_adapter/flight_search/FlightSearchPresenter.class
 interface_adapter/logout/LogoutController.class
 interface_adapter/flight_search/FlightSearchController.class
-interface_adapter/complete_current_trip/CompleteCurrentTripController.class
 entity/User.class
 view/SignupView$5.class
 use_case/create_new_trip/CreateNewTripInteractor.class
@@ -78,13 +74,11 @@ use_case/change_password/ChangePasswordOutputBoundary.class
 use_case/signup/SignupInputBoundary.class
 use_case/hotel_search/HotelSearchOutputData.class
 view/SignupView.class
-interface_adapter/complete_current_trip/CompleteCurrentTripPresenter.class
 use_case/load_trip_detail/LoadTripDetailInputData.class
 use_case/delete_current_trip/DeleteCurrentTripInteractor.class
 use_case/load_trip_detail/LoadTripDetailDataAccessInterface.class
 use_case/hotel_search/HotelSearchInteractor.class
 view/LabelTextPanel.class
-use_case/complete_current_trip/CompleteCurrentTripOutputData.class
 use_case/delete_current_trip/DeleteCurrentTripInputData.class
 use_case/delete_current_trip/DeleteCurrentTripOutputData.class
 interface_adapter/flight_search/FlightSearchViewModel.class
@@ -92,7 +86,6 @@ use_case/signup/SignupOutputBoundary.class
 use_case/load_trip_list/LoadTripListInputData.class
 use_case/hotel_search/HotelSearchOutputBoundary.class
 data_access/SerpApiHotelSearchGateway.class
-use_case/complete_current_trip/CompleteCurrentTripDataAccessInterface.class
 use_case/create_new_trip/CreateNewTripInputData.class
 use_case/login/LoginUserDataAccessInterface.class
 view/LoggedInView.class
@@ -120,7 +113,6 @@ interface_adapter/signup/SignupState.class
 interface_adapter/create_trip_result/TripResultState.class
 use_case/login/LoginInputBoundary.class
 interface_adapter/hotel_search/HotelSearchPresenter.class
-use_case/complete_current_trip/CompleteCurrentTripInteractor.class
 use_case/logout/LogoutInteractor.class
 interface_adapter/delete_current_trip/DeleteCurrentTripController.class
 view/ViewManager.class
