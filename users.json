@@ -5,6 +5,12 @@
     "tripList": [],
     "username": "aaa"
   },
+  "aa": {
+    "password": "1",
+    "currentTripId": null,
+    "tripList": [],
+    "username": "aa"
+  },
   "a": {
     "password": "1",
     "currentTripId": "T000",
