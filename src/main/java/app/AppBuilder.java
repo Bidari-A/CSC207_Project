@@ -16,6 +16,7 @@ import data_access.FileUserDataAccessObject;
 import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
 import data_access.*;
+import data_access.*;
 import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
