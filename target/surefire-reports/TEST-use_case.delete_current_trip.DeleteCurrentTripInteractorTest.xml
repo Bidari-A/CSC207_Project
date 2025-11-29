@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.027" tests="12" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="24"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/hanmeilin/cursor/CSC207_Project_11_27/target/test-classes:/Users/hanmeilin/cursor/CSC207_Project_11_27/target/classes:/Users/hanmeilin/.m2/repository/org/json/json/20240303/json-20240303.jar:/Users/hanmeilin/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/Users/hanmeilin/.m2/repository/com/squareup/okio/okio/3.6.0/okio-3.6.0.jar:/Users/hanmeilin/.m2/repository/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.10/kotlin-stdlib-common-1.9.10.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.21/kotlin-stdlib-jdk8-1.8.21.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.8.21/kotlin-stdlib-1.8.21.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.21/kotlin-stdlib-jdk7-1.8.21.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter/5.8.1/junit-jupiter-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.1/junit-jupiter-api-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/hanmeilin/.m2/repository/org/junit/platform/junit-platform-commons/1.8.1/junit-platform-commons-1.8.1.jar:/Users/hanmeilin/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.8.1/junit-jupiter-params-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.8.1/junit-jupiter-engine-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/junit/platform/junit-platform-engine/1.8.1/junit-platform-engine-1.8.1.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="24"/>
+    <property name="user.country" value="CA"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/Users/hanmeilin/Library/Java/JavaVirtualMachines/openjdk-24.0.2+12-54/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/hanmeilin/cursor/CSC207_Project_11_27/target/surefire/surefirebooter-20251129160124683_3.jar /Users/hanmeilin/cursor/CSC207_Project_11_27/target/surefire 2025-11-29T16-01-24_640-jvmRun1 surefire-20251129160124683_1tmp surefire_0-20251129160124683_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="test" value="use_case.delete_current_trip.DeleteCurrentTripInteractorTest"/>
+    <property name="surefire.test.class.path" value="/Users/hanmeilin/cursor/CSC207_Project_11_27/target/test-classes:/Users/hanmeilin/cursor/CSC207_Project_11_27/target/classes:/Users/hanmeilin/.m2/repository/org/json/json/20240303/json-20240303.jar:/Users/hanmeilin/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/Users/hanmeilin/.m2/repository/com/squareup/okio/okio/3.6.0/okio-3.6.0.jar:/Users/hanmeilin/.m2/repository/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.10/kotlin-stdlib-common-1.9.10.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.21/kotlin-stdlib-jdk8-1.8.21.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.8.21/kotlin-stdlib-1.8.21.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/Users/hanmeilin/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.21/kotlin-stdlib-jdk7-1.8.21.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter/5.8.1/junit-jupiter-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.1/junit-jupiter-api-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/hanmeilin/.m2/repository/org/junit/platform/junit-platform-commons/1.8.1/junit-platform-commons-1.8.1.jar:/Users/hanmeilin/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.8.1/junit-jupiter-params-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.8.1/junit-jupiter-engine-5.8.1.jar:/Users/hanmeilin/.m2/repository/org/junit/platform/junit-platform-engine/1.8.1/junit-platform-engine-1.8.1.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/hanmeilin"/>
+    <property name="user.language" value="zh"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-07-15"/>
+    <property name="java.home" value="/Users/hanmeilin/Library/Java/JavaVirtualMachines/openjdk-24.0.2+12-54/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/hanmeilin/cursor/CSC207_Project_11_27"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/hanmeilin/cursor/CSC207_Project_11_27/target/surefire/surefirebooter-20251129160124683_3.jar"/>
+    <property name="user.script" value="Hans"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="24.0.2+12-54"/>
+    <property name="user.name" value="hanmeilin"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="15.7.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="maven.ext.class.path" value="/Users/hanmeilin/.cursor/extensions/oracle.oracle-java-24.1.2-universal/nbcode/java/maven-nblib/netbeans-eventspy.jar"/>
+    <property name="localRepository" value="/Users/hanmeilin/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/var/folders/2s/x1lrxh2j4qj5bky9x37y_qx00000gn/T/"/>
+    <property name="java.version" value="24.0.2"/>
+    <property name="user.dir" value="/Users/hanmeilin/cursor/CSC207_Project_11_27"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/hanmeilin/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="24.0.2+12-54"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="68.0"/>
+  </properties>
+  <testcase name="testFailureNoCurrentTripEmptyString" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.01"/>
+  <testcase name="testFailureTripStatusNotCurrent" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.002"/>
+  <testcase name="testFailureNoCurrentTripNull" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.0"/>
+  <testcase name="testSuccessDeleteCurrentTrip" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.001"/>
+  <testcase name="testFailureDeleteTripFailed" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.0"/>
+  <testcase name="testSuccessVerifyOutputData" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.0"/>
+  <testcase name="testFailureUserNotFound" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.001"/>
+  <testcase name="testSuccessWithEmptyTripList" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.0"/>
+  <testcase name="testFailureTripStatusOther" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.0"/>
+  <testcase name="testSuccessWithMultipleTripsInList" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.001"/>
+  <testcase name="testSuccessWhenCurrentTripNotInTripList" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.0"/>
+  <testcase name="testFailureCurrentTripNotFound" classname="use_case.delete_current_trip.DeleteCurrentTripInteractorTest" time="0.001"/>
+</testsuite>

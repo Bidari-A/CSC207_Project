@@ -84,10 +84,29 @@ class DeleteCurrentTripInteractorTest {
     }
 
     @Test
-    void testFailureNoCurrentTrip() {
-        // Setup: Create a user without a current trip
+    void testFailureNoCurrentTripNull() {
+        // Setup: Create a user without a current trip (null)
         String username = "testuser";
         User user = userFactory.create(username, "password", null, new ArrayList<>());
+        mockDataAccess.saveUser(user);
+
+        // Execute
+        DeleteCurrentTripInputData inputData = new DeleteCurrentTripInputData(username);
+        interactor.execute(inputData);
+
+        // Verify fail was called with correct message
+        assertTrue(mockPresenter.failCalled, "Fail view should be prepared");
+        assertFalse(mockPresenter.successCalled, "Success view should not be prepared");
+        assertEquals("There is no current trip, unable to delete, please create a new trip first", 
+                     mockPresenter.failMessage, "Error message should match");
+    }
+
+    @Test
+    void testFailureNoCurrentTripEmptyString() {
+        // Setup: Create a user with empty string currentTripId
+        String username = "testuser";
+        // Create user with empty string currentTripId directly (User constructor accepts it)
+        User user = new User(username, "password", "", new ArrayList<>());
         mockDataAccess.saveUser(user);
 
         // Execute
@@ -134,6 +153,30 @@ class DeleteCurrentTripInteractorTest {
 
         // Create a trip with COMPLETED status
         Trip trip = createTestTrip(tripId, username, "COMPLETED");
+        mockDataAccess.saveTrip(trip);
+
+        // Execute
+        DeleteCurrentTripInputData inputData = new DeleteCurrentTripInputData(username);
+        interactor.execute(inputData);
+
+        // Verify fail was called with correct message
+        assertTrue(mockPresenter.failCalled, "Fail view should be prepared");
+        assertFalse(mockPresenter.successCalled, "Success view should not be prepared");
+        assertEquals("The trip is not a current trip.", mockPresenter.failMessage, "Error message should match");
+    }
+
+    @Test
+    void testFailureTripStatusOther() {
+        // Setup: Test with a different status (not COMPLETED, not CURRENT)
+        String username = "testuser";
+        String tripId = "T001";
+        List<String> tripList = new ArrayList<>();
+        tripList.add(tripId);
+        User user = userFactory.create(username, "password", tripId, tripList);
+        mockDataAccess.saveUser(user);
+
+        // Create a trip with a different status (e.g., "PLANNED" or any other status)
+        Trip trip = createTestTrip(tripId, username, "PLANNED");
         mockDataAccess.saveTrip(trip);
 
         // Execute
@@ -276,6 +319,35 @@ class DeleteCurrentTripInteractorTest {
         
         // Verify tripList remains empty
         assertTrue(updatedUser.getTripList().isEmpty(), "Trip list should remain empty");
+    }
+
+    @Test
+    void testSuccessVerifyOutputData() {
+        // Setup: Create a user with a current trip
+        String username = "testuser";
+        String tripId = "T001";
+        List<String> tripList = new ArrayList<>();
+        tripList.add(tripId);
+        User user = userFactory.create(username, "password", tripId, tripList);
+        mockDataAccess.saveUser(user);
+
+        // Create a trip with CURRENT status
+        Trip trip = createTestTrip(tripId, username, "CURRENT");
+        mockDataAccess.saveTrip(trip);
+
+        // Execute
+        DeleteCurrentTripInputData inputData = new DeleteCurrentTripInputData(username);
+        interactor.execute(inputData);
+
+        // Verify success was called with correct username
+        assertTrue(mockPresenter.successCalled, "Success view should be prepared");
+        assertEquals(username, mockPresenter.successUsername, "Output data should contain correct username");
+        
+        // Verify all state changes
+        assertTrue(mockDataAccess.isTripDeleted(tripId), "Trip should be deleted");
+        User updatedUser = mockDataAccess.getUser(username);
+        assertNull(updatedUser.getCurrentTripId(), "Current trip ID should be null");
+        assertFalse(updatedUser.getTripList().contains(tripId), "Trip ID should be removed from trip list");
     }
 
     // Helper method to create a test trip
