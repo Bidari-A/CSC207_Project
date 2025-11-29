@@ -1,11 +1,17 @@
 {
   "a": {
-    "username": "a",
     "password": "1",
     "currentTripId": "T000",
     "tripList": [
       "T001",
       "T002"
-    ]
+    ],
+    "username": "a"
+  },
+  "jay": {
+    "password": "123",
+    "currentTripId": null,
+    "tripList": [],
+    "username": "jay"
   }
 }

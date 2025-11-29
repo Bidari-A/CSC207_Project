@@ -6,8 +6,8 @@ public class Trip {
     private final String tripId;
     private final String tripName;
     private final String ownerUserName;
-    private final String status;
-    private final String dates;
+    private String status;
+    private String dates;
     private final String destination; // Main destination location (from "To" field)
     private final List<Accommodation> hotels;
     private final List<Flight> flights;
