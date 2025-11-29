@@ -20,8 +20,8 @@ public class LoadTripListInteractor implements LoadTripListInputBoundary {
     @Override
     public void execute(LoadTripListInputData loadTripListInputData) {
         final String username = loadTripListInputData.getUsername();
-        // Load trips from database
-        List<Trip> trips = userDataAccessObject.getTrips(username);
+        // Load trips from database - only show COMPLETED trips in the trip list
+        List<Trip> trips = userDataAccessObject.getTrips(username, "COMPLETED");
 
         final LoadTripListOutputData loadTripListOutputData = new LoadTripListOutputData(trips, username);
         loadTripListPresenter.prepareSuccessView(loadTripListOutputData);

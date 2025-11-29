@@ -175,6 +175,34 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     /**
+     * Gets trips for a user filtered by status.
+     * Only returns trips that are in the user's tripList and match the specified status.
+     * @param username the username
+     * @param status the status to filter by (e.g., "COMPLETED", "CURRENT")
+     * @return list of trips for the user with the specified status
+     */
+    @Override
+    public List<Trip> getTrips(String username, String status) {
+        if (tripDataAccessObject != null) {
+            User user = get(username);
+            if (user == null) {
+                return new ArrayList<>();
+            }
+            
+            // Only return trips that are in the user's tripList and match the status
+            List<Trip> userTrips = new ArrayList<>();
+            for (String tripId : user.getTripList()) {
+                Trip trip = tripDataAccessObject.get(tripId);
+                if (trip != null && status.equals(trip.getStatus())) {
+                    userTrips.add(trip);
+                }
+            }
+            return userTrips;
+        }
+        return new ArrayList<>();
+    }
+
+    /**
      * Gets the current user name.
      * @return the current user name
      */

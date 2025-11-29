@@ -2,7 +2,7 @@
   "aaa": {
     "password": "123",
     "currentTripId": "T100",
-    "tripList": ["T100"],
+    "tripList": [],
     "username": "aaa"
   },
   "a": {
