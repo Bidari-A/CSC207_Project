@@ -1,7 +1,7 @@
 {
   "aaa": {
     "password": "123",
-    "currentTripId": null,
+    "currentTripId": "T100",
     "tripList": [],
     "username": "aaa"
   },
