@@ -34,33 +34,23 @@ public class LoginInteractor implements LoginInputBoundary {
 
                 userDataAccessObject.setCurrentUsername(username);
                 String currentTripId = user.getCurrentTripId();
-                
-                // Handle case when user has no current trip
-                String currentTripName;
-                String cityName;
-                String date;
-                
-                if (currentTripId == null || currentTripId.isEmpty()) {
-                    // No current trip - set default values
-                    currentTripName = "N/A";
-                    cityName = "N/A";
-                    date = "N/A";
+                // Check if user has a currentTrip
+                if (currentTripId == null) {
+                    final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(),
+                            "", "", "");
+                    loginPresenter.prepareSuccessView(loginOutputData);
                 } else {
                     Trip currentTrip = userDataAccessObject.getTrip(currentTripId);
-                    if (currentTrip == null) {
-                        // Trip ID exists but trip not found - set default values
-                        currentTripName = "N/A";
-                        cityName = "N/A";
-                        date = "N/A";
-                    } else {
-                        currentTripName = currentTrip.getTripName();
-                        cityName = currentTrip.getDestination();
-                        date = currentTrip.getDates();
-                    }
+                    String currentTripName = currentTrip.getTripName();
+                    String cityName = currentTrip.getDestination();
+                    String date = currentTrip.getDates();
+
+
+
+                    final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), currentTripName, cityName, date);
+                    loginPresenter.prepareSuccessView(loginOutputData);
                 }
 
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getUsername(), currentTripName, cityName, date);
-                loginPresenter.prepareSuccessView(loginOutputData);
             }
         }
     }

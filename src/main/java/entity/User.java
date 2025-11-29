@@ -3,11 +3,11 @@ package entity;
 import java.util.List;
 
 public class User {
-    private final String username;
-    private final String password;
+    private  String username;
+    private  String password;
 
-    private final String currentTripId;     // may be null
-    private final List<String> tripList;    // list of trip IDs
+    private  String currentTripId;     // may be null
+    private  List<String> tripList;    // list of trip IDs
 
     public User(String username, String password,
                 String currentTripId, List<String> tripList) {
@@ -21,6 +21,10 @@ public class User {
     public String getPassword() { return password; }
     public String getCurrentTripId() { return currentTripId; }
     public List<String> getTripList() { return tripList; }
+    public void setUsername(String username) { this.username = username; }
+    public void setPassword(String password) { this.password = password; }
+    public void setCurrentTripId(String currentTripId) { this.currentTripId = currentTripId; }
+    public void setTripList(List<String> tripList) { this.tripList = tripList; }
 
     @Override
     public String toString() {
