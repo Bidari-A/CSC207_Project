@@ -7,16 +7,13 @@ public class CreateNewTripInputData {
     private final String to;
     private final String startDate;
     private final String endDate;
-    private final String currentUsername;
 
     public CreateNewTripInputData(String from, String to,
-                                  String date, String endDate,
-                                  String currentUsername) {
+                                  String date, String endDate) {
         this.from = from;
         this.to = to;
         this.startDate = date;
         this.endDate = endDate;
-        this.currentUsername = currentUsername;
     }
 
     public String getFrom() {
@@ -32,6 +29,4 @@ public class CreateNewTripInputData {
     }
 
     public String getEndDate() {return endDate;}
-
-    public String getCurrentUsername() {return currentUsername;}
 }

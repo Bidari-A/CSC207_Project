@@ -1,28 +1,14 @@
 package use_case.create_new_trip;
 
-import entity.Accommodation;
-import entity.Destination;
-import entity.Flight;
-import entity.Trip;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
     private final CreateNewTripOutputBoundary createNewTripPresenter;
     private final TripAIDataAccessInterface tripAIDataAccessObject;
-    private final CreateNewTripTripDataAccessInterface tripSaver;
-    private final CreateNewTripUserDataAccessInterface userDataAccess;
 
     public CreateNewTripInteractor(CreateNewTripOutputBoundary createNewTripPresenter,
-                                   TripAIDataAccessInterface tripAIDataAccessObject,
-                                   CreateNewTripTripDataAccessInterface tripSaver,
-                                   CreateNewTripUserDataAccessInterface userDataAccess) {
+                                   TripAIDataAccessInterface tripAIDataAccessObject) {
         this.createNewTripPresenter = createNewTripPresenter;
         this.tripAIDataAccessObject = tripAIDataAccessObject;
-        this.tripSaver = tripSaver;
-        this.userDataAccess = userDataAccess;
     }
 
     @Override
@@ -38,7 +24,6 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         String to = inputData.getTo();
         String startDate = inputData.getStartDate();
         String endDate = inputData.getEndDate();
-        String currentUsername = inputData.getCurrentUsername();
 
         String tripName = from + " to " + to;
 
@@ -66,45 +51,6 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         String itinerary = tripAIDataAccessObject.generateTripPlan(prompt);
 
 
-        // Parse destinations from the AI text
-        List<Destination> attractions = parseDestinations(itinerary);
-
-        // Temporary: just to check it works
-        System.out.println("Parsed attractions:");
-        for (Destination d : attractions) {
-            System.out.println(" - " + d.getName());
-        }
-
-        String tripSummary = parseTripSummary(itinerary);
-
-        // Build dates string for Trip entity
-        String dates = startDate + " to " + endDate;
-
-        // Empty lists for hotels and flights for now
-        List<Accommodation> hotels = new ArrayList<>();
-        List<Flight> flights = new ArrayList<>();
-
-
-        // Create Trip with blank ID; DAO will generate the real ID
-        Trip trip = new Trip(
-                "",             // tripId will be set in DAO
-                tripName,
-                currentUsername,     // ownerUserName from input data
-                "CURRENT",           // status
-                dates,
-                to,                  // main destination city
-                hotels,
-                flights,
-                attractions          // parsed destinations from Gemini
-        );
-
-        // Store the trip
-        // tripSaver.saveTrip(trip);
-        Trip savedTrip = tripSaver.saveTrip(trip);
-        String tripId = savedTrip.getTripId();
-        userDataAccess.updateUserTrips(currentUsername, tripId);
-
-
         CreateNewTripOutputData outputData = new CreateNewTripOutputData(
                 tripName,
                 from,
@@ -117,63 +63,6 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         // THIS LINE IS WHAT MATTERS:
         createNewTripPresenter.presentResult(outputData);
     }
-
-
-
-    private List<Destination> parseDestinations(String aiText) {
-        List<Destination> result = new ArrayList<>();
-
-        String marker = "DESTINATIONS:";
-        int index = aiText.indexOf(marker);
-        if (index == -1) {
-            // No DESTINATIONS section found
-            return result;
-        }
-
-        // Take the part after "DESTINATIONS:"
-        String after = aiText.substring(index + marker.length());
-
-        // Split by lines
-        String[] lines = after.split("\\R"); // splits on any line break
-
-        for (String rawLine : lines) {
-            String line = rawLine.trim();
-            if (line.startsWith("- ")) {
-                String name = line.substring(2).trim();
-                if (!name.isEmpty()) {
-                    result.add(new Destination(name));
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private String parseTripSummary(String aiText) {
-        String summaryMarker = "TRIP SUMMARY:";
-        String destinationsMarker = "DESTINATIONS:";
-
-        int summaryIndex = aiText.indexOf(summaryMarker);
-        if (summaryIndex == -1) {
-            // No summary marker found, just return the whole text
-            return aiText;
-        }
-
-        // Start right after "TRIP SUMMARY:"
-        int start = summaryIndex + summaryMarker.length();
-
-        int end = aiText.indexOf(destinationsMarker, start);
-        if (end == -1) {
-            // No DESTINATIONS found; take everything after TRIP SUMMARY
-            end = aiText.length();
-        }
-
-        String rawSummary = aiText.substring(start, end);
-        return rawSummary.trim();
-    }
-
-
-
     //maybe check later
     @Override
     public void prepareScreen() {
