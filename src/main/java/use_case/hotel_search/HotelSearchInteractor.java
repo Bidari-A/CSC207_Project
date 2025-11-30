@@ -47,34 +47,6 @@ public class HotelSearchInteractor implements HotelSearchInputBoundary {
         }
     }
 
-    // Minimal parser: grab first object in "ads" array
-    private String extractFirstHotel(String json) {
-        int adsIdx = json.indexOf("\"ads\"");
-        if (adsIdx < 0) {
-            return json; // fallback: whole JSON
-        }
-
-        int start = json.indexOf('{', adsIdx);
-        if (start < 0) {
-            return json;
-        }
-
-        int depth = 0;
-        int i = start;
-        for (; i < json.length(); i++) {
-            char c = json.charAt(i);
-            if (c == '{') depth++;
-            else if (c == '}') {
-                depth--;
-                if (depth == 0) {
-                    i++; // include closing brace
-                    break;
-                }
-            }
-        }
-
-        return json.substring(start, i);
-    }
 
     private void saveBestHotelToCurrentTrip(Accommodation accommodation) {
         if (accommodation == null) return;

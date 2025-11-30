@@ -61,36 +61,6 @@ public class FlightSearchInteractor implements FlightSearchInputBoundary{
             presenter.prepareFailView(e.getMessage());
         }
     }
-
-    private String extractFirstBestFlight(String json) {
-        int bestIdx = json.indexOf("\"best_flights\"");
-        if (bestIdx < 0) {
-            return json; // fallback: whole JSON
-        }
-
-        // find first '{' after "best_flights" – start of first object
-        int start = json.indexOf('{', bestIdx);
-        if (start < 0) {
-            return json;
-        }
-
-        int depth = 0;
-        int i = start;
-        for (; i < json.length(); i++) {
-            char c = json.charAt(i);
-            if (c == '{') {
-                depth++;
-            } else if (c == '}') {
-                depth--;
-                if (depth == 0) {
-                    i++; // include closing brace
-                    break;
-                }
-            }
-        }
-        return json.substring(start, i);
-    }
-
     private void saveBestFlightToCurrentTrip(Flight flight) {
         if (flight == null) {
             return;
