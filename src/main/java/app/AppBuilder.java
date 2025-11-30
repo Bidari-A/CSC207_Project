@@ -290,7 +290,7 @@ public class AppBuilder {
                 new TripListPresenter(viewManagerModel, tripListViewModel);
 
         DeleteTripInputBoundary deleteTripInteractor =
-                new DeleteTripInteractor(deleteTripDAO, deleteTripPresenter);
+                new DeleteTripInteractor(deleteTripDAO, userDataAccessObject, deleteTripPresenter);
 
         tripListView.getTripListController().setDeleteTripUseCaseInteractor(deleteTripInteractor);
 

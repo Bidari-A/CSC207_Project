@@ -1,17 +1,23 @@
 package use_case.delete_trip_list;
 
 import entity.Trip;
+import entity.User;
 
 import java.util.List;
 
+import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
+
 public class DeleteTripInteractor implements DeleteTripInputBoundary {
 
-    private final DeleteTripUserDataAccessInterface dao;
+    private final DeleteTripUserDataAccessInterface tripDAO;
+    private final DeleteCurrentTripDataAccessInterface userDAO;
     private final DeleteTripOutputBoundary presenter;
 
-    public DeleteTripInteractor(DeleteTripUserDataAccessInterface dao,
+    public DeleteTripInteractor(DeleteTripUserDataAccessInterface tripDAO,
+                                DeleteCurrentTripDataAccessInterface userDAO,
                                 DeleteTripOutputBoundary presenter) {
-        this.dao = dao;
+        this.tripDAO = tripDAO;
+        this.userDAO = userDAO;
         this.presenter = presenter;
     }
 
@@ -20,15 +26,28 @@ public class DeleteTripInteractor implements DeleteTripInputBoundary {
         String username = data.getUsername();
         String tripId = data.getTripId();
 
-        boolean success = dao.deleteTrip(username, tripId);
+        boolean success = tripDAO.deleteTrip(username, tripId);
         if (!success) {
             presenter.prepareFailView("Failed to delete trip.");
             return;
         }
 
-        List<Trip> updatedTrips = dao.getTrips(username);
+        User user = userDAO.getUser(username);
 
-        DeleteTripOutputData outputData = new DeleteTripOutputData(updatedTrips, username);
+        if (user.getCurrentTripId() != null &&
+                user.getCurrentTripId().equals(tripId)) {
+            user.setCurrentTripId(null);
+        }
+
+        user.getTripList().remove(tripId);
+
+        userDAO.saveUser(user);
+
+        List<Trip> updatedTrips = tripDAO.getTrips(username);
+
+        DeleteTripOutputData outputData =
+                new DeleteTripOutputData(updatedTrips, username);
+
         presenter.prepareSuccessView(outputData);
     }
 }
