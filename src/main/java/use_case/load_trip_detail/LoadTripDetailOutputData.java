@@ -10,7 +10,8 @@ public class LoadTripDetailOutputData {
     private final String prevViewName;
 
     public LoadTripDetailOutputData(String tripName, String cityName, String date,
-                                    String attractions, String flightDetails, String hotelDetails, String prevViewName) {
+                                    String attractions, String flightDetails,
+                                    String hotelDetails, String prevViewName) {
         this.tripName = tripName;
         this.cityName = cityName;
         this.date = date;
@@ -23,21 +24,27 @@ public class LoadTripDetailOutputData {
     public String getTripName() {
         return tripName;
     }
+
     public String getCityName() {
         return cityName;
     }
+
     public String getDate() {
         return date;
     }
+
     public String getAttractions() {
         return attractions;
     }
+
     public String getFlightDetails() {
         return flightDetails;
     }
+
     public String getHotelDetails() {
         return hotelDetails;
     }
+
     public String getPrevViewName() {
         return prevViewName;
     }

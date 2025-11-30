@@ -9,7 +9,8 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
     private final LoadTripDetailDataAccessInterface loadTripDetailDataAccessInterface;
     private final LoadTripDetailOutputBoundary loadTripDetailOutputBoundary;
 
-    public LoadTripDetailInteractor(LoadTripDetailDataAccessInterface loadTripDetailDataAccessInterface, LoadTripDetailOutputBoundary loadTripDetailOutputBoundary) {
+    public LoadTripDetailInteractor(LoadTripDetailDataAccessInterface loadTripDetailDataAccessInterface,
+                                    LoadTripDetailOutputBoundary loadTripDetailOutputBoundary) {
         this.loadTripDetailDataAccessInterface = loadTripDetailDataAccessInterface;
         this.loadTripDetailOutputBoundary = loadTripDetailOutputBoundary;
     }
@@ -18,19 +19,17 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
     public void execute(LoadTripDetailInputData loadTripDetailInputData) {
         final String prevViewName = loadTripDetailInputData.getPrevViewName();
         String tripId = loadTripDetailInputData.getTripId();
-        String username = loadTripDetailInputData.getUsername();
+        final String username = loadTripDetailInputData.getUsername();
 
         if (tripId == null) {
-            User user = loadTripDetailDataAccessInterface.get(username);
+            final User user = loadTripDetailDataAccessInterface.get(username);
             tripId = user.getCurrentTripId();
         }
         // Load trip from database using trip ID
-        Trip trip = loadTripDetailDataAccessInterface.getTrip(tripId);
+        final Trip trip = loadTripDetailDataAccessInterface.getTrip(tripId);
 
         if (trip != null) {
             // Format trip data for display
-            String tripName = trip.getTripName();
-            String dates = trip.getDates();
 
             // Format attractions (Destination objects)
             String attractions = formatAttractions(trip.getAttractions());
@@ -50,6 +49,7 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
                 hotelDetails = "No hotels selected";
             }
 
+            final String tripName = trip.getTripName();
             // Use the destination field from the trip entity
             String cityName = trip.getDestination();
             if (cityName == null || cityName.isEmpty()) {
@@ -57,12 +57,14 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
                 cityName = extractCityName(tripName);
             }
 
+            final String dates = trip.getDates();
             final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
                     tripName, cityName, dates,
                     attractions, flightDetails, hotelDetails, prevViewName);
 
             loadTripDetailOutputBoundary.prepareTripView(loadTripDetailOutputData);
-        } else {
+        }
+        else {
             // Trip not found - show empty/default data
             final LoadTripDetailOutputData loadTripDetailOutputData = new LoadTripDetailOutputData(
                     "Trip not found", "", "",
@@ -73,14 +75,16 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
 
     /**
      * Formats a list of flights into a display string.
+     * @param flights a list of Flight objects
+     * @return a string with formatted flights
      */
     private String formatFlights(List<Flight> flights) {
         return flights.stream()
                 .map(flight -> {
-                    StringBuilder sb = new StringBuilder();
+                    final StringBuilder sb = new StringBuilder();
                     sb.append("Airline: ").append(flight.getAirlineName());
 
-                    String times = flight.getDepartureTimes();
+                    final String times = flight.getDepartureTimes();
                     if (times != null && !times.isEmpty()) {
                         sb.append("\nDeparture: ").append(times);
                     }
@@ -96,23 +100,21 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
                 .collect(Collectors.joining("\n\n"));
     }
 
-
     /**
      * Formats a list of hotels into a display string.
-     */
-    /**
-     * Formats a list of hotels into a display string.
+     * @param hotels a list of Accommodation objects
+     * @return a String with formatted hotels
      */
     private String formatHotels(List<Accommodation> hotels) {
         return hotels.stream()
                 .map(hotel -> {
-                    StringBuilder sb = new StringBuilder();
+                    final StringBuilder sb = new StringBuilder();
 
                     // Name is always shown
                     sb.append("Name: ").append(hotel.getName());
 
                     // Only show address if present (yours is often "")
-                    String address = hotel.getAddress();
+                    final String address = hotel.getAddress();
                     if (address != null && !address.isEmpty()) {
                         sb.append("\nAddress: ").append(address);
                     }
@@ -129,11 +131,11 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
                 .collect(Collectors.joining("\n\n"));
     }
 
-
     /**
      * Formats a list of attractions (Destination objects) into a display string.
+     * @param attractions a list of Destination objects
+     * @return a String with formatted attractions
      */
-
     private String formatAttractions(List<Destination> attractions) {
         return attractions.stream()
                 .map(Destination::getName)
@@ -142,15 +144,17 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
 
     /**
      * Extracts city name from trip name (simple heuristic).
+     * @param tripName a String: tripName of the Trip object
+     * @return a String with the city name
      */
     private String extractCityName(String tripName) {
         // Try to extract city from trip name like "trip to attr10" or "Summer in Tokyo"
         if (tripName.contains(" to ")) {
-            String[] parts = tripName.split(" to ");
+            final String[] parts = tripName.split(" to ");
             return parts[1].trim();
         }
         if (tripName.contains(" in ")) {
-            String[] parts = tripName.split(" in ");
+            final String[] parts = tripName.split(" in ");
             return parts[1].trim();
         }
         // Default: return first word or whole name
