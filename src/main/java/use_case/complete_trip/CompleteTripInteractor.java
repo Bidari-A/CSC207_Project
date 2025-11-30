@@ -31,7 +31,7 @@ public class CompleteTripInteractor implements CompleteTripInputBoundary {
         trip.setStatus("completed");
 
         // Save the updated trip
-        tripDAO.saveTrip(trip);
+        tripDAO.saveCTrip(trip);
 
         // Produce output data
         CompleteTripOutputData outputData =

@@ -48,7 +48,7 @@ public class CompleteTripInteractorTest {
                 Collections.emptyList(),
                 Collections.emptyList()
         );
-        dao.saveTrip(t); // Use interface method
+        dao.saveCTrip(t); // Use interface method
     }
 
     @Test

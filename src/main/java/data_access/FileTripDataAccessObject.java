@@ -26,7 +26,7 @@ import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
  * DAO for trip data implemented using a JSON file to persist the data.
  * Supports full CRUD operations: create, read, update, delete.
  */
-public class FileTripDataAccessObject implements TripDataAccessInterface {
+public class FileTripDataAccessObject implements TripDataAccessInterface, CreateNewTripTripDataAccessInterface {
     private final File jsonFile;
     private final Map<String, Trip> trips = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class FileTripDataAccessObject implements TripDataAccessInterface {
     }
 
     @Override
-    public void saveTrip(Trip trip) {
+    public void saveCTrip(Trip trip) {
         trips.put(trip.getTripId(), trip);
     }
 

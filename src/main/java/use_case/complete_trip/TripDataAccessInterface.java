@@ -4,5 +4,5 @@ import entity.Trip;
 
 public interface TripDataAccessInterface {
     Trip getTripById(String tripId);
-    void saveTrip(Trip trip);
+    void saveCTrip(Trip trip);
 }
