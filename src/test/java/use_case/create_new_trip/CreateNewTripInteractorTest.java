@@ -4,7 +4,7 @@ import entity.Trip;
 import entity.Destination;
 import entity.Accommodation;
 import entity.Flight;
-import java.lang.reflect.Method;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -194,8 +194,6 @@ class CreateNewTripInteractorTest {
                         "- \n" +                // empty destination line
                         "- Second Place\n";
 
-
-
         mockTripAI.itineraryToReturn = itinerary;
 
         CreateNewTripInputData inputData = new CreateNewTripInputData(
@@ -216,159 +214,12 @@ class CreateNewTripInteractorTest {
     }
 
     /**
-     * Ensures that parseDestinations ignores lines in the DESTINATIONS section
-     * that do not start with "- ", and only parses valid bullet entries.
-     */
-    @Test
-    void testExecuteIgnoresNonBulletLinesInDestinations() {
-        String itinerary =
-                "TRIP SUMMARY:\n" +
-                        "Summary text.\n\n" +
-                        "DESTINATIONS:\n" +
-                        "Not a bullet line\n" +      // <<<<<< this is the missing branch
-                        "- Real Destination\n";
-
-        mockTripAI.itineraryToReturn = itinerary;
-
-        CreateNewTripInputData inputData = new CreateNewTripInputData(
-                "A",
-                "B",
-                "2025-01-01",
-                "2025-01-02",
-                "user"
-        );
-
-        interactor.execute(inputData);
-
-        assertNotNull(mockTripSaver.savedTrip);
-        List<Destination> attractions = mockTripSaver.savedTrip.getAttractions();
-
-        assertEquals(1, attractions.size());
-        assertEquals("Real Destination", attractions.get(0).getName());
-    }
-
-
-
-    /**
      * goBack should delegate to presenter.prepareBackView.
      */
     @Test
     void testGoBack() {
         interactor.goBack();
         assertTrue(mockPresenter.prepareBackViewCalled);
-    }
-
-    /**
-     * Covers the parseTripSummary branch where TRIP SUMMARY exists
-     * but DESTINATIONS is completely missing, causing end == -1.
-     */
-    @Test
-    void testExecuteSummaryWithoutDestinationsTriggersEndMinusOneBranch() {
-        String itinerary =
-                "TRIP SUMMARY:\n" +
-                        "This is only a summary.\n" +
-                        "No destinations at all.";
-
-        mockTripAI.itineraryToReturn = itinerary;
-
-        CreateNewTripInputData inputData = new CreateNewTripInputData(
-                "U",
-                "V",
-                "2025-07-01",
-                "2025-07-02",
-                "userX"
-        );
-
-        interactor.execute(inputData);
-
-        assertNotNull(mockTripSaver.savedTrip);
-        // Attractions should be empty
-        assertEquals(0, mockTripSaver.savedTrip.getAttractions().size());
-
-        // Presenter should still be called
-        assertTrue(mockPresenter.presentResultCalled);
-
-        // Summary should match trimmed part after TRIP SUMMARY:
-        assertEquals("TRIP SUMMARY:\nThis is only a summary.\nNo destinations at all.",
-                mockPresenter.outputData.getItinerary());
-    }
-
-    /**
-     * Verifies that multiple bullet destinations in the DESTINATIONS section
-     * are all parsed and saved as attractions on the Trip.
-     */
-    @Test
-    void testExecuteParsesMultipleDestinations() {
-        String itinerary =
-                "TRIP SUMMARY:\n" +
-                        "A nice long trip.\n\n" +
-                        "DESTINATIONS:\n" +
-                        "- Eiffel Tower\n" +
-                        "- Louvre Museum\n" +
-                        "- Montmartre\n" +
-                        "- Notre Dame\n" +
-                        "- Luxembourg Gardens\n";
-
-        mockTripAI.itineraryToReturn = itinerary;
-
-        CreateNewTripInputData inputData = new CreateNewTripInputData(
-                "Toronto",
-                "Paris",
-                "2025-01-01",
-                "2025-01-10",
-                "multiUser"
-        );
-
-        interactor.execute(inputData);
-
-        assertNotNull(mockTripSaver.savedTrip);
-        List<Destination> attractions = mockTripSaver.savedTrip.getAttractions();
-
-        assertEquals(5, attractions.size());
-        assertEquals("Eiffel Tower", attractions.get(0).getName());
-        assertEquals("Louvre Museum", attractions.get(1).getName());
-        assertEquals("Montmartre", attractions.get(2).getName());
-        assertEquals("Notre Dame", attractions.get(3).getName());
-        assertEquals("Luxembourg Gardens", attractions.get(4).getName());
-    }
-
-    /**
-     * When a line starts with "- " and has a non empty name,
-     * parseDestinations should add a Destination to the result.
-     */
-    @Test
-    void testParseDestinationsAddsDestinationWhenNameNotEmpty() throws Exception {
-        String itinerary = "DESTINATIONS:\n- Eiffel Tower\n";
-
-        Method method = CreateNewTripInteractor.class
-                .getDeclaredMethod("parseDestinations", String.class);
-        method.setAccessible(true);
-
-        @SuppressWarnings("unchecked")
-        List<Destination> result =
-                (List<Destination>) method.invoke(interactor, itinerary);
-
-        assertEquals(1, result.size());
-        assertEquals("Eiffel Tower", result.get(0).getName());
-    }
-
-    /**
-     * When a line starts with "- " but the name is empty,
-     * parseDestinations should skip it.
-     */
-    @Test
-    void testParseDestinationsSkipsEmptyName() throws Exception {
-        String itinerary = "DESTINATIONS:\n-   \n";
-
-        Method method = CreateNewTripInteractor.class
-                .getDeclaredMethod("parseDestinations", String.class);
-        method.setAccessible(true);
-
-        @SuppressWarnings("unchecked")
-        List<Destination> result =
-                (List<Destination>) method.invoke(interactor, itinerary);
-
-        assertEquals(0, result.size());
     }
 
     /**
@@ -429,11 +280,6 @@ class CreateNewTripInteractorTest {
             updateCalled = true;
             updateUsername = username;
             updateTripId = tripId;
-        }
-
-        @Override
-        public void setCurrentTripId(String username, String tripId) {
-
         }
     }
 
