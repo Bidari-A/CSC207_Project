@@ -7,4 +7,6 @@ public interface CreateNewTripOutputBoundary {
 
     // called when the use case has generated a trip result via gemini
     void presentResult(CreateNewTripOutputData outputData);
+
+    void presentBackToCreateNewTripView();
 }

@@ -7,7 +7,6 @@ public class CreateNewTripState {
 
     private String from = "";
     private String to = "";
-    // private String date = "";
     private String startDate = "";
     private String endDate = "";
     private String planText = "";
@@ -22,8 +21,6 @@ public class CreateNewTripState {
     public String getTo() {
         return to;
     }
-
-    // public String getDate() {return date;}
 
     public String getStartDate() { return startDate; }
     public void setStartDate(String startDate) { this.startDate = startDate; }
@@ -47,7 +44,6 @@ public class CreateNewTripState {
         this.to = to;
     }
 
-    // public void setDate(String date) {this.date = date; }
 
     public void setPlanText(String planText) {
         this.planText = planText;

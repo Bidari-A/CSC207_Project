@@ -216,7 +216,13 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         } else if (source == newTripButton) {
 
-            createNewTripController.openForm();
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+
+            // send username toward CreateNewTripView
+            if (createNewTripController != null) {
+                createNewTripController.openForm(username);
+            }
 
         } else if (source == detailsButton) {
 

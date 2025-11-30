@@ -68,7 +68,8 @@ public class CreateNewTripView extends JPanel implements ActionListener {
                 createNewTripController.execute(
                         getFromText(),
                         getToText(),
-                        getStartDateText()
+                        getStartDateText(),
+                        getEndDateText()
                 );
             }
         });

@@ -76,29 +76,67 @@ public class LoadTripDetailInteractor implements LoadTripDetailInputBoundary {
      */
     private String formatFlights(List<Flight> flights) {
         return flights.stream()
-                .map(flight -> flight.getAirlineName() + "\n" + flight.getDepartureTimes())
+                .map(flight -> {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Airline: ").append(flight.getAirlineName());
+
+                    String times = flight.getDepartureTimes();
+                    if (times != null && !times.isEmpty()) {
+                        sb.append("\nDeparture: ").append(times);
+                    }
+
+                    if (flight.getPrice() > 0) {
+                        sb.append("\nPrice: $")
+                                .append(String.format("%.2f", flight.getPrice()))
+                                .append(" USD");
+                    }
+
+                    return sb.toString();
+                })
                 .collect(Collectors.joining("\n\n"));
     }
 
+
+    /**
+     * Formats a list of hotels into a display string.
+     */
     /**
      * Formats a list of hotels into a display string.
      */
     private String formatHotels(List<Accommodation> hotels) {
         return hotels.stream()
-                .map(hotel -> hotel.getName() + "\n" + hotel.getAddress() +
-                        (hotel.getPrice() > 0 ? "\n$" + hotel.getPrice() : ""))
+                .map(hotel -> {
+                    StringBuilder sb = new StringBuilder();
+
+                    // Name is always shown
+                    sb.append("Name: ").append(hotel.getName());
+
+                    // Only show address if present (yours is often "")
+                    String address = hotel.getAddress();
+                    if (address != null && !address.isEmpty()) {
+                        sb.append("\nAddress: ").append(address);
+                    }
+
+                    // Only show price if > 0
+                    if (hotel.getPrice() > 0) {
+                        sb.append("\nPrice: $")
+                                .append(String.format("%.2f", hotel.getPrice()))
+                                .append(" USD");
+                    }
+
+                    return sb.toString();
+                })
                 .collect(Collectors.joining("\n\n"));
     }
+
 
     /**
      * Formats a list of attractions (Destination objects) into a display string.
      */
+
     private String formatAttractions(List<Destination> attractions) {
         return attractions.stream()
-                .map(attraction -> attraction.getName() + "\n" +
-                        attraction.getAddress() + "\n" +
-                        attraction.getDescription() +
-                        (attraction.getPrice() > 0 ? "\nPrice: $" + String.format("%.2f", attraction.getPrice()) : ""))
+                .map(Destination::getName)
                 .collect(Collectors.joining("\n\n"));
     }
 

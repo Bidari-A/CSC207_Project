@@ -54,4 +54,17 @@ public class CreateNewTripPresenter implements CreateNewTripOutputBoundary {
         viewManagerModel.setState(tripResultViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
+
+    /**
+     * Informs the ViewManagerModel that the user has requested to
+     * navigate back to the Create New Trip view. This method updates
+     * the active view and notifies observers so the UI transitions
+     * accordingly.
+     */
+    @Override
+    public void presentBackToCreateNewTripView() {
+        // viewManagerModel.setState("create new trip");
+        viewManagerModel.setState(createNewTripViewModel.getViewName());
+        viewManagerModel.firePropertyChange();
+    }
 }

@@ -1,4 +1,48 @@
 {
+  "T0101": {
+    "hotels": [],
+    "destination": "Paris",
+    "ownerUserName": "b",
+    "tripId": "T0101",
+    "tripName": "Toronto to Paris",
+    "dates": "2025-12-26 to 2026-01-02",
+    "attractions": [
+      {"name": "Eiffel Tower"},
+      {"name": "Louvre Museum"},
+      {"name": "Notre Dame Cathedral (exterior view)"},
+      {"name": "Seine River Cruise"},
+      {"name": "Montmartre and Sacré-Cœur Basilica"},
+      {"name": "Musée d'Orsay"},
+      {"name": "Champs-Élysées"},
+      {"name": "Arc de Triomphe"},
+      {"name": "Latin Quarter"},
+      {"name": "Jardin du Luxembourg"}
+    ],
+    "flights": [],
+    "status": "CURRENT"
+  },
+  "T0102": {
+    "hotels": [],
+    "destination": "Calgary",
+    "ownerUserName": "b",
+    "tripId": "T0102",
+    "tripName": "Toronto to Calgary",
+    "dates": "2025-12-12 to 2025-12-28",
+    "attractions": [
+      {"name": "Calgary Tower"},
+      {"name": "Heritage Park Historical Village (seasonal events)"},
+      {"name": "Olympic Park"},
+      {"name": "Studio Bell, Home of the National Music Centre"},
+      {"name": "Glenbow Museum"},
+      {"name": "Calgary Zoo"},
+      {"name": "Fish Creek Provincial Park"},
+      {"name": "Day trip to Banff National Park"},
+      {"name": "Lake Louise (Banff)"},
+      {"name": "Johnston Canyon (Banff)"}
+    ],
+    "flights": [],
+    "status": "CURRENT"
+  },
   "T002": {
     "hotels": [{
       "address": "",
@@ -10,12 +54,7 @@
     "tripId": "T002",
     "tripName": "trip to attr03",
     "dates": "2025-02-02 to 2025-02-08",
-    "attractions": [{
-      "address": "Rome, Italy",
-      "price": 16,
-      "name": "Colosseum",
-      "description": "Ancient Roman amphitheater and iconic symbol of Rome"
-    }],
+    "attractions": [{"name": "Colosseum"}],
     "flights": [{
       "price": 0,
       "departureTimes": "FRA → FCO on 2025-02-02",
@@ -24,26 +63,28 @@
     "status": "COMPLETED"
   },
   "T000": {
-    "hotels": [{
-      "address": "",
-      "price": 0,
-      "name": "Desert View Lodge"
-    }],
+    "hotels": [
+      {
+        "address": "",
+        "price": 0,
+        "name": "Desert View Lodge"
+      },
+      {
+        "address": "",
+        "price": 30,
+        "name": "ODIKA LOVINA VILLAS"
+      }
+    ],
     "destination": "Las Vegas",
     "ownerUserName": "a",
     "tripId": "T000",
     "tripName": "trip to attr10",
     "dates": "2024-11-01 to 2024-11-05",
-    "attractions": [{
-      "address": "Arizona, USA",
-      "price": 35,
-      "name": "Grand Canyon",
-      "description": "One of the world's natural wonders, a massive gorge carved by the Colorado River"
-    }],
+    "attractions": [{"name": "Grand Canyon"}],
     "flights": [{
-      "price": 0,
-      "departureTimes": "PHX → LAS on 2024-11-01",
-      "airlineName": "American Airlines"
+      "price": 1334,
+      "departureTimes": "Outbound: 2025-11-30 22:40 | Return: 2025-12-01 13:05",
+      "airlineName": "LOT"
     }],
     "status": "CURRENT"
   },
@@ -59,18 +100,8 @@
     "tripName": "trip to attr01",
     "dates": "2025-06-10 to 2025-06-18",
     "attractions": [
-      {
-        "address": "Paris, France",
-        "price": 29,
-        "name": "Eiffel Tower",
-        "description": "Iconic iron lattice tower and symbol of Paris"
-      },
-      {
-        "address": "Paris, France",
-        "price": 17,
-        "name": "Louvre Museum",
-        "description": "World's largest art museum and historic monument"
-      }
+      {"name": "Eiffel Tower"},
+      {"name": "Louvre Museum"}
     ],
     "flights": [{
       "price": 0,
@@ -91,23 +122,43 @@
     "tripName": "Tokyo Adventure",
     "dates": "2025-12-01 to 2025-12-07",
     "attractions": [
-      {
-        "address": "Tokyo, Japan",
-        "price": 18,
-        "name": "Tokyo Skytree",
-        "description": "Tallest tower in Japan with panoramic city views"
-      },
-      {
-        "address": "Tokyo, Japan",
-        "price": 0,
-        "name": "Shibuya Crossing",
-        "description": "World's busiest pedestrian crossing"
-      }
+      {"name": "Tokyo Skytree"},
+      {"name": "Shibuya Crossing"}
     ],
     "flights": [{
       "price": 850,
       "departureTimes": "JFK → NRT on 2025-12-01",
       "airlineName": "Japan Airlines"
+    }],
+    "status": "CURRENT"
+  },
+  "T0103": {
+    "hotels": [{
+      "address": "",
+      "price": 26,
+      "name": "Generator Paris"
+    }],
+    "destination": "Montreal",
+    "ownerUserName": "b",
+    "tripId": "T0103",
+    "tripName": "Toronto to Montreal",
+    "dates": "2025-12-25 to 2026-01-02",
+    "attractions": [
+      {"name": "Old Montreal"},
+      {"name": "Notre-Dame Basilica"},
+      {"name": "Montreal Museum of Fine Arts"},
+      {"name": "Mount Royal Park"},
+      {"name": "Underground City (RÉSO)"},
+      {"name": "Jean-Talon Market"},
+      {"name": "Pointe-à-Callière, Montreal Archaeology and History Complex"},
+      {"name": "Montreal Science Centre"},
+      {"name": "Olympic Park"},
+      {"name": "Biodome"}
+    ],
+    "flights": [{
+      "price": 1428,
+      "departureTimes": "Outbound: 2025-12-01 22:45 | Return: 2025-12-02 12:10",
+      "airlineName": "Air France"
     }],
     "status": "CURRENT"
   }

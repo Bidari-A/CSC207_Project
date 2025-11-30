@@ -22,6 +22,7 @@ public class Main {
                 .addLoadTripDetailUseCase()
                 .addDeleteCurrentTripUseCase()
                 .addCompleteTripUseCase()
+                .addDeleteTripUseCase()
                 .build();
 
 

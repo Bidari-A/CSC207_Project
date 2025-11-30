@@ -31,7 +31,6 @@ import interface_adapter.trip_list.TripListViewModel;
 /**
  * This View is for displaying the list of trips.
  */
-
 public class TripListView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "trip list";
@@ -67,7 +66,7 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
         errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Trip list panel (for scrolling)
+        // Trip list panel (scrollable)
         tripListPanel = new JPanel();
         tripListPanel.setLayout(new BoxLayout(tripListPanel, BoxLayout.Y_AXIS));
         tripListPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -77,12 +76,12 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        // Center panel with error label and scroll pane
+        // Center
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         centerPanel.add(errorLabel, BorderLayout.NORTH);
 
-        // Main Layout
+        // Main layout
         this.setLayout(new BorderLayout(20,20));
         this.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         this.add(topPanel, BorderLayout.NORTH);
@@ -97,17 +96,27 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
         Object source = evt.getSource();
         String cmd = evt.getActionCommand();
 
+        // Back button
         if (source == backButton) {
-            // Navigate back to logged in view
             tripListController.goBack();
         }
+
+        // Details button
         if (cmd.startsWith("DETAILS_")) {
             String tripId = cmd.substring("DETAILS_".length());
-            final TripListState tripListState = tripListViewModel.getState();
-            final String username = tripListState.getUsername();
-
+            TripListState state = tripListViewModel.getState();
+            String username = state.getUsername();
             tripController.execute(username, viewName, tripId);
+        }
 
+        // ★★★ DELETE button — NEW ★★★
+        if (cmd.startsWith("DELETE_")) {
+            String tripId = cmd.substring("DELETE_".length());
+            TripListState state = tripListViewModel.getState();
+            String username = state.getUsername();
+
+            // Call the DeleteTrip use case
+            tripListController.deleteTrip(username, tripId);
         }
     }
 
@@ -117,7 +126,7 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
-            final TripListState state = (TripListState) evt.getNewValue();
+            TripListState state = (TripListState) evt.getNewValue();
 
             // Clear error
             errorLabel.setText("");
@@ -125,11 +134,13 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
             // Clear existing trip list
             tripListPanel.removeAll();
 
-            // Display error if any
+            // Show error
             if (state.getError() != null) {
                 errorLabel.setText(state.getError());
-            } else if (state.getTrips() != null) {
-                // Display trips
+            }
+
+            // Show trips
+            else if (state.getTrips() != null) {
                 List<Trip> trips = state.getTrips();
 
                 if (trips.isEmpty()) {
@@ -194,6 +205,10 @@ public class TripListView extends JPanel implements ActionListener, PropertyChan
 
     public void setTripListController(TripListController tripListController) {
         this.tripListController = tripListController;
+    }
+
+    public TripListController getTripListController() {
+        return tripListController;
     }
 
     public void setTripController(TripController tripController) {

@@ -1,1 +1,46 @@
 {}
+{
+  "aaa": {
+    "password": "123",
+    "currentTripId": "T100",
+    "tripList": [],
+    "username": "aaa"
+  },
+  "aa": {
+    "password": "1",
+    "currentTripId": null,
+    "tripList": [],
+    "username": "aa"
+  },
+  "ww": {
+    "password": "ww",
+    "currentTripId": null,
+    "tripList": [],
+    "username": "ww"
+  },
+  "qq": {
+    "password": "qq",
+    "currentTripId": null,
+    "tripList": [],
+    "username": "qq"
+  },
+  "a": {
+    "password": "1",
+    "currentTripId": "T000",
+    "tripList": [
+      "T001",
+      "T002"
+    ],
+    "username": "a"
+  },
+  "b": {
+    "password": "1",
+    "currentTripId": "T0103",
+    "tripList": [
+      "T0101",
+      "T0102",
+      "T0103"
+    ],
+    "username": "b"
+  }
+}

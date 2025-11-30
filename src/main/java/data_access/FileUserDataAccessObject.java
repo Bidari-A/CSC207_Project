@@ -17,7 +17,11 @@ import entity.Trip;
 import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.create_new_trip.CreateNewTripTripDataAccessInterface;
+import use_case.create_new_trip.CreateNewTripUserDataAccessInterface;
 import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
+import use_case.delete_trip_list.DeleteTripListUserDataAccessInterface;
+import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -33,7 +37,9 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
         LoadTripDetailDataAccessInterface,
-        DeleteCurrentTripDataAccessInterface {
+        CreateNewTripUserDataAccessInterface,
+        DeleteCurrentTripDataAccessInterface,
+        DeleteTripListUserDataAccessInterface {
 
     private final File jsonFile;
     private final Map<String, User> accounts = new HashMap<>();
@@ -186,7 +192,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
             if (user == null) {
                 return new ArrayList<>();
             }
-            
+
             // Only return trips that are in the user's tripList and match the status
             List<Trip> userTrips = new ArrayList<>();
             for (String tripId : user.getTripList()) {
@@ -221,6 +227,25 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         return null;
     }
 
+    public void updateUserTrips(String username, String newTripId) {
+        User user = accounts.get(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        List<String> tripList = user.getTripList();
+
+        // Only add the id
+        if (!tripList.contains(newTripId)) {
+            tripList.add(newTripId);
+        }
+
+        // Put back in map and save to file
+        accounts.put(username, user);
+        save();
+    }
+
+
     // DeleteCurrentTripDataAccessInterface methods
     @Override
     public User getUser(String username) {
@@ -235,9 +260,43 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         return false;
     }
 
+
+
     @Override
     public void saveUser(User user) {
         save(user);
     }
+
+    //TODO: make a method called setCurrentTripId()
+    /**
+     * Sets the current trip ID for the given user and persists the change.
+     *
+     * @param username  the username whose current trip should be updated
+     * @param tripId    the new current trip ID (may be null to clear it)
+     */
+    public void setCurrentTripId(String username, String tripId) {
+        User user = accounts.get(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        // Update the user's currentTripId
+        user.setCurrentTripId(tripId);
+
+        // Optionally ensure the tripId is in the user's tripList
+        if (tripId != null && !tripId.isEmpty()) {
+            List<String> tripList = user.getTripList();
+            if (!tripList.contains(tripId)) {
+                tripList.add(tripId);
+            }
+        }
+
+        // Save back to the map and persist to file
+        accounts.put(username, user);
+        save();
+    }
+
+
+
 
 }
