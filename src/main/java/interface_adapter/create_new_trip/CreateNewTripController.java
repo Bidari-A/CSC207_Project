@@ -33,4 +33,8 @@ public class CreateNewTripController {
         this.currentUsername = username;
         createNewTripInteractor.prepareScreen();
     }
+
+    public void backFromResult() {
+        createNewTripInteractor.backFromResult();
+    }
 }

@@ -17,6 +17,7 @@ import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
 import data_access.*;
 import data_access.*;
+import data_access.*;
 import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
@@ -156,7 +157,7 @@ public class AppBuilder {
     }
 
     GeminiTripAIDataAccessObject geminiTripAIDataAccessObject =
-            new GeminiTripAIDataAccessObject("AIzaSyDJBJrQscLfUsVG3UYHXSfbrCF85njyqyI");
+            new GeminiTripAIDataAccessObject("AIzaSyC15un0Hb4-GYpIJiPB4rJE7euxXb57PjQ");
 
 
     private SignupView signupView;
@@ -326,6 +327,8 @@ public class AppBuilder {
                 new CreateNewTripController(createNewTripInteractor);
 
         createNewTripView.setCreateNewTripController(controller);
+        // Give the controller to tripResultView
+        tripResultView.setCreateNewTripController(controller);
         // Give the controller to LoggedInView
         loggedInView.setCreateNewTripController(controller);
 
