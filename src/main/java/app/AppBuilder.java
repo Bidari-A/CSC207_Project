@@ -50,14 +50,11 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;   // NEW
-import use_case.create_new_trip.CreateNewTripInputBoundary;
-import use_case.create_new_trip.CreateNewTripInteractor;
-import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.create_new_trip.*;
 import use_case.delete_trip_list.DeleteTripInputBoundary;
 import use_case.delete_trip_list.DeleteTripInteractor;
 import use_case.delete_trip_list.DeleteTripOutputBoundary;
 import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
-import use_case.create_new_trip.CreateNewTripUserDataAccessInterface;
 import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
 import use_case.delete_current_trip.DeleteCurrentTripInteractor;
 import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
@@ -147,8 +144,13 @@ public class AppBuilder {
         TripIdGenerator.initializeFromExistingIds(existingTripIds);
     }
 
+    // Create the real AI data access object
     GeminiTripAIDataAccessObject geminiTripAIDataAccessObject =
-            new GeminiTripAIDataAccessObject("AIzaSyC15un0Hb4-GYpIJiPB4rJE7euxXb57PjQ");
+            new GeminiTripAIDataAccessObject("AIzaSyAh4YLh6uIyOWQHJngqlcXS9D9-EKJkO5s");
+
+    // Wrap it with the logging decorator
+    TripAIDataAccessInterface loggingTripAIDataAccessObject =
+            new LoggingTripAIDataAccessDecorator(geminiTripAIDataAccessObject);
 
 
     private SignupView signupView;
@@ -326,8 +328,9 @@ public class AppBuilder {
         final CreateNewTripOutputBoundary createNewTripPresenter =
                 new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripResultViewModel);
 
+        // CreateNewTripInteractor uses the logging decorator instead of the raw Gemini DAO
         final CreateNewTripInputBoundary createNewTripInteractor =
-                new CreateNewTripInteractor(createNewTripPresenter,geminiTripAIDataAccessObject,
+                new CreateNewTripInteractor(createNewTripPresenter,loggingTripAIDataAccessObject,
                         tripDataAccessObject, userDataAccessObject);
 
         final CreateNewTripController controller =
