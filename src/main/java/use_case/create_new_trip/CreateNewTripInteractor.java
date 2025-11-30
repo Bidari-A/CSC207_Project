@@ -94,7 +94,7 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
                 from,
                 to,
                 startDate,   // startDate
-                startDate,   // endDate (same for now)
+                endDate,   // endDate (same for now)
                 itinerary
         );
 

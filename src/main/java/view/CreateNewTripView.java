@@ -214,7 +214,6 @@ public class CreateNewTripView extends JPanel implements ActionListener {
 
     }
 
-
     // Apply placeholder style and text
     private void applyPlaceholder(JTextField field) {
         field.setForeground(Color.GRAY);
