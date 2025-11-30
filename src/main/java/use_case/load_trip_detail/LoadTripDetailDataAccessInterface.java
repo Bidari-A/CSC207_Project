@@ -11,5 +11,10 @@ public interface LoadTripDetailDataAccessInterface {
      */
     Trip getTrip(String tripId);
 
+    /**
+     * Gets a user object by a String: username.
+     * @param username the String: username
+     * @return the User object
+     */
     User get(String username);
 }
