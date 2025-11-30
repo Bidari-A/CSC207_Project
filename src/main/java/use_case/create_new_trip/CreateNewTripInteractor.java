@@ -137,9 +137,7 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
             String line = rawLine.trim();
             if (line.startsWith("- ")) {
                 String name = line.substring(2).trim();
-                if (!name.isEmpty()) {
-                    result.add(new Destination(name));
-                }
+                result.add(new Destination(name));
             }
         }
 
