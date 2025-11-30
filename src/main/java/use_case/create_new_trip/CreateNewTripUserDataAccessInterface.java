@@ -9,4 +9,5 @@ public interface CreateNewTripUserDataAccessInterface {
      *  - tripList contains newTripId (append if not already there)
      */
     void updateUserTrips(String username, String newTripId);
+    void setCurrentTripId(String username, String tripId);
 }

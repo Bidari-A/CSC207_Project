@@ -103,8 +103,7 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         Trip savedTrip = tripSaver.saveTrip(trip);
         String tripId = savedTrip.getTripId();
         userDataAccess.updateUserTrips(currentUsername, tripId);
-
-
+        userDataAccess.setCurrentTripId(currentUsername,tripId);
         CreateNewTripOutputData outputData = new CreateNewTripOutputData(
                 tripName,
                 from,
@@ -117,8 +116,6 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         // THIS LINE IS WHAT MATTERS:
         createNewTripPresenter.presentResult(outputData);
     }
-
-
 
     private List<Destination> parseDestinations(String aiText) {
         List<Destination> result = new ArrayList<>();

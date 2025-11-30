@@ -264,6 +264,35 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         save(user);
     }
 
+    //TODO: make a method called setCurrentTripId()
+    /**
+     * Sets the current trip ID for the given user and persists the change.
+     *
+     * @param username  the username whose current trip should be updated
+     * @param tripId    the new current trip ID (may be null to clear it)
+     */
+    public void setCurrentTripId(String username, String tripId) {
+        User user = accounts.get(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        // Update the user's currentTripId
+        user.setCurrentTripId(tripId);
+
+        // Optionally ensure the tripId is in the user's tripList
+        if (tripId != null && !tripId.isEmpty()) {
+            List<String> tripList = user.getTripList();
+            if (!tripList.contains(tripId)) {
+                tripList.add(tripId);
+            }
+        }
+
+        // Save back to the map and persist to file
+        accounts.put(username, user);
+        save();
+    }
+
 
 
 
