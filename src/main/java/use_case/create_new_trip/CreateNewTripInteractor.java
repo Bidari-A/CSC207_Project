@@ -183,4 +183,9 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
     public void goBack() {
         createNewTripPresenter.prepareBackView();
     }
+
+    @Override
+    public void backFromResult() {
+        createNewTripPresenter.presentBackToCreateNewTripView();
+    }
 }

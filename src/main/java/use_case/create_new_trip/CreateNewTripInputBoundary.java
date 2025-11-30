@@ -5,4 +5,5 @@ public interface CreateNewTripInputBoundary {
     void execute(CreateNewTripInputData inputData);
     void prepareScreen();
     void goBack();
+    void backFromResult();
 }
