@@ -43,7 +43,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         setLayout(new BorderLayout(10, 10));
 
         // ---- Left panel ----
-        JPanel left = new JPanel();
+        final JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
 
         left.add(labeled("Name of Trip:", tripNameLabel));
@@ -54,7 +54,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         left.add(new JScrollPane(attractionsArea));
 
         // ---- Right panel ----
-        JPanel right = new JPanel();
+        final JPanel right = new JPanel();
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 
         right.add(new JLabel("Flight:"));
@@ -66,19 +66,19 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         right.add(new JScrollPane(hotelArea));
 
         // Top grid: left & right columns
-        JPanel top = new JPanel(new GridLayout(1, 2, 10, 0));
+        final JPanel top = new JPanel(new GridLayout(1, 2, 10, 0));
         top.add(left);
         top.add(right);
 
         // Bottom panel: Gemini + Back
-        JPanel bottom = new JPanel();
+        final JPanel bottom = new JPanel();
         bottom.setLayout(new BoxLayout(bottom, BoxLayout.Y_AXIS));
 
-        JPanel geminiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        final JPanel geminiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         geminiPanel.add(new JLabel("Ask Gemini:"));
         geminiPanel.add(geminiInputField);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(backButton);
 
         backButton.addActionListener(this);
@@ -91,7 +91,12 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         add(bottom, BorderLayout.SOUTH);
     }
 
-    /** Helper method for "Label: value" rows */
+    /**
+     * Helper method for "Label: value" rows.
+     * @param title String title of the desired panel
+     * @param value JLabel representing the information desired in the panel
+     * @return a JPanel with the title and JLabel connected
+     */
     private JPanel labeled(String title, JLabel value) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(new JLabel(title));
