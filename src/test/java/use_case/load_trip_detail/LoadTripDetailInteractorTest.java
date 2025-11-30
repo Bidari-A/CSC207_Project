@@ -60,9 +60,7 @@ public class LoadTripDetailInteractorTest {
 
         Accommodation accommodation = new Accommodation("Four Seasons Hotel", "Paris", 100);
         Flight flight = new Flight("RyanAir", "LHR → CDG on 2024-12-12", 100);
-        Destination destination = new Destination("Eiffel Tower", "Paris",
-                "Famous attraction",
-                10);
+        Destination destination = new Destination("Eiffel Tower");
 
         List<Accommodation> accommodations = new ArrayList<>();
         accommodations.add(accommodation);
@@ -92,7 +90,7 @@ public class LoadTripDetailInteractorTest {
                 assertEquals("Paris Trip", outputData.getTripName());
                 assertEquals("Paris", outputData.getCityName());
                 assertEquals("2024-12-12 to 2024-12-13", outputData.getDate());
-                assertEquals("Eiffel Tower\nParis\nFamous attraction\nPrice: $10.00", outputData.getAttractions());
+                assertEquals("Eiffel Tower", outputData.getAttractions());
                 assertEquals("RyanAir\nLHR → CDG on 2024-12-12", outputData.getFlightDetails());
                 assertEquals("Four Seasons Hotel\nParis\n$100.0", outputData.getHotelDetails());
                 assertEquals("trip list", outputData.getPrevViewName());
@@ -115,9 +113,7 @@ public class LoadTripDetailInteractorTest {
 
         Accommodation accommodation = new Accommodation("Four Seasons Hotel", "Paris", 100);
         Flight flight = new Flight("RyanAir", "LHR → CDG on 2024-12-12", 100);
-        Destination destination = new Destination("Eiffel Tower", "Paris",
-                "Famous attraction",
-                10);
+        Destination destination = new Destination("Eiffel Tower");
 
         List<Accommodation> accommodations = new ArrayList<>();
         accommodations.add(accommodation);
@@ -147,7 +143,7 @@ public class LoadTripDetailInteractorTest {
                 assertEquals("Paris Trip", outputData.getTripName());
                 assertEquals("Paris", outputData.getCityName());
                 assertEquals("2024-12-12 to 2024-12-13", outputData.getDate());
-                assertEquals("Eiffel Tower\nParis\nFamous attraction\nPrice: $10.00", outputData.getAttractions());
+                assertEquals("Eiffel Tower", outputData.getAttractions());
                 assertEquals("RyanAir\nLHR → CDG on 2024-12-12", outputData.getFlightDetails());
                 assertEquals("Four Seasons Hotel\nParis\n$100.0", outputData.getHotelDetails());
                 assertEquals("logged in", outputData.getPrevViewName());
@@ -285,7 +281,7 @@ public class LoadTripDetailInteractorTest {
         // price == 0 to hit the "else" of ternary branches
         Accommodation hotel = new Accommodation("Budget Inn", "Somewhere", 0);
         Flight flight = new Flight("AirTest", "TestFlight", 0);
-        Destination dest = new Destination("Park", "City", "Nice place", 0);
+        Destination dest = new Destination("Park");
 
         Trip trip = new Trip("tripZ", "Trip to Berlin", "Paul", "",
                 "dates", "", // cityName empty → triggers fallback
@@ -300,7 +296,7 @@ public class LoadTripDetailInteractorTest {
             public void prepareTripView(LoadTripDetailOutputData o) {
                 assertEquals("Berlin", o.getCityName()); // fallback via "to"
                 assertEquals("Budget Inn\nSomewhere", o.getHotelDetails()); // no price line
-                assertEquals("Park\nCity\nNice place", o.getAttractions()); // no price line
+                assertEquals("Park", o.getAttractions()); // no price line
             }
             @Override public void back() {}
         };

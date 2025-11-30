@@ -17,6 +17,8 @@ import entity.Trip;
 import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.create_new_trip.CreateNewTripTripDataAccessInterface;
+import use_case.create_new_trip.CreateNewTripUserDataAccessInterface;
 import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
@@ -33,6 +35,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
         LoadTripDetailDataAccessInterface,
+        CreateNewTripUserDataAccessInterface,
         DeleteCurrentTripDataAccessInterface {
 
     private final File jsonFile;
@@ -186,7 +189,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
             if (user == null) {
                 return new ArrayList<>();
             }
-            
+
             // Only return trips that are in the user's tripList and match the status
             List<Trip> userTrips = new ArrayList<>();
             for (String tripId : user.getTripList()) {
@@ -221,6 +224,25 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         return null;
     }
 
+    public void updateUserTrips(String username, String newTripId) {
+        User user = accounts.get(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        List<String> tripList = user.getTripList();
+
+        // Only add the id
+        if (!tripList.contains(newTripId)) {
+            tripList.add(newTripId);
+        }
+
+        // Put back in map and save to file
+        accounts.put(username, user);
+        save();
+    }
+
+
     // DeleteCurrentTripDataAccessInterface methods
     @Override
     public User getUser(String username) {
@@ -235,9 +257,14 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         return false;
     }
 
+
+
     @Override
     public void saveUser(User user) {
         save(user);
     }
+
+
+
 
 }
