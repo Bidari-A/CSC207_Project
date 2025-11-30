@@ -119,13 +119,7 @@ public class TripResultView extends JPanel implements
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        System.out.println("TripResultView: actionPerformed fired");
-        System.out.println("TripResultView: source == backButton? " + (source == backButton));
-        System.out.println("TripResultView: controller is " +
-                (createNewTripController == null ? "NULL" : "NOT NULL"));
-
         if (source == backButton && createNewTripController != null) {
-            System.out.println("TripResultView: calling controller.backFromResult()");
             createNewTripController.backFromResult();
         }
     }
