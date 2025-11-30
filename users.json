@@ -25,10 +25,10 @@
   },
   "a": {
     "password": "1",
-    "currentTripId": "T000",
+    "currentTripId": "T0104",
     "tripList": [
-      "T001",
-      "T002"
+      "T002",
+      "T0104"
     ],
     "username": "a"
   },
@@ -41,5 +41,11 @@
       "T0103"
     ],
     "username": "b"
+  },
+  "j": {
+    "password": "1",
+    "currentTripId": null,
+    "tripList": ["T0105"],
+    "username": "j"
   }
 }

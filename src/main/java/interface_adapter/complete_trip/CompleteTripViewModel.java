@@ -31,6 +31,18 @@ public class CompleteTripViewModel {
         pcs.firePropertyChange("errorMessage", old, errorMessage);
     }
 
+    public String getMessage() {
+        if (errorMessage != null && !errorMessage.isEmpty()) {
+            return "Error: " + errorMessage;
+        } else if (tripStatus != null && !tripStatus.isEmpty()) {
+            return tripStatus;
+        } else if (lastCompletedTripId != null && !lastCompletedTripId.isEmpty()) {
+            return "Trip completed successfully: " + lastCompletedTripId;
+        } else {
+            return null; // nothing to show
+        }
+    }
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }

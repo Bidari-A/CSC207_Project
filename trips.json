@@ -62,54 +62,6 @@
     }],
     "status": "COMPLETED"
   },
-  "T000": {
-    "hotels": [
-      {
-        "address": "",
-        "price": 0,
-        "name": "Desert View Lodge"
-      },
-      {
-        "address": "",
-        "price": 30,
-        "name": "ODIKA LOVINA VILLAS"
-      }
-    ],
-    "destination": "Las Vegas",
-    "ownerUserName": "a",
-    "tripId": "T000",
-    "tripName": "trip to attr10",
-    "dates": "2024-11-01 to 2024-11-05",
-    "attractions": [{"name": "Grand Canyon"}],
-    "flights": [{
-      "price": 1334,
-      "departureTimes": "Outbound: 2025-11-30 22:40 | Return: 2025-12-01 13:05",
-      "airlineName": "LOT"
-    }],
-    "status": "CURRENT"
-  },
-  "T001": {
-    "hotels": [{
-      "address": "",
-      "price": 0,
-      "name": "Hôtel Champs-Élysées"
-    }],
-    "destination": "Paris",
-    "ownerUserName": "a",
-    "tripId": "T001",
-    "tripName": "trip to attr01",
-    "dates": "2025-06-10 to 2025-06-18",
-    "attractions": [
-      {"name": "Eiffel Tower"},
-      {"name": "Louvre Museum"}
-    ],
-    "flights": [{
-      "price": 0,
-      "departureTimes": "JFK → CDG on 2025-06-10",
-      "airlineName": "Air France"
-    }],
-    "status": "COMPLETED"
-  },
   "T100": {
     "hotels": [{
       "address": "Shibuya, Tokyo",
@@ -130,6 +82,17 @@
       "departureTimes": "JFK → NRT on 2025-12-01",
       "airlineName": "Japan Airlines"
     }],
+    "status": "CURRENT"
+  },
+  "T0105": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0105",
+    "tripName": "Toronto to London",
+    "dates": "2025-11-30 to 2025-12-01",
+    "attractions": [],
+    "flights": [],
     "status": "CURRENT"
   },
   "T0103": {
@@ -160,6 +123,17 @@
       "departureTimes": "Outbound: 2025-12-01 22:45 | Return: 2025-12-02 12:10",
       "airlineName": "Air France"
     }],
+    "status": "CURRENT"
+  },
+  "T0104": {
+    "hotels": [],
+    "destination": "New York City",
+    "ownerUserName": "a",
+    "tripId": "T0104",
+    "tripName": "Toronto to New York City",
+    "dates": "2025-11-30 to 2025-12-10",
+    "attractions": [],
+    "flights": [],
     "status": "CURRENT"
   }
 }

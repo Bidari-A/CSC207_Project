@@ -439,13 +439,15 @@ public class AppBuilder {
                 new CompleteTripPresenter(completeTripViewModel);
 
         final CompleteTripInputBoundary completeTripInteractor =
-                new CompleteTripInteractor((TripDataAccessInterface) tripDataAccessObject, completeTripPresenter);
+                new CompleteTripInteractor(tripDataAccessObject, completeTripPresenter);
 
         final CompleteTripController completeTripController =
                 new CompleteTripController(completeTripInteractor);
 
         // Give controller to TripView (because completion happens from Trip Detail page)
         tripView.setCompleteTripController(completeTripController);
+
+        loggedInView.setCompleteTripController(completeTripController);
 
         return this;
     }

@@ -12,6 +12,7 @@ public class LoggedInState {
     private String currentTripName = "";
     private String cityName = "";
     private String date = "";
+    private final String currentTripId = null;
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
@@ -68,4 +69,6 @@ public class LoggedInState {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getCurrentTripId() { return currentTripId; }
 }

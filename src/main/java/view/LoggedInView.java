@@ -1,6 +1,7 @@
 package view;
 
 
+import interface_adapter.complete_trip.CompleteTripController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
@@ -36,7 +37,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private CreateNewTripController createNewTripController;
     private TripController tripController;
     private DeleteCurrentTripController deleteCurrentTripController;
-
+    private CompleteTripController completeTripController;
 
     // For opening the flight page
     private FlightSearchViewModel flightSearchViewModel;
@@ -248,7 +249,13 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 deleteCurrentTripController.execute(username);
             }
         } else if (source == completeButton) {
-            System.out.println("Complete clicked");
+            LoggedInState state = loggedInViewModel.getState();
+            String currentTripId = state.getCurrentTripId();
+
+            if (completeTripController != null && username != null) {
+                completeTripController.completeTrip(currentTripId);
+                System.out.println("Complete clicked");
+            }
         }
 
     }
@@ -305,6 +312,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setDeleteCurrentTripController(DeleteCurrentTripController deleteCurrentTripController) {
         this.deleteCurrentTripController = deleteCurrentTripController;
+    }
+
+    public void setCompleteTripController(CompleteTripController completeTripController) {
+        this.completeTripController = completeTripController;
     }
 
 }

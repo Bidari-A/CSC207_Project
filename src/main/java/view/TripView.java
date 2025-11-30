@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.complete_trip.CompleteTripController;
+import interface_adapter.complete_trip.CompleteTripViewModel;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripState;
 import interface_adapter.trip.TripViewModel;
@@ -21,6 +22,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final TripViewModel tripViewModel;
     private TripController tripController;
+    private CompleteTripViewModel completeTripViewModel;
     private CompleteTripController completeTripController;
 
     private final JLabel tripNameLabel = new JLabel();
@@ -38,6 +40,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
     public TripView(TripViewModel tripViewModel) {
         this.tripViewModel = tripViewModel;
         this.tripViewModel.addPropertyChangeListener(this);
+        this.completeTripViewModel = completeTripViewModel;
 
         attractionsArea.setEditable(false);
         flightArea.setEditable(false);
@@ -86,9 +89,10 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
         backButton.addActionListener(this);
 
-        completeTripButton.addActionListener(e -> {
-            if (completeTripController != null && tripViewModel.getCurrentTripId() != null) {
-                completeTripController.completeTrip(tripViewModel.getCurrentTripId());
+        this.completeTripViewModel.addPropertyChangeListener(evt -> {
+            String msg = completeTripViewModel.getMessage();
+            if (msg != null && !msg.isEmpty()) {
+                JOptionPane.showMessageDialog(this, msg);
             }
         });
 
