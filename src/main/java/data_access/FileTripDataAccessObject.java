@@ -18,6 +18,7 @@ import entity.Destination;
 import entity.Flight;
 import entity.Trip;
 import entity.TripIdGenerator;
+import use_case.complete_trip.TripDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripTripDataAccessInterface;
 import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 
@@ -25,9 +26,19 @@ import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
  * DAO for trip data implemented using a JSON file to persist the data.
  * Supports full CRUD operations: create, read, update, delete.
  */
-public class FileTripDataAccessObject implements CreateNewTripTripDataAccessInterface {
+public class FileTripDataAccessObject implements TripDataAccessInterface, CreateNewTripTripDataAccessInterface {
     private final File jsonFile;
     private final Map<String, Trip> trips = new HashMap<>();
+
+    @Override
+    public Trip getTripById(String tripId) {
+        return trips.get(tripId);
+    }
+
+    @Override
+    public void saveCTrip(Trip trip) {
+        trips.put(trip.getTripId(), trip);
+    }
 
     /**
      * Construct this DAO for saving to and reading from a local JSON file.

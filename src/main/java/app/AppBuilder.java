@@ -50,6 +50,13 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;   // NEW
+import interface_adapter.trip.TripController;
+import interface_adapter.trip.TripPresenter;
+import interface_adapter.trip.TripViewModel;
+import interface_adapter.trip_list.TripListController;
+import interface_adapter.trip_list.TripListPresenter;
+import interface_adapter.trip_list.TripListViewModel;
+import use_case.complete_trip.TripDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
@@ -95,7 +102,13 @@ import view.TripListView;
 import view.TripResultView;
 import view.TripView;
 import view.ViewManager;
+import interface_adapter.complete_trip.CompleteTripController;
+import interface_adapter.complete_trip.CompleteTripPresenter;
+import interface_adapter.complete_trip.CompleteTripViewModel;
 
+import use_case.complete_trip.CompleteTripInputBoundary;
+import use_case.complete_trip.CompleteTripInteractor;
+import use_case.complete_trip.CompleteTripOutputBoundary;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -167,6 +180,7 @@ public class AppBuilder {
     private TripListViewModel tripListViewModel;
     private FlightSearchViewModel flightSearchViewModel;
     private HotelSearchViewModel hotelSearchViewModel;
+    private CompleteTripViewModel completeTripViewModel;
 
 
     // NEW: Trip result VM and view
@@ -414,6 +428,25 @@ public class AppBuilder {
         final DeleteCurrentTripController deleteCurrentTripController =
                 new DeleteCurrentTripController(deleteCurrentTripInteractor);
         loggedInView.setDeleteCurrentTripController(deleteCurrentTripController);
+        return this;
+    }
+
+    public AppBuilder addCompleteTripUseCase() {
+
+        completeTripViewModel = new CompleteTripViewModel();
+
+        final CompleteTripOutputBoundary completeTripPresenter =
+                new CompleteTripPresenter(completeTripViewModel);
+
+        final CompleteTripInputBoundary completeTripInteractor =
+                new CompleteTripInteractor((TripDataAccessInterface) tripDataAccessObject, completeTripPresenter);
+
+        final CompleteTripController completeTripController =
+                new CompleteTripController(completeTripInteractor);
+
+        // Give controller to TripView (because completion happens from Trip Detail page)
+        tripView.setCompleteTripController(completeTripController);
+
         return this;
     }
 

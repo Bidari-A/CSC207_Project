@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.complete_trip.CompleteTripController;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripState;
 import interface_adapter.trip.TripViewModel;
@@ -20,6 +21,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final TripViewModel tripViewModel;
     private TripController tripController;
+    private CompleteTripController completeTripController;
 
     private final JLabel tripNameLabel = new JLabel();
     private final JLabel cityLabel = new JLabel();
@@ -31,6 +33,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JTextField geminiInputField = new JTextField(25);
     private final JButton backButton = new JButton("Back");
+    private final JButton completeTripButton = new JButton("Complete Trip");
 
     public TripView(TripViewModel tripViewModel) {
         this.tripViewModel = tripViewModel;
@@ -83,6 +86,12 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
         backButton.addActionListener(this);
 
+        completeTripButton.addActionListener(e -> {
+            if (completeTripController != null && tripViewModel.getCurrentTripId() != null) {
+                completeTripController.completeTrip(tripViewModel.getCurrentTripId());
+            }
+        });
+
         bottom.add(geminiPanel);
         bottom.add(buttonPanel);
 
@@ -120,6 +129,10 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
         flightArea.setText(s.getFlightDetails());
         hotelArea.setText(s.getHotelDetails());
         geminiInputField.setText(s.getGeminiInput());
+    }
+
+    public void setCompleteTripController(CompleteTripController controller) {
+        this.completeTripController = controller;
     }
 
     public void setTripController(TripController tripController) {
