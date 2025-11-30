@@ -31,7 +31,7 @@ public class HotelSearchDialog extends JDialog implements PropertyChangeListener
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         p.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-
+        p.add(new JLabel("Search where you wanna stay. Date format: YYYY-MM-DD"));
         p.add(row("Query:", queryField));
         p.add(row("Check-in:", checkInField));
         p.add(row("Check-out:", checkOutField));

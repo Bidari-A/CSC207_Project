@@ -20,7 +20,7 @@ public class FlightSearchDialog extends JDialog implements PropertyChangeListene
     private final FlightSearchController controller;
 
 
-    // STEP 1 Construct the JPanels
+    // STEP 1 Construct the JPanels (Example)
     private final JTextField fromField =  new JTextField("YYZ", 6);
     private final JTextField toField =  new JTextField("BUD", 6);
     private final JTextField outField =  new JTextField("2025-11-18", 10);
@@ -38,7 +38,7 @@ public class FlightSearchDialog extends JDialog implements PropertyChangeListene
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         p.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
-        p.add(new JLabel("Please use airport code"));
+        p.add(new JLabel("Please use airport code. Date format: YYYY-MM-DD"));
         p.add(row("From:", fromField));
         p.add(row("To:", toField));
         p.add(row("Outbound:", outField));
