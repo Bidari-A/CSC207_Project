@@ -21,6 +21,7 @@ public class Main {
                 .addTripView()
                 .addLoadTripDetailUseCase()
                 .addDeleteCurrentTripUseCase()
+                .addCompleteTripUseCase()
                 .build();
 
 
