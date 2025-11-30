@@ -20,6 +20,8 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripTripDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripUserDataAccessInterface;
 import use_case.delete_current_trip.DeleteCurrentTripDataAccessInterface;
+import use_case.delete_trip_list.DeleteTripListUserDataAccessInterface;
+import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 import use_case.load_trip_detail.LoadTripDetailDataAccessInterface;
 import use_case.load_trip_list.LoadTripListUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -36,7 +38,8 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         LoadTripListUserDataAccessInterface,
         LoadTripDetailDataAccessInterface,
         CreateNewTripUserDataAccessInterface,
-        DeleteCurrentTripDataAccessInterface {
+        DeleteCurrentTripDataAccessInterface,
+        DeleteTripListUserDataAccessInterface {
 
     private final File jsonFile;
     private final Map<String, User> accounts = new HashMap<>();
