@@ -10,8 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.FileDeleteTripDataAccessObject;
 import data_access.FileTripDataAccessObject;
-import data_access.FileUserDataAccessObject;
 import data_access.FileUserDataAccessObject;
 import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
@@ -21,8 +21,6 @@ import data_access.*;
 import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
-import entity.Trip;
-import entity.TripIdGenerator;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
@@ -46,23 +44,19 @@ import interface_adapter.trip_list.TripListViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
-import interface_adapter.create_new_trip.CreateNewTripViewModel;
-import interface_adapter.create_new_trip.CreateNewTripController;
-import interface_adapter.create_new_trip.CreateNewTripPresenter;
+
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;   // NEW
-import interface_adapter.trip.TripController;
-import interface_adapter.trip.TripPresenter;
-import interface_adapter.trip.TripViewModel;
-import interface_adapter.trip_list.TripListController;
-import interface_adapter.trip_list.TripListPresenter;
-import interface_adapter.trip_list.TripListViewModel;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.delete_trip_list.DeleteTripInputBoundary;
+import use_case.delete_trip_list.DeleteTripInteractor;
+import use_case.delete_trip_list.DeleteTripOutputBoundary;
+import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripUserDataAccessInterface;
 import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
 import use_case.delete_current_trip.DeleteCurrentTripInteractor;
@@ -90,9 +84,6 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import use_case.create_new_trip.CreateNewTripInputBoundary;
-import use_case.create_new_trip.CreateNewTripOutputBoundary;
-import use_case.create_new_trip.CreateNewTripInteractor;
 import view.*;
 import view.CreateNewTripView;
 import view.TripResultView;
@@ -288,6 +279,22 @@ public class AppBuilder {
         tripView.setTripController(tripController);
         loggedInView.setTripController(tripController);
         tripListView.setTripController(tripController);
+        return this;
+    }
+
+    public AppBuilder addDeleteTripUseCase() {
+
+        DeleteTripUserDataAccessInterface deleteTripDAO =
+                new FileDeleteTripDataAccessObject(tripDataAccessObject);
+
+        DeleteTripOutputBoundary deleteTripPresenter =
+                new TripListPresenter(viewManagerModel, tripListViewModel);
+
+        DeleteTripInputBoundary deleteTripInteractor =
+                new DeleteTripInteractor(deleteTripDAO, userDataAccessObject, deleteTripPresenter);
+
+        tripListView.getTripListController().setDeleteTripUseCaseInteractor(deleteTripInteractor);
+
         return this;
     }
 
