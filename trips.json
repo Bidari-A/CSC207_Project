@@ -1,22 +1,121 @@
-{"T100": {
-  "hotels": [{
-    "address": "Shibuya, Tokyo",
-    "price": 150,
-    "name": "Tokyo Grand Hotel"
-  }],
-  "destination": "Tokyo",
-  "ownerUserName": "aaa",
-  "tripId": "T100",
-  "tripName": "Tokyo Adventure",
-  "dates": "2025-12-01 to 2025-12-07",
-  "attractions": [
-    {"name": "Tokyo Skytree"},
-    {"name": "Shibuya Crossing"}
-  ],
-  "flights": [{
-    "price": 850,
-    "departureTimes": "JFK → NRT on 2025-12-01",
-    "airlineName": "Japan Airlines"
-  }],
-  "status": "CURRENT"
-}}
+{
+  "T002": {
+    "hotels": [{
+      "address": "",
+      "price": 0,
+      "name": "Rome Grand Hotel"
+    }],
+    "destination": "Rome",
+    "ownerUserName": "a",
+    "tripId": "T002",
+    "tripName": "trip to attr03",
+    "dates": "2025-02-02 to 2025-02-08",
+    "attractions": [{
+      "address": "Rome, Italy",
+      "price": 16,
+      "name": "Colosseum",
+      "description": "Ancient Roman amphitheater and iconic symbol of Rome"
+    }],
+    "flights": [{
+      "price": 0,
+      "departureTimes": "FRA → FCO on 2025-02-02",
+      "airlineName": "Lufthansa"
+    }],
+    "status": "COMPLETED"
+  },
+  "T000": {
+    "hotels": [
+      {
+        "address": "",
+        "price": 0,
+        "name": "Desert View Lodge"
+      },
+      {
+        "address": "",
+        "price": 30,
+        "name": "ODIKA LOVINA VILLAS"
+      }
+    ],
+    "destination": "Las Vegas",
+    "ownerUserName": "a",
+    "tripId": "T000",
+    "tripName": "trip to attr10",
+    "dates": "2024-11-01 to 2024-11-05",
+    "attractions": [{
+      "address": "Arizona, USA",
+      "price": 35,
+      "name": "Grand Canyon",
+      "description": "One of the world's natural wonders, a massive gorge carved by the Colorado River"
+    }],
+    "flights": [{
+      "price": 1334,
+      "departureTimes": "Outbound: 2025-11-30 22:40 | Return: 2025-12-01 13:05",
+      "airlineName": "LOT"
+    }],
+    "status": "CURRENT"
+  },
+  "T001": {
+    "hotels": [{
+      "address": "",
+      "price": 0,
+      "name": "Hôtel Champs-Élysées"
+    }],
+    "destination": "Paris",
+    "ownerUserName": "a",
+    "tripId": "T001",
+    "tripName": "trip to attr01",
+    "dates": "2025-06-10 to 2025-06-18",
+    "attractions": [
+      {
+        "address": "Paris, France",
+        "price": 29,
+        "name": "Eiffel Tower",
+        "description": "Iconic iron lattice tower and symbol of Paris"
+      },
+      {
+        "address": "Paris, France",
+        "price": 17,
+        "name": "Louvre Museum",
+        "description": "World's largest art museum and historic monument"
+      }
+    ],
+    "flights": [{
+      "price": 0,
+      "departureTimes": "JFK → CDG on 2025-06-10",
+      "airlineName": "Air France"
+    }],
+    "status": "COMPLETED"
+  },
+  "T100": {
+    "hotels": [{
+      "address": "Shibuya, Tokyo",
+      "price": 150,
+      "name": "Tokyo Grand Hotel"
+    }],
+    "destination": "Tokyo",
+    "ownerUserName": "aaa",
+    "tripId": "T100",
+    "tripName": "Tokyo Adventure",
+    "dates": "2025-12-01 to 2025-12-07",
+    "attractions": [
+      {
+        "address": "Tokyo, Japan",
+        "price": 18,
+        "name": "Tokyo Skytree",
+        "description": "Tallest tower in Japan with panoramic city views"
+      },
+      {
+        "address": "Tokyo, Japan",
+        "price": 0,
+        "name": "Shibuya Crossing",
+        "description": "World's busiest pedestrian crossing"
+      }
+    ],
+    "flights": [{
+      "price": 850,
+      "departureTimes": "JFK → NRT on 2025-12-01",
+      "airlineName": "Japan Airlines"
+    }],
+    "status": "CURRENT"
+  }
+}
