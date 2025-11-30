@@ -24,11 +24,18 @@
     "status": "COMPLETED"
   },
   "T000": {
-    "hotels": [{
-      "address": "",
-      "price": 0,
-      "name": "Desert View Lodge"
-    }],
+    "hotels": [
+      {
+        "address": "",
+        "price": 0,
+        "name": "Desert View Lodge"
+      },
+      {
+        "address": "",
+        "price": 30,
+        "name": "ODIKA LOVINA VILLAS"
+      }
+    ],
     "destination": "Las Vegas",
     "ownerUserName": "a",
     "tripId": "T000",
@@ -41,9 +48,9 @@
       "description": "One of the world's natural wonders, a massive gorge carved by the Colorado River"
     }],
     "flights": [{
-      "price": 0,
-      "departureTimes": "PHX → LAS on 2024-11-01",
-      "airlineName": "American Airlines"
+      "price": 1334,
+      "departureTimes": "Outbound: 2025-11-30 22:40 | Return: 2025-12-01 13:05",
+      "airlineName": "LOT"
     }],
     "status": "CURRENT"
   },

@@ -1,6 +1,7 @@
 package data_access;
 
 import use_case.hotel_search.HotelSearchGateway;
+import entity.Accommodation;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -13,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 public class SerpApiHotelSearchGateway implements HotelSearchGateway {
 
     private static final String API_KEY =
-            "";
+            "1b10e45871e0486cd7fb938a5261325fc3a556c156f75fda42f0ad53c52c7523";
     // As the interface defines that we need implement this method called fetchRawJson
     // Query, means the search keyword. For example, Bali, YYZ, NYC.
     @Override
@@ -127,6 +128,52 @@ public class SerpApiHotelSearchGateway implements HotelSearchGateway {
 
         if (start >= json.length()) return "";
         return json.substring(start, i);
+    }
+
+    @Override
+    public Accommodation buildFirstHotelEntity(String json) {
+        // 1. Locate the first hotel object in the JSON (same as summarizeFirstHotel)
+        int adsIndex = json.indexOf("\"ads\"");
+        if (adsIndex < 0) {
+            return null; // no hotels
+        }
+
+        int firstBrace = json.indexOf('{', adsIndex);
+        if (firstBrace < 0) {
+            return null;
+        }
+
+        int braceCount = 0;
+        int i = firstBrace;
+        for (; i < json.length(); i++) {
+            char c = json.charAt(i);
+            if (c == '{') braceCount++;
+            if (c == '}') braceCount--;
+            if (braceCount == 0) break;
+        }
+
+        if (braceCount != 0) {
+            return null;
+        }
+
+        String firstHotel = json.substring(firstBrace, i + 1);
+
+        // 2. Extract fields from this first hotel JSON
+        String name = extractStringValue(firstHotel, "\"name\"");
+        String address = extractStringValue(firstHotel, "\"address\"");
+        String priceStr = extractNumberValue(firstHotel, "\"price\"");
+
+        float price = 0.0f;
+        try {
+            if (!priceStr.isEmpty()) {
+                price = Float.parseFloat(priceStr);
+            }
+        } catch (NumberFormatException ignored) {
+            // leave price as 0.0f
+        }
+
+        // 3. Build and return the Accommodation entity
+        return new Accommodation(name, address, price);
     }
 
 

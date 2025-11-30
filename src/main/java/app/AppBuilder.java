@@ -286,24 +286,34 @@ public class AppBuilder {
     public AppBuilder addFlightSearchUseCase() {
         // 1. ViewModel
         flightSearchViewModel = new FlightSearchViewModel();
+
         // 2. Presenter
         FlightSearchOutputBoundary flightSearchOutputBoundary =
                 new FlightSearchPresenter(flightSearchViewModel);
+
         // 3. Gateway (calls SerpAPI)
         FlightSearchGateway flightSearchGateway = new SerpApiFlightSearchGateway();
-        // 4. Interactor
+
+        // 4. Interactor – now inject the DAOs as well
         FlightSearchInputBoundary flightSearchInteractor =
-                new FlightSearchInteractor(flightSearchGateway, flightSearchOutputBoundary);
+                new FlightSearchInteractor(
+                        flightSearchGateway,
+                        flightSearchOutputBoundary,
+                        userDataAccessObject,
+                        tripDataAccessObject
+                );
+
         // 5. Controller
         FlightSearchController flightSearchController =
                 new FlightSearchController(flightSearchInteractor);
 
-        // 6. Inject into LoggedInView (like you do for logout)
+        // 6. Inject into LoggedInView
         loggedInView.setFlightSearchViewModel(flightSearchViewModel);
         loggedInView.setFlightSearchController(flightSearchController);
 
         return this;
     }
+
 
     public AppBuilder addHotelSearchUseCase() {
         hotelSearchViewModel = new HotelSearchViewModel();
@@ -314,8 +324,12 @@ public class AppBuilder {
         HotelSearchGateway gateway = new SerpApiHotelSearchGateway();
 
         HotelSearchInputBoundary interactor =
-                new HotelSearchInteractor(gateway, outputBoundary);
-
+                new HotelSearchInteractor(
+                        gateway,
+                        outputBoundary,
+                        userDataAccessObject,
+                        tripDataAccessObject
+                );
         HotelSearchController controller =
                 new HotelSearchController(interactor);
 
