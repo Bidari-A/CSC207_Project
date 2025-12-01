@@ -93,6 +93,31 @@
     "dates": "2025-11-30 to 2025-12-01",
     "attractions": [],
     "flights": [],
+    "hotels": [{
+      "address": "",
+      "price": 64,
+      "name": "Maverick Downtown"
+    }],
+    "destination": "Budapest",
+    "ownerUserName": "my TA is so cool",
+    "tripId": "T0105",
+    "tripName": "Toronto to Budapest",
+    "dates": "2025-12-25 to 2025-12-31",
+    "attractions": [
+      {"name": "Buda Castle"},
+      {"name": "Hungarian Parliament Building"},
+      {"name": "Szechenyi Thermal Baths"},
+      {"name": "Fisherman's Bastion"},
+      {"name": "Matthias Church"},
+      {"name": "Central Market Hall"},
+      {"name": "St. Stephen's Basilica"},
+      {"name": "Christmas Markets (Vörösmarty Square)"}
+    ],
+    "flights": [{
+      "price": 1482,
+      "departureTimes": "Outbound: 2025-12-25 19:45 | Return: 2025-12-26 09:50",
+      "airlineName": "Air Canada"
+    }],
     "status": "CURRENT"
   },
   "T0103": {
@@ -132,6 +157,11 @@
     "tripId": "T0104",
     "tripName": "Toronto to New York City",
     "dates": "2025-11-30 to 2025-12-10",
+    "destination": "Budapest",
+    "ownerUserName": "my TA is so cool",
+    "tripId": "T0104",
+    "tripName": "Toronto to Budapest",
+    "dates": "2025-12-25 to 2025-12-31",
     "attractions": [],
     "flights": [],
     "status": "CURRENT"
