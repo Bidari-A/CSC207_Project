@@ -23,26 +23,26 @@ public class CompleteTripInteractor implements CompleteTripInputBoundary {
         String tripId = inputData.getTripId();
 
         try {
-            /***** ADDED: LOAD TRIP FROM DATABASE *****/
+            /***** LOAD TRIP FROM DATABASE *****/
             Trip trip = tripDAO.getTrip(tripId);
             if (trip == null) {
                 presenter.prepareFailView("Trip not found.");
                 return;
             }
 
-            /***** ADDED: SET STATUS = COMPLETED *****/
+            /***** SET STATUS = COMPLETED *****/
             trip.setStatus("COMPLETED");
 
-            /***** ADDED: UPDATE TRIP IN DATABASE *****/
+            /***** UPDATE TRIP IN DATABASE *****/
             tripDAO.updateTrip(trip);
 
-            /***** ADDED: ADD TRIP TO HISTORY *****/
+            /***** ADD TRIP TO HISTORY *****/
             tripDAO.addToHistory(tripId);
 
-            /***** ADDED: CLEAR CURRENT TRIP *****/
+            /***** CLEAR CURRENT TRIP *****/
             tripDAO.clearCurrentTrip();
 
-            /***** ADDED: SEND SUCCESS VIEW *****/
+            /***** SEND SUCCESS VIEW *****/
             presenter.prepareSuccessView(new CompleteTripOutputData(tripId));
 
         } catch (Exception e) {
