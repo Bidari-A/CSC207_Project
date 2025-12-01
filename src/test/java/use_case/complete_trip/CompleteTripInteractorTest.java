@@ -64,7 +64,7 @@ public class CompleteTripInteractorTest {
         assertEquals("Hawaii Trip", presenter.outputData.getTripName());
 
         // Trip status updated
-        assertEquals("Completed", tripDAO.trip.getStatus());
+        assertEquals("COMPLETED", tripDAO.trip.getStatus());
 
         // User current trip cleared
         assertNull(userDAO.currentTripId);
