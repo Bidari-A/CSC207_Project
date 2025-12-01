@@ -48,6 +48,21 @@ public class FileTripDataAccessObject
         this.historyFilePath = historyPath;
         this.currentTripFilePath = currentTripPath;
 
+        File parent = jsonFile.getParentFile();
+        if (parent != null && !parent.exists()) {
+            parent.mkdirs();
+        }
+
+        File historyFile = new File(historyPath);
+        if (historyFile.getParentFile() != null && !historyFile.getParentFile().exists()) {
+            historyFile.getParentFile().mkdirs();
+        }
+
+        File currentFile = new File(currentTripPath);
+        if (currentFile.getParentFile() != null && !currentFile.getParentFile().exists()) {
+            currentFile.getParentFile().mkdirs();
+        }
+
         if (jsonFile.exists() && jsonFile.length() > 0) {
             load();
         } else {
