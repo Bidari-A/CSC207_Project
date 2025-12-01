@@ -13,6 +13,10 @@ public class LoggedInState {
     private String cityName = "";
     private String date = "";
 
+    private String lastCompletedTripName;
+    private String errorMessage;
+    private String successMessage = "";
+
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
         password = copy.password;
@@ -68,4 +72,29 @@ public class LoggedInState {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getLastCompletedTripName() {
+        return lastCompletedTripName;
+    }
+
+    public void setLastCompletedTripName(String lastCompletedTripName) {
+        this.lastCompletedTripName = lastCompletedTripName;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    public void setSuccessMessage(String msg) {
+        this.successMessage = msg;
+    }
+
 }

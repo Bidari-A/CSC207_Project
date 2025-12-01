@@ -296,6 +296,29 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         save();
     }
 
+    public String getCurrentTripId(String username) {
+        User user = accounts.get(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        return user.getCurrentTripId();
+    }
+
+    public void clearCurrentTrip(String username) {
+        setCurrentTripId(username, null);
+    }
+
+    public void addTripToHistory(String username, String tripId) {
+        User user = accounts.get(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        List<String> trips = user.getTripList();
+        if (!trips.contains(tripId)) {
+            trips.add(tripId);
+        }
+        save(user);
+    }
 
 
 

@@ -22,6 +22,8 @@ import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.complete_trip.CompleteTripController;
+import interface_adapter.complete_trip.CompleteTripPresenter;
 import interface_adapter.create_new_trip.CreateNewTripController;
 import interface_adapter.create_new_trip.CreateNewTripPresenter;
 import interface_adapter.create_new_trip.CreateNewTripViewModel;
@@ -50,6 +52,9 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;   // NEW
+import use_case.complete_trip.CompleteTripInputBoundary;
+import use_case.complete_trip.CompleteTripInteractor;
+import use_case.complete_trip.CompleteTripOutputBoundary;
 import use_case.create_new_trip.*;
 import use_case.delete_trip_list.DeleteTripInputBoundary;
 import use_case.delete_trip_list.DeleteTripInteractor;
@@ -146,7 +151,7 @@ public class AppBuilder {
 
     // Create the real AI data access object
     GeminiTripAIDataAccessObject geminiTripAIDataAccessObject =
-            new GeminiTripAIDataAccessObject("AIzaSyAh4YLh6uIyOWQHJngqlcXS9D9-EKJkO5s");
+            new GeminiTripAIDataAccessObject("AIzaSyCHZ46QjyRenVy7KyEaVr30tx9iTuS9R2U");
 
     // Wrap it with the logging decorator
     TripAIDataAccessInterface loggingTripAIDataAccessObject =
@@ -417,6 +422,23 @@ public class AppBuilder {
         final DeleteCurrentTripController deleteCurrentTripController =
                 new DeleteCurrentTripController(deleteCurrentTripInteractor);
         loggedInView.setDeleteCurrentTripController(deleteCurrentTripController);
+        return this;
+    }
+
+    public AppBuilder addCompleteTripUseCase() {
+        CompleteTripOutputBoundary presenter =
+                new CompleteTripPresenter(loggedInViewModel);
+
+        CompleteTripInputBoundary interactor =
+                new CompleteTripInteractor(userDataAccessObject,
+                        tripDataAccessObject,
+                        presenter);
+
+        CompleteTripController controller =
+                new CompleteTripController(interactor);
+
+        loggedInView.setCompleteTripController(controller);
+
         return this;
     }
 
