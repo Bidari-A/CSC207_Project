@@ -3,8 +3,6 @@ package app;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,8 +13,6 @@ import data_access.FileTripDataAccessObject;
 import data_access.FileUserDataAccessObject;
 import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
-import data_access.*;
-import data_access.*;
 import data_access.*;
 import entity.Trip;
 import entity.TripIdGenerator;
@@ -50,13 +46,6 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;   // NEW
-import interface_adapter.trip.TripController;
-import interface_adapter.trip.TripPresenter;
-import interface_adapter.trip.TripViewModel;
-import interface_adapter.trip_list.TripListController;
-import interface_adapter.trip_list.TripListPresenter;
-import interface_adapter.trip_list.TripListViewModel;
-import use_case.complete_trip.TripDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripInputBoundary;
 import use_case.create_new_trip.CreateNewTripInteractor;
 import use_case.create_new_trip.CreateNewTripOutputBoundary;
@@ -64,7 +53,6 @@ import use_case.delete_trip_list.DeleteTripInputBoundary;
 import use_case.delete_trip_list.DeleteTripInteractor;
 import use_case.delete_trip_list.DeleteTripOutputBoundary;
 import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
-import use_case.create_new_trip.CreateNewTripUserDataAccessInterface;
 import use_case.delete_current_trip.DeleteCurrentTripInputBoundary;
 import use_case.delete_current_trip.DeleteCurrentTripInteractor;
 import use_case.delete_current_trip.DeleteCurrentTripOutputBoundary;
@@ -91,7 +79,6 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.*;
 import view.CreateNewTripView;
 import view.TripResultView;
 
@@ -99,38 +86,19 @@ import view.LoggedInView;
 import view.LoginView;
 import view.SignupView;
 import view.TripListView;
-import view.TripResultView;
 import view.TripView;
 import view.ViewManager;
 import interface_adapter.complete_trip.CompleteTripController;
 import interface_adapter.complete_trip.CompleteTripPresenter;
-import interface_adapter.complete_trip.CompleteTripViewModel;
 
 import use_case.complete_trip.CompleteTripInputBoundary;
 import use_case.complete_trip.CompleteTripInteractor;
 import use_case.complete_trip.CompleteTripOutputBoundary;
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
+
 
 // For flights
-import interface_adapter.flight_search.FlightSearchViewModel;
-import interface_adapter.flight_search.FlightSearchPresenter;
-import interface_adapter.flight_search.FlightSearchController;
-import use_case.flight_search.FlightSearchInputBoundary;
-import use_case.flight_search.FlightSearchInteractor;
-import use_case.flight_search.FlightSearchOutputBoundary;
-import use_case.flight_search.FlightSearchGateway;
 
 // For hotel
-import interface_adapter.hotel_search.HotelSearchViewModel;
-import interface_adapter.hotel_search.HotelSearchPresenter;
-import interface_adapter.hotel_search.HotelSearchController;
-import use_case.hotel_search.HotelSearchInputBoundary;
-import use_case.hotel_search.HotelSearchInteractor;
-import use_case.hotel_search.HotelSearchOutputBoundary;
-import use_case.hotel_search.HotelSearchGateway;
 
 
 public class AppBuilder {
@@ -180,8 +148,9 @@ public class AppBuilder {
     private TripListViewModel tripListViewModel;
     private FlightSearchViewModel flightSearchViewModel;
     private HotelSearchViewModel hotelSearchViewModel;
-    private CompleteTripViewModel completeTripViewModel;
 
+    private TripController tripController;
+    private CompleteTripController completeTripController;
 
     // NEW: Trip result VM and view
     private TripResultViewModel tripResultViewModel;
@@ -276,7 +245,7 @@ public class AppBuilder {
 
     public AppBuilder addTripView(){
         tripViewModel = new TripViewModel();
-        tripView = new TripView(tripViewModel);
+        tripView = new TripView(tripViewModel, tripController, completeTripController);
         cardPanel.add(tripView, tripViewModel.getViewName());
         return this;
     }
@@ -432,26 +401,18 @@ public class AppBuilder {
     }
 
     public AppBuilder addCompleteTripUseCase() {
+        CompleteTripOutputBoundary presenter =
+                new CompleteTripPresenter(loggedInViewModel);
 
-        completeTripViewModel = new CompleteTripViewModel();
+        CompleteTripInputBoundary interactor =
+                new CompleteTripInteractor(tripDataAccessObject, presenter);
 
-        final CompleteTripOutputBoundary completeTripPresenter =
-                new CompleteTripPresenter(completeTripViewModel);
-
-        final CompleteTripInputBoundary completeTripInteractor =
-                new CompleteTripInteractor(tripDataAccessObject, completeTripPresenter);
-
-        final CompleteTripController completeTripController =
-                new CompleteTripController(completeTripInteractor);
-
-        // Give controller to TripView (because completion happens from Trip Detail page)
-        tripView.setCompleteTripController(completeTripController);
+        completeTripController =
+                new CompleteTripController(interactor);
 
         loggedInView.setCompleteTripController(completeTripController);
-
         return this;
     }
-
     public JFrame build() {
         final JFrame application = new JFrame("Travel App");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

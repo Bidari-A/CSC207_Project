@@ -10,11 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import data_access.FileTripDataAccessObject;
 import entity.Trip;
-import entity.Accommodation;
-import entity.Flight;
-import entity.Destination;
 import interface_adapter.complete_trip.CompleteTripPresenter;
-import interface_adapter.complete_trip.CompleteTripViewModel;
 
 public class CompleteTripInteractorTest {
 

@@ -13,3 +13,4 @@ public class LoggedInViewModel extends ViewModel<LoggedInState> {
     }
 
 }
+

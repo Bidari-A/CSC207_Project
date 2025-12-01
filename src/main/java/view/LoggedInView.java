@@ -250,11 +250,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             }
         } else if (source == completeButton) {
             LoggedInState state = loggedInViewModel.getState();
-            String currentTripId = state.getCurrentTripId();
+            String currentTripId = state.getTripId();
 
-            if (completeTripController != null && username != null) {
+            if (completeTripController != null) {
                 completeTripController.completeTrip(currentTripId);
-                System.out.println("Complete clicked");
             }
         }
 
@@ -265,12 +264,33 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        LoggedInState state = loggedInViewModel.getState();
+
         if ("state".equals(evt.getPropertyName())) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
             tripName.setText(state.getCurrentTripName());
             cityName.setText(state.getCityName());
             date.setText(state.getDate());
+        }
+
+        switch (evt.getPropertyName()) {
+
+            case "tripStatus":
+                System.out.println("Trip status changed: " + state.getTripStatus());
+                break;
+
+            case "lastCompletedTripId":
+                JOptionPane.showMessageDialog(this,
+                        "Trip Completed Successfully!\nTrip ID: " + state.getLastCompletedTripId());
+                break;
+
+            case "errorMessage":
+                JOptionPane.showMessageDialog(this,
+                        state.getErrorMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
         }
     }
 

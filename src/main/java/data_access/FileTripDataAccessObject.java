@@ -18,7 +18,7 @@ import entity.Destination;
 import entity.Flight;
 import entity.Trip;
 import entity.TripIdGenerator;
-import use_case.complete_trip.TripDataAccessInterface;
+import data_access.TripDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripTripDataAccessInterface;
 import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 
@@ -29,16 +29,6 @@ import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 public class FileTripDataAccessObject implements TripDataAccessInterface, CreateNewTripTripDataAccessInterface {
     private final File jsonFile;
     private final Map<String, Trip> trips = new HashMap<>();
-
-    @Override
-    public Trip getTripById(String tripId) {
-        return trips.get(tripId);
-    }
-
-    @Override
-    public void saveCTrip(Trip trip) {
-        trips.put(trip.getTripId(), trip);
-    }
 
     /**
      * Construct this DAO for saving to and reading from a local JSON file.
@@ -304,5 +294,45 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
      */
     public List<Trip> getAllTrips() {
         return new ArrayList<>(trips.values());
+    }
+    /**
+     * Return a trip object by its ID.
+     */
+    @Override
+    public Trip getTrip(String tripId) {
+        return trips.get(tripId);
+    }
+
+    /**
+     * Update a trip's data (or create if not exists)
+     */
+    @Override
+    public void updateTrip(Trip trip) {
+        trips.put(trip.getTripId(), trip);
+        saveTrips();
+    }
+
+    /**
+     * Append trip ID to trip history file.
+     */
+    @Override
+    public void addToHistory(String tripId) {
+        try (FileWriter fw = new FileWriter(historyFilePath, true)) {
+            fw.write(tripId + System.lineSeparator());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clear the currently active trip.
+     */
+    @Override
+    public void clearCurrentTrip() {
+        try (FileWriter fw = new FileWriter(currentTripFilePath)) {
+            fw.write(""); // Clears the file content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

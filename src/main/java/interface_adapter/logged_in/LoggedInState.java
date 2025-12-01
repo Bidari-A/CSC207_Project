@@ -12,12 +12,17 @@ public class LoggedInState {
     private String currentTripName = "";
     private String cityName = "";
     private String date = "";
-    private final String currentTripId = null;
+
+    private String tripId;
+    private String tripStatus;
+    private String lastCompletedTripId;
+    private String errorMessage;
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
+        tripId = copy.tripId;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -70,5 +75,36 @@ public class LoggedInState {
         this.date = date;
     }
 
-    public String getCurrentTripId() { return currentTripId; }
+    public String getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
+    }
+
+    public String getTripStatus() {
+        return tripStatus;
+    }
+
+    public void setTripStatus(String tripStatus) {
+        this.tripStatus = tripStatus;
+    }
+
+    public String getLastCompletedTripId() {
+        return lastCompletedTripId;
+    }
+
+    public void setLastCompletedTripId(String lastCompletedTripId) {
+        this.lastCompletedTripId = lastCompletedTripId;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
 }

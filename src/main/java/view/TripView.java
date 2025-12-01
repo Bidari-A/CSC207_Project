@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.complete_trip.CompleteTripController;
-import interface_adapter.complete_trip.CompleteTripViewModel;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip.TripState;
 import interface_adapter.trip.TripViewModel;
@@ -22,7 +21,6 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final TripViewModel tripViewModel;
     private TripController tripController;
-    private CompleteTripViewModel completeTripViewModel;
     private CompleteTripController completeTripController;
 
     private final JLabel tripNameLabel = new JLabel();
@@ -37,10 +35,13 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton backButton = new JButton("Back");
     private final JButton completeTripButton = new JButton("Complete Trip");
 
-    public TripView(TripViewModel tripViewModel) {
+    public TripView(TripViewModel tripViewModel,
+                    TripController tripController,
+                    CompleteTripController completeTripController) {
         this.tripViewModel = tripViewModel;
         this.tripViewModel.addPropertyChangeListener(this);
-        this.completeTripViewModel = completeTripViewModel;
+        this.tripController = tripController;
+        this.completeTripController = completeTripController;
 
         attractionsArea.setEditable(false);
         flightArea.setEditable(false);
@@ -89,10 +90,11 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
         backButton.addActionListener(this);
 
-        this.completeTripViewModel.addPropertyChangeListener(evt -> {
-            String msg = completeTripViewModel.getMessage();
-            if (msg != null && !msg.isEmpty()) {
-                JOptionPane.showMessageDialog(this, msg);
+        completeTripButton.addActionListener(e -> {
+            if (completeTripController != null) {
+                completeTripController.completeTrip(tripViewModel.getTripId());
+            } else {
+                JOptionPane.showMessageDialog(this, "CompleteTripController not set!");
             }
         });
 
