@@ -22,4 +22,8 @@ public class SignupViewModel extends ViewModel<SignupState> {
         setState(new SignupState());
     }
 
+    @Override
+    public void firePropertyChanged() {
+
+    }
 }

@@ -11,4 +11,8 @@ public class ViewManagerModel extends ViewModel<String> {
         this.setState("");
     }
 
+    @Override
+    public void firePropertyChanged() {
+
+    }
 }

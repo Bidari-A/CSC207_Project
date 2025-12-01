@@ -8,4 +8,9 @@ public class CreateNewTripViewModel extends ViewModel<CreateNewTripState> {
         super("create new trip");
         setState(new CreateNewTripState());
     }
+
+    @Override
+    public void firePropertyChanged() {
+
+    }
 }

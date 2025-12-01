@@ -21,5 +21,10 @@ public class TripListViewModel extends ViewModel<TripListState> {
         setState(new TripListState(newState)); // deep copy
         firePropertyChange();
     }
+
+    @Override
+    public void firePropertyChanged() {
+
+    }
 }
 

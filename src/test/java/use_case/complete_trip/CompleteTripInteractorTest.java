@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.util.Collections;
 
+import data_access.TripDataAccessInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +28,7 @@ public class CompleteTripInteractorTest {
         if (f.exists()) f.delete();
 
         // Use interface type for dependency injection
-        dao = new FileTripDataAccessObject(TEST_JSON_PATH);
-        viewModel = new CompleteTripViewModel();
+        dao = new TripDataAccessInterface(TEST_JSON_PATH);
         presenter = new CompleteTripPresenter(viewModel);
         interactor = new CompleteTripInteractor(dao, presenter);
 

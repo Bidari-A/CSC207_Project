@@ -10,7 +10,7 @@ import java.beans.PropertyChangeSupport;
  *
  * @param <T> The type of state object contained in the model.
  */
-public class ViewModel<T> {
+public abstract class ViewModel<T> {
 
     private final String viewName;
 
@@ -53,6 +53,8 @@ public class ViewModel<T> {
     public void firePropertyChange(String propertyName) {
         this.support.firePropertyChange(propertyName, null, this.state);
     }
+
+    public abstract void firePropertyChanged();
 
     /**
      * Adds a PropertyChangeListener to this ViewModel.

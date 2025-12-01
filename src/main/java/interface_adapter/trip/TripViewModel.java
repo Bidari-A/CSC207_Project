@@ -26,4 +26,8 @@ public class TripViewModel extends ViewModel<TripState> {
         firePropertyChange("currentTripId");
     }
 
+    @Override
+    public void firePropertyChanged() {
+
+    }
 }

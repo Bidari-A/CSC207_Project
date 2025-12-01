@@ -18,29 +18,40 @@ import entity.Destination;
 import entity.Flight;
 import entity.Trip;
 import entity.TripIdGenerator;
-import data_access.TripDataAccessInterface;
 import use_case.create_new_trip.CreateNewTripTripDataAccessInterface;
-import use_case.delete_trip_list.DeleteTripUserDataAccessInterface;
 
 /**
  * DAO for trip data implemented using a JSON file to persist the data.
  * Supports full CRUD operations: create, read, update, delete.
  */
-public class FileTripDataAccessObject implements TripDataAccessInterface, CreateNewTripTripDataAccessInterface {
+public class FileTripDataAccessObject
+        implements data_access.TripDataAccessInterface, CreateNewTripTripDataAccessInterface {
+
     private final File jsonFile;
     private final Map<String, Trip> trips = new HashMap<>();
 
+    private final String historyFilePath;
+    private final String currentTripFilePath;
+
     /**
-     * Construct this DAO for saving to and reading from a local JSON file.
-     * @param jsonPath the path of the JSON file to save to
+     * Simple constructor: only JSON path, uses default history/current paths.
      */
     public FileTripDataAccessObject(String jsonPath) {
-        this.jsonFile = new File(jsonPath);
+        this(jsonPath, "data/trip_history.txt", "data/current_trip.txt");
+    }
+
+    /**
+     * Full constructor: JSON + history + current trip paths.
+     */
+    public FileTripDataAccessObject(String tripJsonPath, String historyPath, String currentTripPath) {
+        this.jsonFile = new File(tripJsonPath);
+        this.historyFilePath = historyPath;
+        this.currentTripFilePath = currentTripPath;
 
         if (jsonFile.exists() && jsonFile.length() > 0) {
             load();
         } else {
-            // Create empty JSON file if it doesn't exist
+            // Create empty JSON structure on disk
             save();
         }
     }
@@ -53,7 +64,7 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
             JSONObject jsonObject = new JSONObject(new JSONTokener(reader));
 
             // Collect all trip IDs to initialize TripIdGenerator
-            java.util.List<String> tripIds = new ArrayList<>();
+            List<String> tripIds = new ArrayList<>();
 
             for (String tripId : jsonObject.keySet()) {
                 tripIds.add(tripId);
@@ -91,9 +102,9 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
             JSONArray hotelsArray = tripJson.getJSONArray("hotels");
             for (int i = 0; i < hotelsArray.length(); i++) {
                 JSONObject hotelJson = hotelsArray.getJSONObject(i);
-                String name = hotelJson.has("name") ? hotelJson.getString("name") : "";
-                String address = hotelJson.has("address") ? hotelJson.getString("address") : "";
-                float price = hotelJson.has("price") ? (float) hotelJson.getDouble("price") : 0.0f;
+                String name = hotelJson.optString("name", "");
+                String address = hotelJson.optString("address", "");
+                float price = (float) hotelJson.optDouble("price", 0.0);
                 hotels.add(new Accommodation(name, address, price));
             }
         }
@@ -104,9 +115,9 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
             JSONArray flightsArray = tripJson.getJSONArray("flights");
             for (int i = 0; i < flightsArray.length(); i++) {
                 JSONObject flightJson = flightsArray.getJSONObject(i);
-                String airlineName = flightJson.has("airlineName") ? flightJson.getString("airlineName") : "";
-                String departureTimes = flightJson.has("departureTimes") ? flightJson.getString("departureTimes") : "";
-                float price = flightJson.has("price") ? (float) flightJson.getDouble("price") : 0.0f;
+                String airlineName = flightJson.optString("airlineName", "");
+                String departureTimes = flightJson.optString("departureTimes", "");
+                float price = (float) flightJson.optDouble("price", 0.0);
                 flights.add(new Flight(airlineName, departureTimes, price));
             }
         }
@@ -117,7 +128,7 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
             JSONArray attractionsArray = tripJson.getJSONArray("attractions");
             for (int i = 0; i < attractionsArray.length(); i++) {
                 JSONObject attractionJson = attractionsArray.getJSONObject(i);
-                String name = attractionJson.has("name") ? attractionJson.getString("name") : "";
+                String name = attractionJson.optString("name", "");
                 attractions.add(new Destination(name));
             }
         }
@@ -125,7 +136,6 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
         return new Trip(tripId, tripName, ownerUserName, status, dates,
                 destination, hotels, flights, attractions);
     }
-
 
     /**
      * Saves trips to the JSON file.
@@ -143,7 +153,8 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
                 tripJson.put("dates", trip.getDates());
 
                 // Save destination (String - main destination location)
-                tripJson.put("destination", trip.getDestination() != null ? trip.getDestination() : "");
+                tripJson.put("destination",
+                        trip.getDestination() != null ? trip.getDestination() : "");
 
                 // Save hotels as objects
                 JSONArray hotelsArray = new JSONArray();
@@ -185,51 +196,23 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
         }
     }
 
-//    @Override
-//    public void saveTrip(Trip trip) {
-//        save(trip);   // reuse your already-correct logic
-//    }
-
+    /**
+     * TripDataAccessInterface / CreateNewTripTripDataAccessInterface:
+     * Save a trip and return the stored version.
+     */
     @Override
     public Trip saveTrip(Trip trip) {
-        return save(trip);
+        return saveInternal(trip);
     }
 
     /**
-     * Gets a trip by ID.
-     * @param tripId the trip ID
-     * @return the Trip object, or null if not found
+     * Internal save method that updates the map and writes to disk.
      */
-    public Trip get(String tripId) {
-        return trips.get(tripId);
-    }
-
-    /**
-     * Gets all trips for a user.
-     * @param username the username
-     * @return list of trips owned by the user
-     */
-    public List<Trip> getTripsByUser(String username) {
-        List<Trip> userTrips = new ArrayList<>();
-        for (Trip trip : trips.values()) {
-            if (trip.getOwnerUserName().equals(username)) {
-                userTrips.add(trip);
-            }
-        }
-        return userTrips;
-    }
-
-    /**
-     * Saves a trip (create or update).
-     * If the trip doesn't have an ID or has an empty ID, a new ID will be generated.
-     * @param trip the trip to save
-     * @return the trip with its ID (newly generated if it was missing)
-     */
-    public Trip save(Trip trip) {
+    private Trip saveInternal(Trip trip) {
         String tripId = trip.getTripId();
 
         // Generate new ID if trip doesn't have one or has empty ID
-        if (tripId == null || tripId.isEmpty() || tripId.trim().isEmpty()) {
+        if (tripId == null || tripId.trim().isEmpty()) {
             tripId = TripIdGenerator.nextId();
             // Create new trip with generated ID
             trip = new Trip(tripId, trip.getTripName(), trip.getOwnerUserName(),
@@ -242,19 +225,47 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
         return trip;
     }
 
+    /**
+     * Return a trip object by its ID.
+     */
+    @Override
+    public Trip getTrip(String tripId) {
+        return trips.get(tripId);
+    }
+
+    /**
+     * Update a trip's data (or create if not exists).
+     */
+    @Override
+    public void updateTrip(Trip trip) {
+        trips.put(trip.getTripId(), trip);
+        save();
+    }
+
+    /**
+     * Gets all trips as a Collection (matches TripDataAccessInterface).
+     */
+    @Override
+    public Trip[] getAllTrips() {
+        return trips.values().toArray(new Trip[0]);
+    }
+
+    /**
+     * Gets all trips for a given user.
+     */
+    public List<Trip> getTripsByUser(String username) {
+        List<Trip> userTrips = new ArrayList<>();
+        for (Trip trip : trips.values()) {
+            if (trip.getOwnerUserName().equals(username)) {
+                userTrips.add(trip);
+            }
+        }
+        return userTrips;
+    }
 
     /**
      * Creates and saves a new trip with auto-generated ID.
      * This is the preferred method for creating new trips.
-     * @param tripName the name of the trip
-     * @param ownerUserName the username of the trip owner
-     * @param status the status of the trip (e.g., "CURRENT", "COMPLETED")
-     * @param dates the date range string
-     * @param destination the main destination location (from "To" field)
-     * @param hotels list of hotels
-     * @param flights list of flights
-     * @param attractions list of Destination objects (attractions)
-     * @return the created trip with auto-generated ID
      */
     public Trip createTrip(String tripName, String ownerUserName, String status, String dates,
                            String destination, List<Accommodation> hotels,
@@ -262,12 +273,11 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
         String tripId = TripIdGenerator.nextId();
         Trip trip = new Trip(tripId, tripName, ownerUserName, status, dates,
                 destination, hotels, flights, attractions);
-        return save(trip);
+        return saveInternal(trip);
     }
 
     /**
      * Deletes a trip by ID.
-     * @param tripId the trip ID to delete
      * @return true if the trip was deleted, false if not found
      */
     public boolean delete(String tripId) {
@@ -281,35 +291,9 @@ public class FileTripDataAccessObject implements TripDataAccessInterface, Create
 
     /**
      * Checks if a trip exists.
-     * @param tripId the trip ID
-     * @return true if the trip exists, false otherwise
      */
     public boolean exists(String tripId) {
         return trips.containsKey(tripId);
-    }
-
-    /**
-     * Gets all trips.
-     * @return list of all trips
-     */
-    public List<Trip> getAllTrips() {
-        return new ArrayList<>(trips.values());
-    }
-    /**
-     * Return a trip object by its ID.
-     */
-    @Override
-    public Trip getTrip(String tripId) {
-        return trips.get(tripId);
-    }
-
-    /**
-     * Update a trip's data (or create if not exists)
-     */
-    @Override
-    public void updateTrip(Trip trip) {
-        trips.put(trip.getTripId(), trip);
-        saveTrips();
     }
 
     /**

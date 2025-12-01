@@ -92,7 +92,7 @@ public class TripView extends JPanel implements ActionListener, PropertyChangeLi
 
         completeTripButton.addActionListener(e -> {
             if (completeTripController != null) {
-                completeTripController.completeTrip(tripViewModel.getTripId());
+                completeTripController.completeTrip(tripViewModel.getCurrentTripId());
             } else {
                 JOptionPane.showMessageDialog(this, "CompleteTripController not set!");
             }

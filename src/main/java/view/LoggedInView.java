@@ -267,7 +267,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         LoggedInState state = loggedInViewModel.getState();
 
         if ("state".equals(evt.getPropertyName())) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
             tripName.setText(state.getCurrentTripName());
             cityName.setText(state.getCityName());

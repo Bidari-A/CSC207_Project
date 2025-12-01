@@ -18,13 +18,6 @@ public class LoggedInState {
     private String lastCompletedTripId;
     private String errorMessage;
 
-    public LoggedInState(LoggedInState copy) {
-        username = copy.username;
-        password = copy.password;
-        passwordError = copy.passwordError;
-        tripId = copy.tripId;
-    }
-
     // Because of the previous copy constructor, the default constructor must be explicit.
     public LoggedInState() {
 

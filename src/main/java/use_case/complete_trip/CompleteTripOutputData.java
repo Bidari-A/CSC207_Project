@@ -4,7 +4,7 @@ public class CompleteTripOutputData {
     private final String tripId;
     private final String status;
 
-    public CompleteTripOutputData(String tripId, String status) {
+    public CompleteTripOutputData(String tripId) {
         this.tripId = tripId;
         this.status = status;
     }

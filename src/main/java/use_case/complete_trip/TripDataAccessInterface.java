@@ -16,4 +16,6 @@ public interface TripDataAccessInterface {
 
 
     void clearCurrentTrip();
+
+    Trip[] getAllTrips();
 }

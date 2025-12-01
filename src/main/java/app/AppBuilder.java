@@ -14,6 +14,7 @@ import data_access.FileUserDataAccessObject;
 import data_access.SerpApiFlightSearchGateway;
 import data_access.SerpApiHotelSearchGateway;
 import data_access.*;
+import data_access.TripDataAccessInterface;
 import entity.Trip;
 import entity.TripIdGenerator;
 import entity.UserFactory;
@@ -46,9 +47,7 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;   // NEW
-import use_case.create_new_trip.CreateNewTripInputBoundary;
-import use_case.create_new_trip.CreateNewTripInteractor;
-import use_case.create_new_trip.CreateNewTripOutputBoundary;
+import use_case.create_new_trip.*;
 import use_case.delete_trip_list.DeleteTripInputBoundary;
 import use_case.delete_trip_list.DeleteTripInteractor;
 import use_case.delete_trip_list.DeleteTripOutputBoundary;
@@ -111,12 +110,19 @@ public class AppBuilder {
     final FileUserDataAccessObject userDataAccessObject =
             new FileUserDataAccessObject("users.json", userFactory);
 
-    final FileTripDataAccessObject tripDataAccessObject =
-            new FileTripDataAccessObject("trips.json");
+    String tripJsonPath = "data/trips.json"; // Or whatever path you use
+    String historyPath = "data/trip_history.txt"; // DECLARE THIS
+    String currentTripPath = "data/current_trip.txt"; // DECLARE THIS
+
+    final FileTripDataAccessObject fileTripDataAccessObject =
+            new FileTripDataAccessObject(tripJsonPath, historyPath, currentTripPath);
+
+    final TripDataAccessInterface tripDataAccessObject =
+            fileTripDataAccessObject;
 
     {
         // Integrate trip DAO with user DAO
-        userDataAccessObject.setTripDataAccessObject(tripDataAccessObject);
+        userDataAccessObject.setTripDataAccessObject((FileTripDataAccessObject) tripDataAccessObject);
     }
 
     {
@@ -268,7 +274,7 @@ public class AppBuilder {
     public AppBuilder addDeleteTripUseCase() {
 
         DeleteTripUserDataAccessInterface deleteTripDAO =
-                new FileDeleteTripDataAccessObject(tripDataAccessObject);
+                new FileDeleteTripDataAccessObject((FileTripDataAccessObject) tripDataAccessObject);
 
         DeleteTripOutputBoundary deleteTripPresenter =
                 new TripListPresenter(viewManagerModel, tripListViewModel);
@@ -310,8 +316,8 @@ public class AppBuilder {
                 new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripResultViewModel);
 
         final CreateNewTripInputBoundary createNewTripInteractor =
-                new CreateNewTripInteractor(createNewTripPresenter,geminiTripAIDataAccessObject,
-                        tripDataAccessObject, userDataAccessObject);
+                new CreateNewTripInteractor(createNewTripPresenter, (TripAIDataAccessInterface) geminiTripAIDataAccessObject,
+                        (CreateNewTripTripDataAccessInterface) tripDataAccessObject, userDataAccessObject);
 
         final CreateNewTripController controller =
                 new CreateNewTripController(createNewTripInteractor);
@@ -343,7 +349,7 @@ public class AppBuilder {
                         flightSearchGateway,
                         flightSearchOutputBoundary,
                         userDataAccessObject,
-                        tripDataAccessObject
+                        (FileTripDataAccessObject) tripDataAccessObject
                 );
 
         // 5. Controller
@@ -371,7 +377,7 @@ public class AppBuilder {
                         gateway,
                         outputBoundary,
                         userDataAccessObject,
-                        tripDataAccessObject
+                        (FileTripDataAccessObject) tripDataAccessObject
                 );
         HotelSearchController controller =
                 new HotelSearchController(interactor);

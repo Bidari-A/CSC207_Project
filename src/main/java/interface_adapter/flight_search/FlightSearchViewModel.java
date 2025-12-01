@@ -7,4 +7,9 @@ public class FlightSearchViewModel extends ViewModel<FlightSearchState>{
         super("flight search");
         setState(new FlightSearchState());
     }
+
+    @Override
+    public void firePropertyChanged() {
+
+    }
 }
