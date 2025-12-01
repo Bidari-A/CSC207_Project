@@ -62,15 +62,12 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
         // Parse destinations from the AI text
         List<Destination> attractions = parseDestinations(itinerary);
 
-        String tripSummary = parseTripSummary(itinerary);
-
         // Build dates string for Trip entity
         String dates = startDate + " to " + endDate;
 
         // Empty lists for hotels and flights for now
         List<Accommodation> hotels = new ArrayList<>();
         List<Flight> flights = new ArrayList<>();
-
 
         // Create Trip with blank ID; DAO will generate the real ID
         Trip trip = new Trip(
@@ -85,6 +82,7 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
                 attractions          // parsed destinations from Gemini
         );
 
+        // Save the generated trip via DAI (CreateNewTripTripDataAccessInterface)
         Trip savedTrip = tripSaver.saveTrip(trip);
         String tripId = savedTrip.getTripId();
         userDataAccess.updateUserTrips(currentUsername, tripId);
@@ -94,11 +92,9 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
                 from,
                 to,
                 startDate,   // startDate
-                startDate,   // endDate (same for now)
+                endDate,   // endDate
                 itinerary
         );
-
-        // THIS LINE IS WHAT MATTERS:
         createNewTripPresenter.presentResult(outputData);
     }
 
@@ -154,9 +150,10 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
 
 
-    //maybe check later
     @Override
     public void prepareScreen() {
+        // It is the interactor that contacts the presenter.
+        // Controller does not directly touch presenter
         createNewTripPresenter.prepareScreen();
     }
 
@@ -166,6 +163,8 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
     @Override
     public void backFromResult() {
+        // From the TripResultView, go back to CreateNewTripView
         createNewTripPresenter.presentBackToCreateNewTripView();
     }
 }
+
