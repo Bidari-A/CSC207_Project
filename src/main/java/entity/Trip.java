@@ -26,7 +26,6 @@ public class Trip {
         this.flights = flights;
         this.attractions = attractions;
     }
-
     // Getters
     public String getTripId() { return this.tripId; }
     public String getTripName() { return this.tripName; }
