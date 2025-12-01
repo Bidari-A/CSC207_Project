@@ -1,0 +1,150 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam dpi 400
+hide empty members
+
+' Make it taller instead of wider
+left to right direction
+' (we'll stack packages vertically)
+
+' =======================
+' VIEW & ADAPTER
+' =======================
+package "View" {
+  class LoggedInView {
+    +searchFlights(...)
+  }
+}
+
+package "Interface Adapter" {
+  class FlightSearchController {
+    -interactor : FlightSearchInputBoundary
+    +execute(from, to, outDate, returnDate)
+  }
+
+  class FlightSearchPresenter {
+    -viewModel : FlightSearchViewModel
+    +prepareSuccessView(data : FlightSearchOutputData)
+    +prepareFailView(error : String)
+  }
+
+  class FlightSearchViewModel {
+    -summary : String
+    +setSummary(s : String)
+    +getSummary() : String
+    +firePropertyChange()
+  }
+}
+
+' =======================
+' USE CASE
+' =======================
+package "Use Case (Flight)" {
+  interface FlightSearchInputBoundary {
+    +execute(inputData : FlightSearchInputData)
+  }
+
+  interface FlightSearchOutputBoundary {
+    +prepareSuccessView(data : FlightSearchOutputData)
+    +prepareFailView(error : String)
+  }
+
+  interface FlightSearchGateway {
+    +fetchRawJson(from, to, out, ret) : String
+    +summarizeFirstBestFlight(json : String) : String
+    +buildFirstFlightEntity(json : String) : Flight
+  }
+
+  class FlightSearchInteractor {
+    -gateway : FlightSearchGateway
+    -presenter : FlightSearchOutputBoundary
+    -userDao : FileUserDataAccessObject
+    -tripDao : FileTripDataAccessObject
+
+    +execute(inputData : FlightSearchInputData)
+    -saveBestFlightToCurrentTrip(flight : Flight)
+  }
+
+  class FlightSearchInputData {
+    +getFrom() : String
+    +getTo() : String
+    +getOutboundDate() : String
+    +getReturnDate() : String
+  }
+
+  class FlightSearchOutputData {
+    +getSummary() : String
+  }
+}
+
+' =======================
+' DATA ACCESS
+' =======================
+package "Data Access" {
+  class SerpApiFlightSearchGateway {
+    +fetchRawJson(...)
+    +summarizeFirstBestFlight(json)
+    +buildFirstFlightEntity(json)
+  }
+
+  class FileUserDataAccessObject {
+    +getCurrentUsername() : String
+    +getUser(username : String) : User
+  }
+
+  class FileTripDataAccessObject {
+    +get(tripId : String) : Trip
+    +save(trip : Trip)
+  }
+}
+
+' =======================
+' ENTITIES
+' =======================
+package "Entities" {
+  class User {
+    +getCurrentTripId() : String
+  }
+
+  class Trip {
+    +getFlights() : List<Flight>
+  }
+
+  class Flight {
+    +getAirlineName() : String
+    +getDepartureTimes() : String
+    +getPrice() : float
+  }
+
+  Trip "1" o-- "*" Flight
+}
+
+' =======================
+' RELATIONSHIPS (FLOW)
+' =======================
+
+LoggedInView --> FlightSearchController : clicks "Search Flights"
+FlightSearchController --> FlightSearchInputBoundary : execute(...)
+
+FlightSearchInteractor ..|> FlightSearchInputBoundary
+FlightSearchInteractor --> FlightSearchGateway
+FlightSearchInteractor --> FileUserDataAccessObject
+FlightSearchInteractor --> FileTripDataAccessObject
+FlightSearchInteractor --> FlightSearchOutputBoundary
+
+SerpApiFlightSearchGateway ..|> FlightSearchGateway
+
+FlightSearchPresenter ..|> FlightSearchOutputBoundary
+FlightSearchPresenter --> FlightSearchViewModel
+
+FileUserDataAccessObject --> User
+FileTripDataAccessObject --> Trip
+SerpApiFlightSearchGateway --> Flight
+
+FlightSearchInputBoundary --> FlightSearchInputData
+FlightSearchOutputBoundary --> FlightSearchOutputData
+
+@enduml

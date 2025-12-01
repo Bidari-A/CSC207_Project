@@ -1,0 +1,147 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam dpi 140
+hide empty members
+
+left to right direction
+
+' =======================
+' VIEW & ADAPTER
+' =======================
+package "View" {
+  class LoggedInView {
+    +searchHotels(...)
+  }
+}
+
+package "Interface Adapter" {
+  class HotelSearchController {
+    -interactor : HotelSearchInputBoundary
+    +execute(query, checkIn, checkOut)
+  }
+
+  class HotelSearchPresenter {
+    -viewModel : HotelSearchViewModel
+    +prepareSuccessView(data : HotelSearchOutputData)
+    +prepareFailView(error : String)
+  }
+
+  class HotelSearchViewModel {
+    -summary : String
+    +setSummary(s : String)
+    +getSummary() : String
+    +firePropertyChange()
+  }
+}
+
+' =======================
+' USE CASE
+' =======================
+package "Use Case (Hotel)" {
+  interface HotelSearchInputBoundary {
+    +execute(inputData : HotelSearchInputData)
+  }
+
+  interface HotelSearchOutputBoundary {
+    +prepareSuccessView(data : HotelSearchOutputData)
+    +prepareFailView(error : String)
+  }
+
+  interface HotelSearchGateway {
+    +fetchRawJson(query, checkIn, checkOut) : String
+    +summarizeFirstHotel(json : String) : String
+    +buildFirstHotelEntity(json : String) : Accommodation
+  }
+
+  class HotelSearchInteractor {
+    -gateway : HotelSearchGateway
+    -presenter : HotelSearchOutputBoundary
+    -userDao : FileUserDataAccessObject
+    -tripDao : FileTripDataAccessObject
+
+    +execute(inputData : HotelSearchInputData)
+    -saveBestHotelToCurrentTrip(hotel : Accommodation)
+  }
+
+  class HotelSearchInputData {
+    +getQuery() : String
+    +getCheckInDate() : String
+    +getCheckOutDate() : String
+  }
+
+  class HotelSearchOutputData {
+    +getSummary() : String
+  }
+}
+
+' =======================
+' DATA ACCESS
+' =======================
+package "Data Access" {
+  class SerpApiHotelSearchGateway {
+    +fetchRawJson(...)
+    +summarizeFirstHotel(json)
+    +buildFirstHotelEntity(json)
+  }
+
+  class FileUserDataAccessObject {
+    +getCurrentUsername() : String
+    +getUser(username : String) : User
+  }
+
+  class FileTripDataAccessObject {
+    +get(tripId : String) : Trip
+    +save(trip : Trip)
+  }
+}
+
+' =======================
+' ENTITIES
+' =======================
+package "Entities" {
+  class User {
+    +getCurrentTripId() : String
+  }
+
+  class Trip {
+    +getHotels() : List<Accommodation>
+  }
+
+  class Accommodation {
+    +getName() : String
+    +getAddress() : String
+    +getPrice() : float
+  }
+
+  Trip "1" o-- "*" Accommodation
+}
+
+' =======================
+' RELATIONSHIPS (FLOW)
+' =======================
+
+LoggedInView --> HotelSearchController : clicks "Search Hotels"
+HotelSearchController --> HotelSearchInputBoundary : execute(...)
+
+HotelSearchInteractor ..|> HotelSearchInputBoundary
+HotelSearchInteractor --> HotelSearchGateway
+HotelSearchInteractor --> FileUserDataAccessObject
+HotelSearchInteractor --> FileTripDataAccessObject
+HotelSearchInteractor --> HotelSearchOutputBoundary
+
+SerpApiHotelSearchGateway ..|> HotelSearchGateway
+
+HotelSearchPresenter ..|> HotelSearchOutputBoundary
+HotelSearchPresenter --> HotelSearchViewModel
+
+FileUserDataAccessObject --> User
+FileTripDataAccessObject --> Trip
+SerpApiHotelSearchGateway --> Accommodation
+
+HotelSearchInputBoundary --> HotelSearchInputData
+HotelSearchOutputBoundary --> HotelSearchOutputData
+
+@enduml

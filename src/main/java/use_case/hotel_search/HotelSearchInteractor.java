@@ -32,16 +32,13 @@ public class HotelSearchInteractor implements HotelSearchInputBoundary {
                     inputData.getCheckInDate(),
                     inputData.getCheckOutDate()
             );
-
             String summary = gateway.summarizeFirstHotel(json);
 
-// NEW: build entity + save to current trip
+            // build entity + save to current trip
             Accommodation bestHotel = gateway.buildFirstHotelEntity(json);
             saveBestHotelToCurrentTrip(bestHotel);
-
             HotelSearchOutputData outputData = new HotelSearchOutputData(summary);
             presenter.prepareSuccessView(outputData);
-
         } catch (Exception e) {
             presenter.prepareFailView(e.getMessage());
         }

@@ -58,12 +58,12 @@ public class SerpApiHotelSearchGateway implements HotelSearchGateway {
         // 2. Grab first object in "ads" (first hotel result)
         int adsIdx = json.indexOf("\"ads\"");
         if (adsIdx < 0) {
-            return "No ads found.";
+            return "ERROR. No search results found (invalid search / api key). Please try again.";
         }
 
         int start = json.indexOf('{', adsIdx);
         if (start < 0) {
-            return "No hotel object found.";
+            return "ERROR. No search results found (invalid search / api key). Please try again.";
         }
 
         int depth = 0;
