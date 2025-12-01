@@ -49,12 +49,12 @@ public class SerpApiFlightSearchGateway implements FlightSearchGateway{
         // 1. Grab first object in "best_flights"
         int bestIdx = json.indexOf("\"best_flights\"");
         if (bestIdx < 0) {
-            return "No best_flights found.";
+            return "ERROR. No search results found (invalid search / api key). Please try again.";
         }
 
         int start = json.indexOf('{', bestIdx);
         if (start < 0) {
-            return "No flight object found.";
+            return "ERROR. No search results found (invalid search / api key). Please try again.";
         }
 
         int depth = 0;

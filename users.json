@@ -44,8 +44,11 @@
   },
   "my TA is so cool": {
     "password": "1",
-    "currentTripId": null,
-    "tripList": [],
+    "currentTripId": "T0105",
+    "tripList": [
+      "T0104",
+      "T0105"
+    ],
     "username": "my TA is so cool"
   }
 }
