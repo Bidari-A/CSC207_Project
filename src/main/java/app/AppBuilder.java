@@ -317,15 +317,15 @@ public class AppBuilder {
             cardPanel.add(tripResultView, tripResultView.getViewName());
         }
 
-        final CreateNewTripOutputBoundary createNewTripPresenter =
+        CreateNewTripOutputBoundary createNewTripPresenter =
                 new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripResultViewModel);
 
         // CreateNewTripInteractor uses the logging decorator instead of the raw Gemini DAO
-        final CreateNewTripInputBoundary createNewTripInteractor =
+        CreateNewTripInputBoundary createNewTripInteractor =
                 new CreateNewTripInteractor(createNewTripPresenter, (TripAIDataAccessInterface) geminiTripAIDataAccessObject,
                         (CreateNewTripTripDataAccessInterface) tripDataAccessObject, userDataAccessObject);
                 new CreateNewTripInteractor(createNewTripPresenter,loggingTripAIDataAccessObject,
-                        tripDataAccessObject, userDataAccessObject);
+                        (CreateNewTripTripDataAccessInterface) tripDataAccessObject, userDataAccessObject);
 
         final CreateNewTripController controller =
                 new CreateNewTripController(createNewTripInteractor);

@@ -65,7 +65,7 @@ public class HotelSearchInteractor implements HotelSearchInputBoundary {
         trip.getHotels().clear();
         trip.getHotels().add(accommodation);
 
-        tripDao.save(trip);
+        tripDao.save();
     }
 
 

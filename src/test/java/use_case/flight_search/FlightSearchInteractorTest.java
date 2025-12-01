@@ -219,7 +219,7 @@ class FlightSearchInteractorTest {
                 new ArrayList<>(),                  // flights
                 new ArrayList<Destination>()        // attractions
         );
-        tripDao.save(trip);
+        tripDao.save();
     }
 
     @AfterEach

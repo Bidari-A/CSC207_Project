@@ -73,7 +73,7 @@ public class LoadTripDetailInteractorTest {
                 "2024-12-12 to 2024-12-13", "Paris",accommodations, flights, destinations
         );
 
-        tripRepository.save(newTrip);
+        tripRepository.save();
         List<String> tripList = user.getTripList();
         tripList.add(newTrip.getTripId());
         userRepository.save(user);
@@ -127,7 +127,7 @@ public class LoadTripDetailInteractorTest {
         );
 
 
-        tripRepository.save(newTrip);
+        tripRepository.save();
         user.setCurrentTripId("newTripId1");
         userRepository.save(user);
 
@@ -235,7 +235,7 @@ public class LoadTripDetailInteractorTest {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
 
-        tripRepository.save(emptyTrip);
+        tripRepository.save();
 
         LoadTripDetailInputData input = new LoadTripDetailInputData("Paul", "logged in");
 
@@ -287,7 +287,7 @@ public class LoadTripDetailInteractorTest {
                 "dates", "", // cityName empty → triggers fallback
                 List.of(hotel), List.of(flight), List.of(dest));
 
-        tripRepository.save(trip);
+        tripRepository.save();
 
         LoadTripDetailInputData input = new LoadTripDetailInputData("Paul", "logged in");
 
@@ -315,7 +315,7 @@ public class LoadTripDetailInteractorTest {
                 "dates", "Vancouver", // SKIPS fallback
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        tripRepository.save(trip);
+        tripRepository.save();
 
         LoadTripDetailInputData input = new LoadTripDetailInputData("Paul", "logged in");
 
@@ -340,7 +340,7 @@ public class LoadTripDetailInteractorTest {
                 "dates", null, // triggers fallback
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        tripRepository.save(trip);
+        tripRepository.save();
 
         LoadTripDetailInputData input = new LoadTripDetailInputData("Paul", "logged in");
 
@@ -376,7 +376,7 @@ public class LoadTripDetailInteractorTest {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
 
-        tripRepository.save(trip);
+        tripRepository.save();
 
         LoadTripDetailInputData input = new LoadTripDetailInputData("Paul", "logged in");
 
@@ -410,7 +410,7 @@ public class LoadTripDetailInteractorTest {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
 
-        tripRepository.save(trip);
+        tripRepository.save();
 
         LoadTripDetailInputData input = new LoadTripDetailInputData("Paul", "logged in");
 

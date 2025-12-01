@@ -2,7 +2,7 @@ package use_case.complete_trip;
 
 public class CompleteTripOutputData {
     private final String tripId;
-    private final String status;
+    private String status = "";
 
     public CompleteTripOutputData(String tripId) {
         this.tripId = tripId;

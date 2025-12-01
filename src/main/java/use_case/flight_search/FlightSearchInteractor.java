@@ -95,7 +95,7 @@ public class FlightSearchInteractor implements FlightSearchInputBoundary{
         trip.getFlights().add(flight);
 
         // 5. Save the updated trip
-        tripDao.save(trip);
+        tripDao.save();
     }
 
 

@@ -52,6 +52,7 @@ public class FileTripDataAccessObject
             load();
         } else {
             // Create empty JSON structure on disk
+            Trip trip = null;
             save();
         }
     }
@@ -140,7 +141,7 @@ public class FileTripDataAccessObject
     /**
      * Saves trips to the JSON file.
      */
-    private void save() {
+    public void save() {
         try (FileWriter writer = new FileWriter(jsonFile)) {
             JSONObject jsonObject = new JSONObject();
 
@@ -318,5 +319,9 @@ public class FileTripDataAccessObject
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Trip get(String tripId) {
+        return trips.get(tripId);
     }
 }
