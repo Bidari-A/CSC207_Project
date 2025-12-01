@@ -163,7 +163,7 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
     @Override
     public void backFromResult() {
-
+        // From the TripResultView, go back to CreateNewTripView
         createNewTripPresenter.presentBackToCreateNewTripView();
     }
 }
