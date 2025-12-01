@@ -54,7 +54,13 @@
   "j": {
     "password": "1",
     "currentTripId": null,
-    "tripList": ["T0106"],
+    "tripList": [
+      "T0106",
+      "T0107",
+      "T0108",
+      "T0109",
+      "T0110"
+    ],
     "username": "j"
   }
 }

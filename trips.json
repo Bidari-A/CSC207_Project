@@ -43,6 +43,174 @@
     "flights": [],
     "status": "CURRENT"
   },
+  "T0110": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0110",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-10",
+    "attractions": [
+      {"name": "Buckingham Palace"},
+      {"name": "Tower of London"},
+      {"name": "British Museum"},
+      {"name": "Houses of Parliament & Big Ben"},
+      {"name": "Westminster Abbey"},
+      {"name": "National Gallery"},
+      {"name": "Borough Market"},
+      {"name": "Hyde Park (Winter Wonderland if open)"},
+      {"name": "Shakespeare's Globe"},
+      {"name": "Churchill War Rooms"}
+    ],
+    "flights": [],
+    "status": "Completed"
+  },
+  "T0109": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0109",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-10",
+    "attractions": [
+      {"name": "Buckingham Palace"},
+      {"name": "Tower of London"},
+      {"name": "British Museum"},
+      {"name": "Houses of Parliament & Big Ben"},
+      {"name": "Westminster Abbey"},
+      {"name": "National Gallery"},
+      {"name": "London Eye"},
+      {"name": "Hyde Park"},
+      {"name": "Borough Market"},
+      {"name": "Shakespeare's Globe"}
+    ],
+    "flights": [],
+    "status": "CURRENT"
+  },
+  "T0107": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0107",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-10",
+    "attractions": [
+      {"name": "Buckingham Palace"},
+      {"name": "Tower of London"},
+      {"name": "British Museum"},
+      {"name": "Houses of Parliament & Big Ben"},
+      {"name": "Westminster Abbey"},
+      {"name": "National Gallery"},
+      {"name": "Borough Market"},
+      {"name": "Hyde Park"},
+      {"name": "Shakespeare's Globe"},
+      {"name": "Churchill War Rooms"}
+    ],
+    "flights": [],
+    "status": "CURRENT"
+  },
+  "T0108": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0108",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-10",
+    "attractions": [
+      {"name": "Buckingham Palace"},
+      {"name": "Tower of London"},
+      {"name": "British Museum"},
+      {"name": "Houses of Parliament & Big Ben"},
+      {"name": "Westminster Abbey"},
+      {"name": "National Gallery"},
+      {"name": "Hyde Park (Winter Wonderland if open)"},
+      {"name": "Borough Market"},
+      {"name": "Shakespeare's Globe"},
+      {"name": "Churchill War Rooms"}
+    ],
+    "flights": [],
+    "status": "Completed"
+  },
+  "T0105": {
+    "hotels": [{
+      "address": "",
+      "price": 64,
+      "name": "Maverick Downtown"
+    }],
+    "destination": "Budapest",
+    "ownerUserName": "my TA is so cool",
+    "tripId": "T0105",
+    "tripName": "Toronto to Budapest",
+    "dates": "2025-12-25 to 2025-12-31",
+    "attractions": [
+      {"name": "Buda Castle"},
+      {"name": "Hungarian Parliament Building"},
+      {"name": "Szechenyi Thermal Baths"},
+      {"name": "Fisherman's Bastion"},
+      {"name": "Matthias Church"},
+      {"name": "Central Market Hall"},
+      {"name": "St. Stephen's Basilica"},
+      {"name": "Christmas Markets (Vörösmarty Square)"}
+    ],
+    "flights": [{
+      "price": 1482,
+      "departureTimes": "Outbound: 2025-12-25 19:45 | Return: 2025-12-26 09:50",
+      "airlineName": "Air Canada"
+    }],
+    "status": "CURRENT"
+  },
+  "T0106": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0106",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-03",
+    "attractions": [],
+    "flights": [],
+    "status": "Completed"
+  },
+  "T0103": {
+    "hotels": [{
+      "address": "",
+      "price": 26,
+      "name": "Generator Paris"
+    }],
+    "destination": "Montreal",
+    "ownerUserName": "b",
+    "tripId": "T0103",
+    "tripName": "Toronto to Montreal",
+    "dates": "2025-12-25 to 2026-01-02",
+    "attractions": [
+      {"name": "Old Montreal"},
+      {"name": "Notre-Dame Basilica"},
+      {"name": "Montreal Museum of Fine Arts"},
+      {"name": "Mount Royal Park"},
+      {"name": "Underground City (RÉSO)"},
+      {"name": "Jean-Talon Market"},
+      {"name": "Pointe-à-Callière, Montreal Archaeology and History Complex"},
+      {"name": "Montreal Science Centre"},
+      {"name": "Olympic Park"},
+      {"name": "Biodome"}
+    ],
+    "flights": [{
+      "price": 1428,
+      "departureTimes": "Outbound: 2025-12-01 22:45 | Return: 2025-12-02 12:10",
+      "airlineName": "Air France"
+    }],
+    "status": "CURRENT"
+  },
+  "T0104": {
+    "hotels": [],
+    "destination": "Budapest",
+    "ownerUserName": "my TA is so cool",
+    "tripId": "T0104",
+    "tripName": "Toronto to Budapest",
+    "dates": "2025-12-25 to 2025-12-31",
+    "attractions": [],
+    "flights": [],
+    "status": "CURRENT"
+  },
   "T002": {
     "hotels": [{
       "address": "",
@@ -130,86 +298,6 @@
       "departureTimes": "JFK → NRT on 2025-12-01",
       "airlineName": "Japan Airlines"
     }],
-    "status": "CURRENT"
-  },
-  "T0105": {
-    "hotels": [{
-      "address": "",
-      "price": 64,
-      "name": "Maverick Downtown"
-    }],
-    "destination": "Budapest",
-    "ownerUserName": "my TA is so cool",
-    "tripId": "T0105",
-    "tripName": "Toronto to Budapest",
-    "dates": "2025-12-25 to 2025-12-31",
-    "attractions": [
-      {"name": "Buda Castle"},
-      {"name": "Hungarian Parliament Building"},
-      {"name": "Szechenyi Thermal Baths"},
-      {"name": "Fisherman's Bastion"},
-      {"name": "Matthias Church"},
-      {"name": "Central Market Hall"},
-      {"name": "St. Stephen's Basilica"},
-      {"name": "Christmas Markets (Vörösmarty Square)"}
-    ],
-    "flights": [{
-      "price": 1482,
-      "departureTimes": "Outbound: 2025-12-25 19:45 | Return: 2025-12-26 09:50",
-      "airlineName": "Air Canada"
-    }],
-    "status": "CURRENT"
-  },
-  "T0106": {
-    "hotels": [],
-    "destination": "London",
-    "ownerUserName": "j",
-    "tripId": "T0106",
-    "tripName": "Toronto to London",
-    "dates": "2025-12-01 to 2025-12-03",
-    "attractions": [],
-    "flights": [],
-    "status": "Completed"
-  },
-  "T0103": {
-    "hotels": [{
-      "address": "",
-      "price": 26,
-      "name": "Generator Paris"
-    }],
-    "destination": "Montreal",
-    "ownerUserName": "b",
-    "tripId": "T0103",
-    "tripName": "Toronto to Montreal",
-    "dates": "2025-12-25 to 2026-01-02",
-    "attractions": [
-      {"name": "Old Montreal"},
-      {"name": "Notre-Dame Basilica"},
-      {"name": "Montreal Museum of Fine Arts"},
-      {"name": "Mount Royal Park"},
-      {"name": "Underground City (RÉSO)"},
-      {"name": "Jean-Talon Market"},
-      {"name": "Pointe-à-Callière, Montreal Archaeology and History Complex"},
-      {"name": "Montreal Science Centre"},
-      {"name": "Olympic Park"},
-      {"name": "Biodome"}
-    ],
-    "flights": [{
-      "price": 1428,
-      "departureTimes": "Outbound: 2025-12-01 22:45 | Return: 2025-12-02 12:10",
-      "airlineName": "Air France"
-    }],
-    "status": "CURRENT"
-  },
-  "T0104": {
-    "hotels": [],
-    "destination": "Budapest",
-    "ownerUserName": "my TA is so cool",
-    "tripId": "T0104",
-    "tripName": "Toronto to Budapest",
-    "dates": "2025-12-25 to 2025-12-31",
-    "attractions": [],
-    "flights": [],
     "status": "CURRENT"
   }
 }

@@ -19,21 +19,17 @@ public class CompleteTripPresenter implements CompleteTripOutputBoundary {
 
     @Override
     public void prepareSuccessView(CompleteTripOutputData outputData) {
-        // Get the current state
         LoggedInState state = loggedInViewModel.getState();
 
-        // We clear the current trip fields from the dashboard
+        // Clear current trip fields
         state.setCurrentTripName("");
         state.setCityName("");
         state.setDate("");
 
-        // Optional: If you track the "lastCompletedTripName", update it here
-        state.setLastCompletedTripName(outputData.getTripName());
+        // Add success message
+        state.setSuccessMessage("Trip completed successfully!");
 
-        // Push updated state into the ViewModel
         loggedInViewModel.setState(state);
-
-        // Notify UI
         loggedInViewModel.firePropertyChange("state");
     }
 

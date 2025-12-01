@@ -15,6 +15,7 @@ public class LoggedInState {
 
     private String lastCompletedTripName;
     private String errorMessage;
+    private String successMessage = "";
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
@@ -87,4 +88,13 @@ public class LoggedInState {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    public void setSuccessMessage(String msg) {
+        this.successMessage = msg;
+    }
+
 }

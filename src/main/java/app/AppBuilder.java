@@ -151,7 +151,7 @@ public class AppBuilder {
 
     // Create the real AI data access object
     GeminiTripAIDataAccessObject geminiTripAIDataAccessObject =
-            new GeminiTripAIDataAccessObject("AIzaSyAh4YLh6uIyOWQHJngqlcXS9D9-EKJkO5s");
+            new GeminiTripAIDataAccessObject("AIzaSyCHZ46QjyRenVy7KyEaVr30tx9iTuS9R2U");
 
     // Wrap it with the logging decorator
     TripAIDataAccessInterface loggingTripAIDataAccessObject =

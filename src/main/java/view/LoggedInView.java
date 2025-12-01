@@ -286,6 +286,20 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         }
 
         // ================================
+        // SHOW SUCCESS POPUP IF NEEDED
+        // ================================
+        if (state.getSuccessMessage() != null && !state.getSuccessMessage().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    state.getSuccessMessage(),
+                    "Trip Completed",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            state.setSuccessMessage("");
+        }
+
+
+        // ================================
         // UPDATE LABELS
         // ================================
         username.setText(state.getUsername());
