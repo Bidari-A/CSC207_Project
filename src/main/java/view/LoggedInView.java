@@ -1,6 +1,7 @@
 package view;
 
 
+import interface_adapter.complete_trip.CompleteTripController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
@@ -36,7 +37,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private CreateNewTripController createNewTripController;
     private TripController tripController;
     private DeleteCurrentTripController deleteCurrentTripController;
-
+    private CompleteTripController completeTripController;
 
     // For opening the flight page
     private FlightSearchViewModel flightSearchViewModel;
@@ -177,7 +178,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         bottomPanel.add(hotelSearchButton);
 
 
-
         this.setLayout(new BorderLayout(20, 20));
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.add(topPanel, BorderLayout.NORTH);
@@ -208,7 +208,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
             // Get the current username from the logged in state
             LoggedInState state = loggedInViewModel.getState();
             String username = state.getUsername();
-            
+
             // Load trips (navigation will be handled by TripListPresenter)
             if (tripListController != null && username != null) {
                 tripListController.executeLoadTrips(username);
@@ -248,7 +248,12 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 deleteCurrentTripController.execute(username);
             }
         } else if (source == completeButton) {
-            System.out.println("Complete clicked");
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+
+            if (completeTripController != null && username != null) {
+                completeTripController.execute(username);
+            }
         }
 
     }
@@ -256,15 +261,39 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     /**
      * Updates the labels when LoggedInState changes.
      */
+    /**
+     * Updates the labels and shows popups when LoggedInState changes.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("state".equals(evt.getPropertyName())) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            username.setText(state.getUsername());
-            tripName.setText(state.getCurrentTripName());
-            cityName.setText(state.getCityName());
-            date.setText(state.getDate());
+        if (!"state".equals(evt.getPropertyName())) {
+            return;
         }
+
+        LoggedInState state = loggedInViewModel.getState();
+
+        // ================================
+        // SHOW ERROR POPUP IF NEEDED
+        // ================================
+        if (state.getErrorMessage() != null && !state.getErrorMessage().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    state.getErrorMessage(),
+                    "Unable to Complete Trip",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            state.setErrorMessage("");
+        }
+
+        // ================================
+        // UPDATE LABELS
+        // ================================
+        username.setText(state.getUsername());
+        tripName.setText(state.getCurrentTripName());
+        cityName.setText(state.getCityName());
+        date.setText(state.getDate());
+
+        this.repaint();
     }
 
     public String getViewName() {
@@ -282,6 +311,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void setCreateNewTripController(CreateNewTripController createNewTripController) {
         this.createNewTripController = createNewTripController;
     }
+
     public void setTripController(TripController tripController) {
         this.tripController = tripController;
     }
@@ -307,4 +337,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.deleteCurrentTripController = deleteCurrentTripController;
     }
 
+    public void setCompleteTripController(CompleteTripController controller) {
+        this.completeTripController = controller;
+    }
 }

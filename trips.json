@@ -160,6 +160,17 @@
     }],
     "status": "CURRENT"
   },
+  "T0106": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0106",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-03",
+    "attractions": [],
+    "flights": [],
+    "status": "Completed"
+  },
   "T0103": {
     "hotels": [{
       "address": "",

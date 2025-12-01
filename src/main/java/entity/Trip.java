@@ -6,7 +6,7 @@ public class Trip {
     private final String tripId;
     private final String tripName;
     private final String ownerUserName;
-    private final String status;
+    private String status;
     private final String dates;
     private final String destination; // Main destination location (from "To" field)
     private final List<Accommodation> hotels;
@@ -37,4 +37,8 @@ public class Trip {
     public List<Accommodation> getHotels() { return this.hotels; }
     public List<Flight> getFlights() { return this.flights; }
     public List<Destination> getAttractions() { return this.attractions; }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

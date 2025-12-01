@@ -50,5 +50,11 @@
       "T0105"
     ],
     "username": "my TA is so cool"
+  },
+  "j": {
+    "password": "1",
+    "currentTripId": null,
+    "tripList": ["T0106"],
+    "username": "j"
   }
 }
