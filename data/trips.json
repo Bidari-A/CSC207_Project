@@ -1,1 +1,24 @@
-{}
+{
+  "T0003": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0003",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-12",
+    "attractions": [],
+    "flights": [],
+    "status": "CURRENT"
+  },
+  "T0001": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0001",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-12",
+    "attractions": [],
+    "flights": [],
+    "status": "CURRENT"
+  }
+}
