@@ -27,12 +27,6 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
     @Override
     public void execute(CreateNewTripInputData inputData) {
-        // TEMPORARY FAKE LOGIC
-        System.out.println("Generating fake trip...");
-        System.out.println("From: " + inputData.getFrom());
-        System.out.println("To: " + inputData.getTo());
-        System.out.println("Date: " + inputData.getStartDate());
-        System.out.println("Date: " + inputData.getEndDate());
 
         String from = inputData.getFrom();
         String to = inputData.getTo();
@@ -65,15 +59,8 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
 
         String itinerary = tripAIDataAccessObject.generateTripPlan(prompt);
 
-
         // Parse destinations from the AI text
         List<Destination> attractions = parseDestinations(itinerary);
-
-        // Temporary: just to check it works
-        System.out.println("Parsed attractions:");
-        for (Destination d : attractions) {
-            System.out.println(" - " + d.getName());
-        }
 
         String tripSummary = parseTripSummary(itinerary);
 
@@ -98,8 +85,6 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
                 attractions          // parsed destinations from Gemini
         );
 
-        // Store the trip
-        // tripSaver.saveTrip(trip);
         Trip savedTrip = tripSaver.saveTrip(trip);
         String tripId = savedTrip.getTripId();
         userDataAccess.updateUserTrips(currentUsername, tripId);
@@ -137,9 +122,7 @@ public class CreateNewTripInteractor implements CreateNewTripInputBoundary {
             String line = rawLine.trim();
             if (line.startsWith("- ")) {
                 String name = line.substring(2).trim();
-                if (!name.isEmpty()) {
-                    result.add(new Destination(name));
-                }
+                result.add(new Destination(name));
             }
         }
 

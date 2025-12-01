@@ -134,8 +134,13 @@ public class AppBuilder {
         TripIdGenerator.initializeFromExistingIds(existingTripIds);
     }
 
+    // Create the real AI data access object
     GeminiTripAIDataAccessObject geminiTripAIDataAccessObject =
-            new GeminiTripAIDataAccessObject("AIzaSyC15un0Hb4-GYpIJiPB4rJE7euxXb57PjQ");
+            new GeminiTripAIDataAccessObject("AIzaSyAh4YLh6uIyOWQHJngqlcXS9D9-EKJkO5s");
+
+    // Wrap it with the logging decorator
+    TripAIDataAccessInterface loggingTripAIDataAccessObject =
+            new LoggingTripAIDataAccessDecorator(geminiTripAIDataAccessObject);
 
 
     private SignupView signupView;
@@ -315,9 +320,12 @@ public class AppBuilder {
         final CreateNewTripOutputBoundary createNewTripPresenter =
                 new CreateNewTripPresenter(viewManagerModel, createNewTripViewModel, tripResultViewModel);
 
+        // CreateNewTripInteractor uses the logging decorator instead of the raw Gemini DAO
         final CreateNewTripInputBoundary createNewTripInteractor =
                 new CreateNewTripInteractor(createNewTripPresenter, (TripAIDataAccessInterface) geminiTripAIDataAccessObject,
                         (CreateNewTripTripDataAccessInterface) tripDataAccessObject, userDataAccessObject);
+                new CreateNewTripInteractor(createNewTripPresenter,loggingTripAIDataAccessObject,
+                        tripDataAccessObject, userDataAccessObject);
 
         final CreateNewTripController controller =
                 new CreateNewTripController(createNewTripInteractor);

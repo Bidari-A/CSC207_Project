@@ -59,11 +59,6 @@ public class DeleteTripInteractor implements DeleteTripInputBoundary {
         presenter.prepareSuccessView(outputData);
     }
 
-    /**
-     * ★★★★★ Your teammate’s method, adapted to your actual tripDAO ★★★★★
-     * This version does NOT require getTripById.
-     * It uses tripDAO.getTrips(username) and filters inside.
-     */
     private List<Trip> getCompletedTrips(String username) {
 
         // tripDAO.getTrips(username) returns ALL trips belonging to the user

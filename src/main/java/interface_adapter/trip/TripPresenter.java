@@ -3,6 +3,7 @@ package interface_adapter.trip;
 import interface_adapter.ViewManagerModel;
 import use_case.load_trip_detail.LoadTripDetailOutputBoundary;
 import use_case.load_trip_detail.LoadTripDetailOutputData;
+
 public class TripPresenter implements LoadTripDetailOutputBoundary {
 
     // Model here
