@@ -1,28 +1,38 @@
 package view;
 
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+import interface_adapter.complete_current_trip.CompleteCurrentTripController;
+import interface_adapter.create_new_trip.CreateNewTripController;
+import interface_adapter.delete_current_trip.DeleteCurrentTripController;
+import interface_adapter.flight_search.FlightSearchController;
+import interface_adapter.flight_search.FlightSearchViewModel;
+import interface_adapter.hotel_search.HotelSearchController;
+import interface_adapter.hotel_search.HotelSearchViewModel;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.trip.TripController;
 import interface_adapter.trip_list.TripListController;
-import use_case.flight_search.FlightSearchInteractor;
-import interface_adapter.flight_search.FlightSearchViewModel;
-import interface_adapter.flight_search.FlightSearchController;
-import interface_adapter.hotel_search.HotelSearchViewModel;
-import interface_adapter.hotel_search.HotelSearchController;
-import view.HotelSearchDialog;
-
-
-import interface_adapter.create_new_trip.CreateNewTripController;
-import interface_adapter.delete_current_trip.DeleteCurrentTripController;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * The View for when the user is logged into the program.
@@ -36,6 +46,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     private CreateNewTripController createNewTripController;
     private TripController tripController;
     private DeleteCurrentTripController deleteCurrentTripController;
+    private CompleteCurrentTripController completeCurrentTripController;
 
 
     // For opening the flight page
@@ -52,7 +63,6 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     // tripHistoryController
     // detailController
     // deleteTripController
-    // completeTripController
     // newTripController
 
     private final JLabel tripName;
@@ -248,7 +258,20 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                 deleteCurrentTripController.execute(username);
             }
         } else if (source == completeButton) {
-            System.out.println("Complete clicked");
+            LoggedInState state = loggedInViewModel.getState();
+            String username = state.getUsername();
+            String currentTripName = state.getCurrentTripName();
+            
+            // Check if current trip info is not "N/A"
+            if (currentTripName == null || currentTripName.equals("N/A") || currentTripName.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "There is no current trip to complete. Please create a new trip first.", 
+                    "No Current Trip", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
+            if (completeCurrentTripController != null && username != null) {
+                completeCurrentTripController.execute(username);
+            }
         }
 
     }
@@ -305,6 +328,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public void setDeleteCurrentTripController(DeleteCurrentTripController deleteCurrentTripController) {
         this.deleteCurrentTripController = deleteCurrentTripController;
+    }
+
+    public void setCompleteCurrentTripController(CompleteCurrentTripController completeCurrentTripController) {
+        this.completeCurrentTripController = completeCurrentTripController;
     }
 
 }
