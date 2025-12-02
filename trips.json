@@ -21,6 +21,28 @@
     "flights": [],
     "status": "CURRENT"
   },
+  "T0112": {
+    "hotels": [],
+    "destination": "London",
+    "ownerUserName": "j",
+    "tripId": "T0112",
+    "tripName": "Toronto to London",
+    "dates": "2025-12-01 to 2025-12-10",
+    "attractions": [
+      {"name": "Buckingham Palace"},
+      {"name": "Tower of London"},
+      {"name": "British Museum"},
+      {"name": "National Gallery"},
+      {"name": "Westminster Abbey"},
+      {"name": "Houses of Parliament & Big Ben"},
+      {"name": "London Eye"},
+      {"name": "Shakespeare's Globe"},
+      {"name": "Borough Market"},
+      {"name": "Winter Wonderland in Hyde Park"}
+    ],
+    "flights": [],
+    "status": "CURRENT"
+  },
   "T0102": {
     "hotels": [],
     "destination": "Calgary",
