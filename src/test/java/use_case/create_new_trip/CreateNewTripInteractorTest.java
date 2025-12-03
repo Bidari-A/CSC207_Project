@@ -99,7 +99,7 @@ class CreateNewTripInteractorTest {
         assertEquals("Paris", mockPresenter.outputData.getTo());
         assertEquals("2025-01-01", mockPresenter.outputData.getStartDate());
         // Interactor currently passes startDate for endDate
-        assertEquals("2025-01-01", mockPresenter.outputData.getEndDate());
+        assertEquals("2025-01-05", mockPresenter.outputData.getEndDate());
         assertEquals(itinerary, mockPresenter.outputData.getItinerary());
     }
 
@@ -231,6 +231,67 @@ class CreateNewTripInteractorTest {
         assertTrue(mockPresenter.presentBackToCreateNewTripViewCalled);
     }
 
+    /**
+     * When there is no "TRIP SUMMARY:" marker, parseTripSummary should
+     * return the original text unchanged.
+     */
+    @Test
+    void testParseTripSummaryNoSummaryMarkerReturnsWholeText() throws Exception {
+        String text = "Just some random itinerary text without markers.";
+
+        Method method = CreateNewTripInteractor.class
+                .getDeclaredMethod("parseTripSummary", String.class);
+        method.setAccessible(true);
+
+        String result = (String) method.invoke(interactor, text);
+
+        assertEquals(text, result);
+    }
+
+    /**
+     * When both TRIP SUMMARY and DESTINATIONS are present, parseTripSummary
+     * should return only the text between these two markers (trimmed).
+     */
+    @Test
+    void testParseTripSummaryExtractsTextBetweenMarkers() throws Exception {
+        String text =
+                "Intro line\n" +
+                        "TRIP SUMMARY:\n" +
+                        "Line one of the summary.\n" +
+                        "Line two of the summary.\n" +
+                        "DESTINATIONS:\n" +
+                        "- Place one\n";
+
+        Method method = CreateNewTripInteractor.class
+                .getDeclaredMethod("parseTripSummary", String.class);
+        method.setAccessible(true);
+
+        String result = (String) method.invoke(interactor, text);
+
+        assertEquals("Line one of the summary.\nLine two of the summary.", result);
+    }
+
+    /**
+     * When TRIP SUMMARY exists but there is no DESTINATIONS marker,
+     * parseTripSummary should return everything after TRIP SUMMARY.
+     */
+    @Test
+    void testParseTripSummaryWithNoDestinationsMarkerUsesEndOfText() throws Exception {
+        String text =
+                "TRIP SUMMARY:\n" +
+                        "Only summary line one.\n" +
+                        "Only summary line two.\n";
+
+        Method method = CreateNewTripInteractor.class
+                .getDeclaredMethod("parseTripSummary", String.class);
+        method.setAccessible(true);
+
+        String result = (String) method.invoke(interactor, text);
+
+        assertEquals("Only summary line one.\nOnly summary line two.", result);
+    }
+
+
     // Mocks
 
     private static class MockTripAIDataAccess implements TripAIDataAccessInterface {
@@ -314,3 +375,4 @@ class CreateNewTripInteractorTest {
         }
     }
 }
+
