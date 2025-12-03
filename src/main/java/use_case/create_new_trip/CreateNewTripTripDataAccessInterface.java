@@ -8,12 +8,10 @@ import entity.Trip;
  */
 public interface CreateNewTripTripDataAccessInterface {
 
-    /**
+  /**
      * Saves the given Trip to persistent storage.
      *
      * @param trip the Trip to save
      */
-    // void saveTrip(Trip trip);
-    Trip saveTrip(Trip trip);
-
+  Trip saveTrip(Trip trip);
 }
