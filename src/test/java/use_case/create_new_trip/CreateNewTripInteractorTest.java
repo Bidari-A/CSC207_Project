@@ -8,6 +8,7 @@ import entity.Flight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -335,6 +336,10 @@ class CreateNewTripInteractorTest {
         boolean updateCalled = false;
         String updateUsername;
         String updateTripId;
+        @Override
+        public void setCurrentTripId(String username, String tripId) {
+
+        }
 
         @Override
         public void updateUserTrips(String username, String tripId) {
